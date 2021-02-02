@@ -1,0 +1,67 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.40.1.212/W32 for ARM         02/Feb/2021  11:39:10
+# Copyright 1999-2019 IAR Systems AB.
+#
+#    Cpu mode     =  
+#    Endian       =  little
+#    Source file  =  E:\cpp\nrf52_libraries\main\main.cpp
+#    Command line =
+#        -f C:\Users\IF385~1.SHO\AppData\Local\Temp\EW5111.tmp
+#        (E:\cpp\nrf52_libraries\main\main.cpp -D NRF52840_XXAA -D
+#        CONFIG_NFCT_PINS_AS_GPIOS -D APP_TIMER_V2 -D APP_TIMER_V2_RTC1_ENABLED
+#        -D DEBUG -D DEBUG_NRF -D FLOAT_ABI_HARD -lCN
+#        E:\cpp\nrf52_libraries\main\List -lA E:\cpp\nrf52_libraries\main\List
+#        -o E:\cpp\nrf52_libraries\main\Obj --no_cse --no_unroll --no_inline
+#        --no_code_motion --no_tbaa --no_clustering --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M3 -e --fpu=None --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        8.3\arm\inc\c\DLib_Config_Normal.h" -I E:\cpp\nrf52_libraries\fsm\ -I
+#        E:\cpp\nrf52_libraries\pwm\ -I E:\cpp\nrf52_libraries\spi\ -I
+#        E:\cpp\nrf52_libraries\usb\ -I E:\cpp\nrf52_libraries\main\ -I
+#        E:\cpp\nrf52_libraries\cmsis\ -I E:\cpp\nrf52_libraries\cmsis\device\
+#        -I E:\cpp\nrf52_libraries\cmsis\include\ -On --c++ --no_exceptions
+#        --no_rtti)
+#    Locale       =  C
+#    List file    =  E:\cpp\nrf52_libraries\main\List\main.lst
+#    Object file  =  E:\cpp\nrf52_libraries\main\Obj\main.o
+#
+###############################################################################
+
+E:\cpp\nrf52_libraries\main\main.cpp
+      1          #include <string.h>
+      2          #include <ctype.h>
+      3          #include <intrinsics.h>
+      4          #include "nrf.h"
+      5          #include "nrf_gpio.h"
+      6          
+
+   \                                 In section .text, align 2, keep-with-next
+      7          int main()
+      8          {
+      9            return 0;
+   \                     main: (+1)
+   \        0x0   0x2000             MOVS     R0,#+0
+   \        0x2   0x4770             BX       LR               ;; return
+     10          }
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   main
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  main
+
+ 
+ 4 bytes in section .text
+ 
+ 4 bytes of CODE memory
+
+Errors: none
+Warnings: none

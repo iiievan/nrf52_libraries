@@ -1,0 +1,222 @@
+###############################################################################
+#
+# IAR ELF Linker V8.40.1.212/W32 for ARM                  02/Feb/2021  11:39:10
+# Copyright 2007-2019 IAR Systems AB.
+#
+#    Output file  =  E:\cpp\nrf52_libraries\main\Exe\libraries.out.tmp
+#    Map file     =  E:\cpp\nrf52_libraries\main\List\libraries.map
+#    Command line =
+#        -f C:\Users\IF385~1.SHO\AppData\Local\Temp\EW521E.tmp
+#        (E:\cpp\nrf52_libraries\main\Obj\iar_startup_nrf52840.o
+#        E:\cpp\nrf52_libraries\main\Obj\main.o
+#        E:\cpp\nrf52_libraries\main\Obj\system_nrf52.o
+#        E:\cpp\nrf52_libraries\main\Obj\system_nrf52840.o --no_out_extension
+#        -o E:\cpp\nrf52_libraries\main\Exe\libraries.out.tmp --redirect
+#        _Printf=_PrintfFullNoMb --redirect _Scanf=_ScanfFullNoMb --map
+#        E:\cpp\nrf52_libraries\main\List\libraries.map --config
+#        E:\cpp\nrf52_libraries\main\main_nRF5x.icf --keep __checksum --entry
+#        __iar_program_start --place_holder __checksum,2,.checksum,1
+#        --define_symbol __checksum_begin=0x2000 --define_symbol
+#        __checksum_end=0x3fffe --inline --merge_duplicate_sections --vfe
+#        --text_out locale)
+#
+###############################################################################
+
+*******************************************************************************
+*** RUNTIME MODEL ATTRIBUTES
+***
+
+CppFlavor        = *
+__CPP_Exceptions = Disabled
+__CPP_Language   = C++14
+__SystemLibrary  = DLib
+__dlib_version   = 6
+
+
+*******************************************************************************
+*** HEAP SELECTION
+***
+
+The basic heap was selected because no calls to memory allocation
+functions were found in the application outside of system library
+functions, and there are calls to deallocation functions in the
+application.
+
+
+*******************************************************************************
+*** PLACEMENT SUMMARY
+***
+
+"A0":  place at address 0x2000 { ro section .intvec };
+"A1":  place at address 0x3'fffe { ro section .checksum };
+"P1":  place in [from 0x2000 to 0x3'ffff] { ro };
+define block HEAP with size = 0, alignment = 8 { };
+"P2":  place in [from 0x2000'0000 to 0x2003'dfdf] { rw, block HEAP };
+define block CSTACK with size = 8K, alignment = 8 { };
+"P3":  place in [from 0x2003'dfe0 to 0x2003'ffe0] { block CSTACK };
+initialize by copy { rw };
+keep { section .intvec };
+
+No sections matched the following patterns:
+
+  ro section bootloader_section  in "A3"
+  ro section firmware_type       in "A2"
+
+
+  Section            Kind         Address    Size  Object
+  -------            ----         -------    ----  ------
+"A0":                                       0x200
+  .intvec            ro code       0x2000   0x200  iar_startup_nrf52840.o [1]
+                                 - 0x2200   0x200
+
+"P1":                                       0x3fc
+  .text              ro code       0x2200   0x334  system_nrf52840.o [1]
+  .text              ro code       0x2534    0x2e  copy_init3.o [3]
+  .text              ro code       0x2562     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code       0x2564    0x28  data_init.o [3]
+  .iar.init_table    const         0x258c    0x14  - Linker created -
+  .text              ro code       0x25a0    0x1e  cmain.o [3]
+  .text              ro code       0x25be     0x4  exit.o [2]
+  .text              ro code       0x25c4     0xa  cexit.o [3]
+  .text              ro code       0x25d0     0xc  XXexit.o [3]
+  .text              ro code       0x25dc    0x10  iar_startup_nrf52840.o [1]
+  .text              ro code       0x25ec     0xc  cstartup_M.o [3]
+  Initializer bytes  const         0x25f8     0x4  <for P2-1>
+  .rodata            const         0x25fc     0x0  copy_init3.o [3]
+                                 - 0x25fc   0x3fc
+
+"A1":                                         0x2
+  .checksum          const       0x3'fffe     0x2  Place holder __checksum
+                               - 0x4'0000     0x2
+
+"P2":                                         0x4
+  P2-1                        0x2000'0000     0x4  <Init block>
+    .data            inited   0x2000'0000     0x4  system_nrf52840.o [1]
+                            - 0x2000'0004     0x4
+
+"P3":                                      0x2000
+  CSTACK                      0x2003'dfe0  0x2000  <Block>
+    CSTACK           uninit   0x2003'dfe0  0x2000  <Block tail>
+                            - 0x2003'ffe0  0x2000
+
+Unused ranges:
+
+         From           To      Size
+         ----           --      ----
+       0x25fc     0x3'fffd  0x3'da02
+  0x2000'0004  0x2003'dfdf  0x3'dfdc
+  0x2003'ffe0  0x2003'ffe0       0x1
+
+
+*******************************************************************************
+*** INIT TABLE
+***
+
+          Address      Size
+          -------      ----
+Copy (__iar_copy_init3)
+    1 source range, total size 0x4:
+               0x25f8   0x4
+    1 destination range, total size 0x4:
+          0x2000'0000   0x4
+
+
+
+*******************************************************************************
+*** MODULE SUMMARY
+***
+
+    Module                   ro code  ro data  rw data
+    ------                   -------  -------  -------
+command line/config:
+    Place holder __checksum                 2
+    --------------------------------------------------
+    Total:                                  2
+
+E:\cpp\nrf52_libraries\main\Obj: [1]
+    iar_startup_nrf52840.o       530
+    system_nrf52840.o            820        4        4
+    --------------------------------------------------
+    Total:                     1'350        4        4
+
+dl7M_tln.a: [2]
+    exit.o                         4
+    --------------------------------------------------
+    Total:                         4
+
+rt7M_tl.a: [3]
+    XXexit.o                      12
+    cexit.o                       10
+    cmain.o                       30
+    copy_init3.o                  46
+    cstartup_M.o                  12
+    data_init.o                   40
+    --------------------------------------------------
+    Total:                       150
+
+    Gaps                           4
+    Linker created                         20    8'192
+------------------------------------------------------
+    Grand Total:               1'508       26    8'196
+
+
+*******************************************************************************
+*** ENTRY LIST
+***
+
+Entry                       Address   Size  Type      Object
+-----                       -------   ----  ----      ------
+.iar.init_table$$Base        0x258c          --   Gb  - Linker created -
+.iar.init_table$$Limit       0x25a0          --   Gb  - Linker created -
+?main                        0x25a1         Code  Gb  cmain.o [3]
+CSTACK$$Base            0x2003'dfe0          --   Gb  - Linker created -
+CSTACK$$Limit           0x2003'ffe0          --   Gb  - Linker created -
+Region$$Table$$Base          0x258c          --   Gb  - Linker created -
+Region$$Table$$Limit         0x25a0          --   Gb  - Linker created -
+SystemCoreClock         0x2000'0000    0x4  Data  Gb  system_nrf52840.o [1]
+SystemCoreClockUpdate        0x221b    0x8  Code  Gb  system_nrf52840.o [1]
+SystemInit                   0x2223  0x150  Code  Gb  system_nrf52840.o [1]
+[local to system_nrf52840_c]::NVIC_SystemReset()
+                             0x2201   0x1a  Code  Lc  system_nrf52840.o [1]
+[local to system_nrf52840_c]::errata_103()
+                             0x23e3   0x18  Code  Lc  system_nrf52840.o [1]
+[local to system_nrf52840_c]::errata_115()
+                             0x23fb   0x18  Code  Lc  system_nrf52840.o [1]
+[local to system_nrf52840_c]::errata_120()
+                             0x2413   0x18  Code  Lc  system_nrf52840.o [1]
+[local to system_nrf52840_c]::errata_136()
+                             0x242b   0x2c  Code  Lc  system_nrf52840.o [1]
+[local to system_nrf52840_c]::errata_36()
+                             0x2373   0x2c  Code  Lc  system_nrf52840.o [1]
+[local to system_nrf52840_c]::errata_66()
+                             0x239f   0x2c  Code  Lc  system_nrf52840.o [1]
+[local to system_nrf52840_c]::errata_98()
+                             0x23cb   0x18  Code  Lc  system_nrf52840.o [1]
+__Vectors                    0x2000          --   Gb  iar_startup_nrf52840.o [1]
+__Vectors_End                0x2200         Data  Gb  iar_startup_nrf52840.o [1]
+__Vectors_Size {Abs}          0x200          --   Gb  iar_startup_nrf52840.o [1]
+__checksum                 0x3'fffe    0x2  Data  Gb  Place holder __checksum
+__checksum_begin {Abs}       0x2000         Data  Gb  <internal module>
+__checksum_end {Abs}       0x3'fffe         Data  Gb  <internal module>
+__cmain                      0x25a1         Code  Gb  cmain.o [3]
+__exit                       0x25d1         Code  Gb  XXexit.o [3]
+__iar_copy_init3             0x2535   0x2e  Code  Gb  copy_init3.o [3]
+__iar_data_init3             0x2565   0x28  Code  Gb  data_init.o [3]
+__iar_program_start          0x25ed         Code  Gb  cstartup_M.o [3]
+__vector_table               0x2000         Data  Gb  iar_startup_nrf52840.o [1]
+_call_main                   0x25ad         Code  Gb  cmain.o [3]
+_exit                        0x25c5         Code  Gb  cexit.o [3]
+_main                        0x25bb         Code  Gb  cmain.o [3]
+exit                         0x25bf    0x4  Code  Gb  exit.o [2]
+
+
+[1] = E:\cpp\nrf52_libraries\main\Obj
+[2] = dl7M_tln.a
+[3] = rt7M_tl.a
+
+  1'508 bytes of readonly  code memory
+     26 bytes of readonly  data memory
+  8'196 bytes of readwrite data memory
+
+Errors: none
+Warnings: none

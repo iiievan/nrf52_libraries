@@ -1,0 +1,311 @@
+###############################################################################
+#
+# IAR ELF Linker V8.40.1.212/W32 for ARM                  02/Feb/2021  11:39:18
+# Copyright 2007-2019 IAR Systems AB.
+#
+#    Output file  =  E:\cpp\nrf52_libraries\bootloader\Exe\bootloader.out.tmp
+#    Map file     =  E:\cpp\nrf52_libraries\bootloader\List\bootloader.map
+#    Command line =
+#        -f C:\Users\IF385~1.SHO\AppData\Local\Temp\EW71E1.tmp
+#        (E:\cpp\nrf52_libraries\bootloader\Obj\boot_tools.o
+#        E:\cpp\nrf52_libraries\bootloader\Obj\bootloader.o
+#        E:\cpp\nrf52_libraries\bootloader\Obj\iar_startup_nrf52840.o
+#        E:\cpp\nrf52_libraries\bootloader\Obj\system_nrf52.o
+#        E:\cpp\nrf52_libraries\bootloader\Obj\system_nrf52840.o
+#        --no_out_extension -o
+#        E:\cpp\nrf52_libraries\bootloader\Exe\bootloader.out.tmp --redirect
+#        _Printf=_PrintfFullNoMb --redirect _Scanf=_ScanfFullNoMb --map
+#        E:\cpp\nrf52_libraries\bootloader\List\bootloader.map --config
+#        E:\cpp\nrf52_libraries\bootloader\boot_nRF5x.icf --keep __checksum
+#        --keep __firmware_type --semihosting --entry __iar_program_start
+#        --place_holder __checksum,2,.checksum,1 --define_symbol
+#        __checksum_begin=0x0 --define_symbol __checksum_end=0x1ffe --vfe
+#        --text_out locale)
+#
+###############################################################################
+
+*******************************************************************************
+*** RUNTIME MODEL ATTRIBUTES
+***
+
+CppFlavor       = *
+__SystemLibrary = DLib
+__dlib_version  = 6
+
+
+*******************************************************************************
+*** HEAP SELECTION
+***
+
+The basic heap was selected because no calls to memory allocation
+functions were found in the application outside of system library
+functions, and there are calls to deallocation functions in the
+application.
+
+
+*******************************************************************************
+*** PLACEMENT SUMMARY
+***
+
+"A0":  place at address 0x0 { ro section .intvec };
+"A1":  place at address 0x1ffe { ro section .checksum };
+"A2":  place at address 0x1ff8 { ro section firmware_type };
+"P1":  place in [from 0x0 to 0x2000] { ro };
+define block HEAP with size = 0, alignment = 8 { };
+"P2":  place in [from 0x2000'0000 to 0x2000'dfdf] { rw, block HEAP };
+define block CSTACK with size = 8K, alignment = 8 { };
+"P3":  place in [from 0x2000'dfe0 to 0x2000'ffe0] { block CSTACK };
+initialize by copy { rw };
+keep { section .intvec };
+
+  Section            Kind         Address    Size  Object
+  -------            ----         -------    ----  ------
+"A0":                                       0x200
+  .intvec            ro code          0x0   0x200  iar_startup_nrf52840.o [1]
+                                  - 0x200   0x200
+
+"P1":                                       0x735
+  .text              ro code        0x200   0x33c  system_nrf52840.o [1]
+  .text              ro code        0x53c   0x130  boot_tools.o [1]
+  .text              ro code        0x66c    0xc0  bootloader.o [1]
+  .text              ro code        0x72c    0xa6  ABImemcpy.o [4]
+  .text              ro code        0x7d2    0x38  packbits_init_single.o [4]
+  .text              ro code        0x80a     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x80c    0x28  data_init.o [4]
+  .text              ro code        0x834    0x22  fpinit_M.o [3]
+  .iar.init_table    const          0x858    0x10  - Linker created -
+  .text              ro code        0x868     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x86c    0x1e  cmain.o [4]
+  .text              ro code        0x88a     0x4  low_level_init.o [2]
+  .text              ro code        0x88e     0x4  exit.o [2]
+  .text              ro code        0x892     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x894     0xa  cexit.o [4]
+  .text              ro code        0x89e     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8a0    0x14  exit.o [5]
+  .text              ro code        0x8b4    0x10  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8c4     0xc  cstartup_M.o [4]
+  .text              ro code        0x8d0     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8d2     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8d4     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8d6     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8d8     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8da     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8dc     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8de     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8e0     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8e2     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8e4     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8e6     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8e8     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8ea     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8ec     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8ee     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8f0     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8f2     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8f4     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8f6     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8f8     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8fa     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8fc     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x8fe     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x900     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x902     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x904     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x906     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x908     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x90a     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x90c     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x90e     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x910     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x912     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x914     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x916     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x918     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x91a     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x91c     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x91e     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x920     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x922     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x924     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x926     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x928     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x92a     0x2  iar_startup_nrf52840.o [1]
+  .text              ro code        0x92c     0x2  iar_startup_nrf52840.o [1]
+  .rodata            const          0x92e     0x0  packbits_init_single.o [4]
+  Initializer bytes  const          0x92e     0x7  <for P2-1>
+                                  - 0x935   0x735
+
+"A2":                                         0x4
+  firmware_type      const         0x1ff8     0x4  bootloader.o [1]
+                                 - 0x1ffc     0x4
+
+"A1":                                         0x2
+  .checksum          const         0x1ffe     0x2  Place holder __checksum
+                                 - 0x2000     0x2
+
+"P2":                                        0x2d
+  P2-1                        0x2000'0000    0x2d  <Init block>
+    .data            inited   0x2000'0000     0x4  system_nrf52840.o [1]
+    .bss             inited   0x2000'0004    0x28  bootloader.o [1]
+    .bss             inited   0x2000'002c     0x1  bootloader.o [1]
+                            - 0x2000'002d    0x2d
+
+"P3":                                      0x2000
+  CSTACK                      0x2000'dfe0  0x2000  <Block>
+    CSTACK           uninit   0x2000'dfe0  0x2000  <Block tail>
+                            - 0x2000'ffe0  0x2000
+
+Unused ranges:
+
+         From           To    Size
+         ----           --    ----
+        0x935       0x1ff7  0x16c3
+       0x1ffc       0x1ffd     0x2
+       0x2000       0x2000     0x1
+  0x2000'002d  0x2000'dfdf  0xdfb3
+  0x2000'ffe0  0x2000'ffe0     0x1
+
+
+*******************************************************************************
+*** INIT TABLE
+***
+
+          Address      Size
+          -------      ----
+Copy/packbits (__iar_packbits_init_single3)
+    1 source range, total size 0x7 (15% of destination):
+                0x92e   0x7
+    1 destination range, total size 0x2d:
+          0x2000'0000  0x2d
+
+
+
+*******************************************************************************
+*** MODULE SUMMARY
+***
+
+    Module                   ro code  ro data  rw data
+    ------                   -------  -------  -------
+command line/config:
+    Place holder __checksum                 2
+    --------------------------------------------------
+    Total:                                  2
+
+E:\cpp\nrf52_libraries\bootloader\Obj: [1]
+    boot_tools.o                 304
+    bootloader.o                 192       11       41
+    iar_startup_nrf52840.o       630
+    system_nrf52840.o            828                 4
+    --------------------------------------------------
+    Total:                     1'954       11       45
+
+dl7M_tln.a: [2]
+    exit.o                         4
+    low_level_init.o               4
+    --------------------------------------------------
+    Total:                         8
+
+m7M_tls.a: [3]
+    fpinit_M.o                    34
+    --------------------------------------------------
+    Total:                        34
+
+rt7M_tl.a: [4]
+    ABImemcpy.o                  166
+    cexit.o                       10
+    cmain.o                       30
+    cstartup_M.o                  12
+    data_init.o                   40
+    packbits_init_single.o        56
+    --------------------------------------------------
+    Total:                       314
+
+shb_l.a: [5]
+    exit.o                        20
+    --------------------------------------------------
+    Total:                        20
+
+    Gaps                           2        2
+    Linker created                         16    8'192
+------------------------------------------------------
+    Grand Total:               2'332       31    8'237
+
+
+*******************************************************************************
+*** ENTRY LIST
+***
+
+Entry                       Address   Size  Type      Object
+-----                       -------   ----  ----      ------
+.iar.init_table$$Base         0x858          --   Gb  - Linker created -
+.iar.init_table$$Limit        0x868          --   Gb  - Linker created -
+?main                         0x86d         Code  Gb  cmain.o [4]
+BLE_Update_packet       0x2000'0004   0x28  Data  Gb  bootloader.o [1]
+CSTACK$$Base            0x2000'dfe0          --   Gb  - Linker created -
+CSTACK$$Limit           0x2000'ffe0          --   Gb  - Linker created -
+Delay1us                      0x5f9   0x20  Code  Gb  boot_tools.o [1]
+NVIC_DisableIRQ               0x66d   0x16  Code  Lc  bootloader.o [1]
+NVIC_SystemReset              0x201   0x1a  Code  Lc  system_nrf52840.o [1]
+RADIO_IRQHandler              0x683   0x5e  Code  Gb  bootloader.o [1]
+RF_OFF                        0x633   0x3a  Code  Gb  boot_tools.o [1]
+RF_RX                         0x61d   0x16  Code  Gb  boot_tools.o [1]
+Region$$Table$$Base           0x858          --   Gb  - Linker created -
+Region$$Table$$Limit          0x868          --   Gb  - Linker created -
+StartProgram                  0x715   0x18  Code  Gb  bootloader.o [1]
+SystemCoreClock         0x2000'0000    0x4  Data  Gb  system_nrf52840.o [1]
+SystemCoreClockUpdate         0x21b    0x8  Code  Gb  system_nrf52840.o [1]
+SystemInit                    0x223  0x15a  Code  Gb  system_nrf52840.o [1]
+__Vectors                       0x0          --   Gb  iar_startup_nrf52840.o [1]
+__Vectors_End                 0x200         Data  Gb  iar_startup_nrf52840.o [1]
+__Vectors_Size {Abs}          0x200          --   Gb  iar_startup_nrf52840.o [1]
+__aeabi_memcpy                0x72d         Code  Gb  ABImemcpy.o [4]
+__aeabi_memcpy4               0x74d         Code  Gb  ABImemcpy.o [4]
+__aeabi_memcpy8               0x74d         Code  Gb  ABImemcpy.o [4]
+__checksum                   0x1ffe    0x2  Data  Gb  Place holder __checksum
+__checksum_begin {Abs}          0x0         Data  Gb  <internal module>
+__checksum_end {Abs}         0x1ffe         Data  Gb  <internal module>
+__cmain                       0x86d         Code  Gb  cmain.o [4]
+__exit                        0x8a1   0x14  Code  Gb  exit.o [5]
+__firmware_type              0x1ff8    0x4  Data  Gb  bootloader.o [1]
+__iar_data_init3              0x80d   0x28  Code  Gb  data_init.o [4]
+__iar_init_vfp                0x835         Code  Gb  fpinit_M.o [3]
+__iar_packbits_init_single3
+                              0x7d3   0x38  Code  Gb  packbits_init_single.o [4]
+__iar_program_start           0x8c5         Code  Gb  cstartup_M.o [4]
+__low_level_init              0x88b    0x4  Code  Gb  low_level_init.o [2]
+__vector_table                  0x0         Data  Gb  iar_startup_nrf52840.o [1]
+_call_main                    0x879         Code  Gb  cmain.o [4]
+_exit                         0x895         Code  Gb  cexit.o [4]
+_main                         0x887         Code  Gb  cmain.o [4]
+errata_103                    0x3ed   0x18  Code  Lc  system_nrf52840.o [1]
+errata_115                    0x405   0x18  Code  Lc  system_nrf52840.o [1]
+errata_120                    0x41d   0x18  Code  Lc  system_nrf52840.o [1]
+errata_136                    0x435   0x2c  Code  Lc  system_nrf52840.o [1]
+errata_36                     0x37d   0x2c  Code  Lc  system_nrf52840.o [1]
+errata_66                     0x3a9   0x2c  Code  Lc  system_nrf52840.o [1]
+errata_98                     0x3d5   0x18  Code  Lc  system_nrf52840.o [1]
+exit                          0x88f    0x4  Code  Gb  exit.o [2]
+main                          0x705   0x10  Code  Gb  bootloader.o [1]
+nrf_gpio_cfg                  0x559   0x48  Code  Lc  boot_tools.o [1]
+nrf_gpio_cfg_input            0x5bb   0x1e  Code  Lc  boot_tools.o [1]
+nrf_gpio_cfg_output           0x5a1   0x1a  Code  Lc  boot_tools.o [1]
+nrf_gpio_pin_clear            0x5d9   0x1a  Code  Lc  boot_tools.o [1]
+nrf_gpio_pin_port_decode
+                              0x53d   0x1c  Code  Lc  boot_tools.o [1]
+nrf_gpio_port_out_clear
+                              0x5f3    0x6  Code  Lc  boot_tools.o [1]
+ucRF_Packet_received    0x2000'002c    0x1  Data  Gb  bootloader.o [1]
+
+
+[1] = E:\cpp\nrf52_libraries\bootloader\Obj
+[2] = dl7M_tln.a
+[3] = m7M_tls.a
+[4] = rt7M_tl.a
+[5] = shb_l.a
+
+  2'332 bytes of readonly  code memory
+     31 bytes of readonly  data memory
+  8'237 bytes of readwrite data memory
+
+Errors: none
+Warnings: none
