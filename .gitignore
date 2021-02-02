@@ -12,5 +12,7 @@ settings/*.wspos
 **/Exe/*.sim  
 
 # IAR Debug Obj  
-Obj/ 
+Obj/
+**List/*.lst 
+**List/*.s 
 
