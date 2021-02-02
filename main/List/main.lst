@@ -1,13 +1,13 @@
 ###############################################################################
 #
-# IAR ANSI C/C++ Compiler V8.40.1.212/W32 for ARM         02/Feb/2021  18:20:23
+# IAR ANSI C/C++ Compiler V8.40.1.212/W32 for ARM         02/Feb/2021  20:02:59
 # Copyright 1999-2019 IAR Systems AB.
 #
 #    Cpu mode     =  
 #    Endian       =  little
 #    Source file  =  E:\cpp\nrf52_libraries\main\main.cpp
 #    Command line =
-#        -f C:\Users\IF385~1.SHO\AppData\Local\Temp\EWADE0.tmp
+#        -f C:\Users\IF385~1.SHO\AppData\Local\Temp\EW918E.tmp
 #        (E:\cpp\nrf52_libraries\main\main.cpp -D NRF52840_XXAA -D
 #        CONFIG_NFCT_PINS_AS_GPIOS -D _AUDIOGUDE_V2_BOARD -D DEBUG -lCN
 #        E:\cpp\nrf52_libraries\main\List -lA E:\cpp\nrf52_libraries\main\List
@@ -34,6 +34,109 @@ E:\cpp\nrf52_libraries\main\main.cpp
       3          #include <intrinsics.h>
       4          #include "nrf.h"
       5          #include "nrf_gpio.h"
+
+   \                                 In section .text, align 2, keep-with-next
+   \   static __interwork __softfp NRF_GPIO_Type *nrf_gpio_pin_port_decode(uint32_t *)
+   \                     _ZN29_INTERNAL_8_main_cpp_0937e68b24nrf_gpio_pin_port_decodeEPj: (+1)
+   \        0x0   0x0001             MOVS     R1,R0
+   \        0x2   0x6808             LDR      R0,[R1, #+0]
+   \        0x4   0x2820             CMP      R0,#+32
+   \        0x6   0xD202             BCS.N    ??nrf_gpio_pin_port_decode_0
+   \        0x8   0xF05F 0x40A0      MOVS     R0,#+1342177280
+   \        0xC   0xE004             B.N      ??nrf_gpio_pin_port_decode_1
+   \                     ??nrf_gpio_pin_port_decode_0: (+1)
+   \        0xE   0x7808             LDRB     R0,[R1, #+0]
+   \       0x10   0xF010 0x001F      ANDS     R0,R0,#0x1F
+   \       0x14   0x6008             STR      R0,[R1, #+0]
+   \       0x16   0x....             LDR.N    R0,??DataTable2_1  ;; 0x50000300
+   \                     ??nrf_gpio_pin_port_decode_1: (+1)
+   \       0x18   0x4770             BX       LR               ;; return
+
+   \                                 In section .text, align 2, keep-with-next
+   \   static __interwork __softfp void nrf_gpio_cfg(uint32_t, nrf_gpio_pin_dir_t, nrf_gpio_pin_input_t, nrf_gpio_pin_pull_t, nrf_gpio_pin_drive_t, nrf_gpio_pin_sense_t)
+   \                     _ZN29_INTERNAL_8_main_cpp_0937e68b12nrf_gpio_cfgEj18nrf_gpio_pin_dir_t20nrf_gpio_pin_input_t19nrf_gpio_pin_pull_t20nrf_gpio_pin_drive_t20nrf_gpio_pin_sense_t: (+1)
+   \        0x0   0xE92D 0x41F1      PUSH     {R0,R4-R8,LR}
+   \        0x4   0xB081             SUB      SP,SP,#+4
+   \        0x6   0x000E             MOVS     R6,R1
+   \        0x8   0x0017             MOVS     R7,R2
+   \        0xA   0x4698             MOV      R8,R3
+   \        0xC   0x9C08             LDR      R4,[SP, #+32]
+   \        0xE   0x9D09             LDR      R5,[SP, #+36]
+   \       0x10   0xA801             ADD      R0,SP,#+4
+   \       0x12   0x....'....        BL       _ZN29_INTERNAL_8_main_cpp_0937e68b24nrf_gpio_pin_port_decodeEPj
+   \       0x16   0x0031             MOVS     R1,R6
+   \       0x18   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \       0x1A   0x003A             MOVS     R2,R7
+   \       0x1C   0xB2D2             UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
+   \       0x1E   0xEA51 0x0142      ORRS     R1,R1,R2, LSL #+1
+   \       0x22   0x4642             MOV      R2,R8
+   \       0x24   0xB2D2             UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
+   \       0x26   0xEA51 0x0182      ORRS     R1,R1,R2, LSL #+2
+   \       0x2A   0x0022             MOVS     R2,R4
+   \       0x2C   0xB2D2             UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
+   \       0x2E   0xEA51 0x2102      ORRS     R1,R1,R2, LSL #+8
+   \       0x32   0x002A             MOVS     R2,R5
+   \       0x34   0xB2D2             UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
+   \       0x36   0xEA51 0x4102      ORRS     R1,R1,R2, LSL #+16
+   \       0x3A   0x9A01             LDR      R2,[SP, #+4]
+   \       0x3C   0xEB00 0x0282      ADD      R2,R0,R2, LSL #+2
+   \       0x40   0xF8C2 0x1700      STR      R1,[R2, #+1792]
+   \       0x44   0xE8BD 0x81F3      POP      {R0,R1,R4-R8,PC}  ;; return
+
+   \                                 In section .text, align 2, keep-with-next
+   \   static __interwork __softfp void nrf_gpio_cfg_output(uint32_t)
+   \                     _ZN29_INTERNAL_8_main_cpp_0937e68b19nrf_gpio_cfg_outputEj: (+1)
+   \        0x0   0xB51C             PUSH     {R2-R4,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+   \        0x4   0x2000             MOVS     R0,#+0
+   \        0x6   0x9001             STR      R0,[SP, #+4]
+   \        0x8   0x2000             MOVS     R0,#+0
+   \        0xA   0x9000             STR      R0,[SP, #+0]
+   \        0xC   0x2300             MOVS     R3,#+0
+   \        0xE   0x2201             MOVS     R2,#+1
+   \       0x10   0x2101             MOVS     R1,#+1
+   \       0x12   0x0020             MOVS     R0,R4
+   \       0x14   0x....'....        BL       _ZN29_INTERNAL_8_main_cpp_0937e68b12nrf_gpio_cfgEj18nrf_gpio_pin_dir_t20nrf_gpio_pin_input_t19nrf_gpio_pin_pull_t20nrf_gpio_pin_drive_t20nrf_gpio_pin_sense_t
+   \       0x18   0xBD13             POP      {R0,R1,R4,PC}    ;; return
+
+   \                                 In section .text, align 2, keep-with-next
+   \   static __interwork __softfp void nrf_gpio_cfg_input(uint32_t, nrf_gpio_pin_pull_t)
+   \                     _ZN29_INTERNAL_8_main_cpp_0937e68b18nrf_gpio_cfg_inputEj19nrf_gpio_pin_pull_t: (+1)
+   \        0x0   0xB53E             PUSH     {R1-R5,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+   \        0x4   0x000D             MOVS     R5,R1
+   \        0x6   0x2000             MOVS     R0,#+0
+   \        0x8   0x9001             STR      R0,[SP, #+4]
+   \        0xA   0x2000             MOVS     R0,#+0
+   \        0xC   0x9000             STR      R0,[SP, #+0]
+   \        0xE   0x002B             MOVS     R3,R5
+   \       0x10   0xB2DB             UXTB     R3,R3            ;; ZeroExt  R3,R3,#+24,#+24
+   \       0x12   0x2200             MOVS     R2,#+0
+   \       0x14   0x2100             MOVS     R1,#+0
+   \       0x16   0x0020             MOVS     R0,R4
+   \       0x18   0x....'....        BL       _ZN29_INTERNAL_8_main_cpp_0937e68b12nrf_gpio_cfgEj18nrf_gpio_pin_dir_t20nrf_gpio_pin_input_t19nrf_gpio_pin_pull_t20nrf_gpio_pin_drive_t20nrf_gpio_pin_sense_t
+   \       0x1C   0xBD37             POP      {R0-R2,R4,R5,PC}  ;; return
+
+   \                                 In section .text, align 2, keep-with-next
+   \   static __interwork __softfp void nrf_gpio_pin_clear(uint32_t)
+   \                     _ZN29_INTERNAL_8_main_cpp_0937e68b18nrf_gpio_pin_clearEj: (+1)
+   \        0x0   0xB511             PUSH     {R0,R4,LR}
+   \        0x2   0xB081             SUB      SP,SP,#+4
+   \        0x4   0xA801             ADD      R0,SP,#+4
+   \        0x6   0x....'....        BL       _ZN29_INTERNAL_8_main_cpp_0937e68b24nrf_gpio_pin_port_decodeEPj
+   \        0xA   0x0004             MOVS     R4,R0
+   \        0xC   0x2101             MOVS     R1,#+1
+   \        0xE   0x9801             LDR      R0,[SP, #+4]
+   \       0x10   0x4081             LSLS     R1,R1,R0
+   \       0x12   0x0020             MOVS     R0,R4
+   \       0x14   0x....'....        BL       _ZN29_INTERNAL_8_main_cpp_0937e68b23nrf_gpio_port_out_clearEP13NRF_GPIO_Typej
+   \       0x18   0xBD13             POP      {R0,R1,R4,PC}    ;; return
+
+   \                                 In section .text, align 2, keep-with-next
+   \   static __interwork __softfp void nrf_gpio_port_out_clear(NRF_GPIO_Type *, uint32_t)
+   \                     _ZN29_INTERNAL_8_main_cpp_0937e68b23nrf_gpio_port_out_clearEP13NRF_GPIO_Typej: (+1)
+   \        0x0   0xF8C0 0x150C      STR      R1,[R0, #+1292]
+   \        0x4   0x4770             BX       LR               ;; return
       6          
       7          #include "led_driver.h"
 
@@ -44,89 +147,294 @@ E:\cpp\nrf52_libraries\main\main.cpp
    \        0x2   0x4770             BX       LR               ;; return
       8          #include "nrf_hw_pwm.h"
       9          #include "timer.h"
-     10          
+     10          #include "PowerControl.h"
 
-   \                                 In section .text, align 4, keep-with-next
-     11          int main()
-     12          {
+   \                                 In section .text, align 2
+   \   __code __interwork __softfp PowerControl::PowerControl(uint32_t, uint32_t, uint32_t, uint32_t, uint32_t)
+   \                     _ZN12PowerControlC1Ejjjjj: (+1)
+   \        0x0   0xB430             PUSH     {R4,R5}
+   \        0x2   0x9C02             LDR      R4,[SP, #+8]
+   \        0x4   0x9D03             LDR      R5,[SP, #+12]
+   \        0x6   0x6001             STR      R1,[R0, #+0]
+   \        0x8   0x6044             STR      R4,[R0, #+4]
+   \        0xA   0x6085             STR      R5,[R0, #+8]
+   \        0xC   0x60C2             STR      R2,[R0, #+12]
+   \        0xE   0x6103             STR      R3,[R0, #+16]
+   \       0x10   0xBC30             POP      {R4,R5}
+   \       0x12   0x4770             BX       LR               ;; return
+
+   \                                 In section .text, align 4
+   \   __interwork __softfp void PowerControl::config(EChargeCurrents)
+   \                     _ZN12PowerControl6configE15EChargeCurrents: (+1)
+   \        0x0   0xB538             PUSH     {R3-R5,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+   \        0x4   0x000D             MOVS     R5,R1
+   \        0x6   0x6860             LDR      R0,[R4, #+4]
+   \        0x8   0xF110 0x0F01      CMN      R0,#+1
+   \        0xC   0xD00B             BEQ.N    ??config_1
+   \        0xE   0x6860             LDR      R0,[R4, #+4]
+   \       0x10   0x....'....        BL       _ZN29_INTERNAL_8_main_cpp_0937e68b19nrf_gpio_cfg_outputEj
+   \       0x14   0x480D             LDR.N    R0,??config_0    ;; 0x50000700
+   \       0x16   0x6861             LDR      R1,[R4, #+4]
+   \       0x18   0xF850 0x1021      LDR      R1,[R0, R1, LSL #+2]
+   \       0x1C   0xF451 0x7100      ORRS     R1,R1,#0x200
+   \       0x20   0x6862             LDR      R2,[R4, #+4]
+   \       0x22   0xF840 0x1022      STR      R1,[R0, R2, LSL #+2]
+   \                     ??config_1: (+1)
+   \       0x26   0x68A0             LDR      R0,[R4, #+8]
+   \       0x28   0xF110 0x0F01      CMN      R0,#+1
+   \       0x2C   0xD002             BEQ.N    ??config_2
+   \       0x2E   0x68A0             LDR      R0,[R4, #+8]
+   \       0x30   0x....'....        BL       _ZN29_INTERNAL_8_main_cpp_0937e68b19nrf_gpio_cfg_outputEj
+   \                     ??config_2: (+1)
+   \       0x34   0x0029             MOVS     R1,R5
+   \       0x36   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \       0x38   0x0020             MOVS     R0,R4
+   \       0x3A   0x....'....        BL       _ZN12PowerControl12enableChargeE15EChargeCurrents
+   \       0x3E   0x0020             MOVS     R0,R4
+   \       0x40   0x....'....        BL       _ZN12PowerControl16disableSupply3V0Ev
+   \       0x44   0x0020             MOVS     R0,R4
+   \       0x46   0x....'....        BL       _ZN12PowerControl16disableModulePwrEv
+   \       0x4A   0xBD31             POP      {R0,R4,R5,PC}    ;; return
+   \                     ??config_0:
+   \       0x4C   0x5000'0700        DC32     0x50000700
+
+   \                                 In section .text, align 2
+   \   __interwork __softfp void PowerControl::enableCharge(EChargeCurrents)
+   \                     _ZN12PowerControl12enableChargeE15EChargeCurrents: (+1)
+   \        0x0   0xB538             PUSH     {R3-R5,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+   \        0x4   0x000D             MOVS     R5,R1
+   \        0x6   0x0028             MOVS     R0,R5
+   \        0x8   0xB2C0             UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
+   \        0xA   0x2800             CMP      R0,#+0
+   \        0xC   0xD003             BEQ.N    ??enableCharge_0
+   \        0xE   0x2802             CMP      R0,#+2
+   \       0x10   0xD00D             BEQ.N    ??enableCharge_1
+   \       0x12   0xD307             BCC.N    ??enableCharge_2
+   \       0x14   0xE010             B.N      ??enableCharge_3
+   \                     ??enableCharge_0: (+1)
+   \       0x16   0x6820             LDR      R0,[R4, #+0]
+   \       0x18   0x....'....        BL       _ZN29_INTERNAL_8_main_cpp_0937e68b19nrf_gpio_cfg_outputEj
+   \       0x1C   0x6820             LDR      R0,[R4, #+0]
+   \       0x1E   0x....'....        BL       _ZN29_INTERNAL_8_main_cpp_0937e68b18nrf_gpio_pin_clearEj
+   \       0x22   0xE00D             B.N      ??enableCharge_4
+   \                     ??enableCharge_2: (+1)
+   \       0x24   0x2100             MOVS     R1,#+0
+   \       0x26   0x6820             LDR      R0,[R4, #+0]
+   \       0x28   0x....'....        BL       _ZN29_INTERNAL_8_main_cpp_0937e68b18nrf_gpio_cfg_inputEj19nrf_gpio_pin_pull_t
+   \       0x2C   0xE008             B.N      ??enableCharge_4
+   \                     ??enableCharge_1: (+1)
+   \       0x2E   0x2103             MOVS     R1,#+3
+   \       0x30   0x6820             LDR      R0,[R4, #+0]
+   \       0x32   0x....'....        BL       _ZN29_INTERNAL_8_main_cpp_0937e68b18nrf_gpio_cfg_inputEj19nrf_gpio_pin_pull_t
+   \       0x36   0xE003             B.N      ??enableCharge_4
+   \                     ??enableCharge_3: (+1)
+   \       0x38   0x2103             MOVS     R1,#+3
+   \       0x3A   0x6820             LDR      R0,[R4, #+0]
+   \       0x3C   0x....'....        BL       _ZN29_INTERNAL_8_main_cpp_0937e68b18nrf_gpio_cfg_inputEj19nrf_gpio_pin_pull_t
+   \                     ??enableCharge_4: (+1)
+   \       0x40   0xBD31             POP      {R0,R4,R5,PC}    ;; return
+
+   \                                 In section .text, align 2
+   \   __interwork __softfp void PowerControl::disableModulePwr()
+   \                     _ZN12PowerControl16disableModulePwrEv: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+   \        0x4   0x68A0             LDR      R0,[R4, #+8]
+   \        0x6   0x....'....        BL       _ZN29_INTERNAL_8_main_cpp_0937e68b18nrf_gpio_pin_clearEj
+   \        0xA   0xBD10             POP      {R4,PC}          ;; return
+
+   \                                 In section .text, align 2
+   \   __interwork __softfp void PowerControl::disableSupply3V0()
+   \                     _ZN12PowerControl16disableSupply3V0Ev: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+   \        0x4   0x6860             LDR      R0,[R4, #+4]
+   \        0x6   0x....'....        BL       _ZN29_INTERNAL_8_main_cpp_0937e68b18nrf_gpio_pin_clearEj
+   \        0xA   0xBD10             POP      {R4,PC}          ;; return
+     11          
+
+   \                                 In section .text, align 2, keep-with-next
+   \   static __intrinsic __interwork __softfp void __sti__routine()
+   \                     __sti__routine: (+1)
+   \        0x0   0xB5E0             PUSH     {R5-R7,LR}
+     12          PowerControl board_power(CHRG_EN_PIN, VBAT_MEAS_PIN, MAIN_MEAS_PIN, SYS_3V0_PIN, MODULE_PWR);
+   \        0x2   0x2028             MOVS     R0,#+40
+   \        0x4   0x9001             STR      R0,[SP, #+4]
+   \        0x6   0x2027             MOVS     R0,#+39
+   \        0x8   0x9000             STR      R0,[SP, #+0]
+   \        0xA   0x231C             MOVS     R3,#+28
+   \        0xC   0x221D             MOVS     R2,#+29
+   \        0xE   0x2103             MOVS     R1,#+3
+   \       0x10   0x....             LDR.N    R0,??DataTable2
+   \       0x12   0x....'....        BL       _ZN12PowerControlC1Ejjjjj
+   \       0x16   0xBD07             POP      {R0-R2,PC}       ;; return
+
+   \                                 In section .bss, align 4
+   \                     board_power:
+   \        0x0                      DS8 20
+     13          
+
+   \                                 In section .text, align 2, keep-with-next
+     14          int main()
+     15          {
    \                     main: (+1)
    \        0x0   0xB510             PUSH     {R4,LR}
-     13              sys_timer.setIRQ(0, TIMER_1MS_INT_PRIORITY);
-   \        0x2   0x4C12             LDR.N    R4,??main_0
+     16              sys_timer.setIRQ(0, TIMER_1MS_INT_PRIORITY);
+   \        0x2   0x....             LDR.N    R4,??DataTable2_2
    \        0x4   0x2205             MOVS     R2,#+5
    \        0x6   0x2100             MOVS     R1,#+0
    \        0x8   0x0020             MOVS     R0,R4
    \        0xA   0x....'....        BL       _ZN5Timer6setIRQEhh
-     14              sys_timer.setCallback(sys_timer_callback);
-   \        0xE   0x4910             LDR.N    R1,??main_0+0x4
+     17              sys_timer.setCallback(sys_timer_callback);
+   \        0xE   0x....             LDR.N    R1,??DataTable2_3
    \       0x10   0x0020             MOVS     R0,R4
    \       0x12   0x....'....        BL       _ZN5Timer11setCallbackEPFvjE
-     15              sys_timer.init(7, 125, true);
+     18              sys_timer.init(7, 125, true);
    \       0x16   0x2301             MOVS     R3,#+1
    \       0x18   0x227D             MOVS     R2,#+125
    \       0x1A   0x2107             MOVS     R1,#+7
    \       0x1C   0x0020             MOVS     R0,R4
    \       0x1E   0x....'....        BL       _ZN5Timer4initEjjb
-     16              
-     17              bl_btn_led.run(1);
-   \       0x22   0x2101             MOVS     R1,#+1
-   \       0x24   0x480B             LDR.N    R0,??main_0+0x8
-   \       0x26   0x....'....        BL       _ZN10led_driver3runEi
-     18              kb_led.run(3);
-   \       0x2A   0x2103             MOVS     R1,#+3
-   \       0x2C   0x480A             LDR.N    R0,??main_0+0xC
-   \       0x2E   0x....'....        BL       _ZN10led_driver3runEi
      19              
-     20            	while(1)
-     21            	{
-     22                  btn_pr_led.run(1);
-   \                     ??main_1: (+1)
-   \       0x32   0x2101             MOVS     R1,#+1
-   \       0x34   0x4809             LDR.N    R0,??main_0+0x10
+     20              board_power.config(CHRG_MAX_CURRENT);
+   \       0x22   0x2100             MOVS     R1,#+0
+   \       0x24   0x....             LDR.N    R0,??DataTable2
+   \       0x26   0x....'....        BL       _ZN12PowerControl6configE15EChargeCurrents
+     21              
+     22              bl_btn_led.run(1);
+   \       0x2A   0x2101             MOVS     R1,#+1
+   \       0x2C   0x....             LDR.N    R0,??DataTable2_4
+   \       0x2E   0x....'....        BL       _ZN10led_driver3runEi
+     23              kb_led.run(3);
+   \       0x32   0x2103             MOVS     R1,#+3
+   \       0x34   0x....             LDR.N    R0,??DataTable2_5
    \       0x36   0x....'....        BL       _ZN10led_driver3runEi
-     23                  red_led.run(1);
-   \       0x3A   0x2101             MOVS     R1,#+1
-   \       0x3C   0x4808             LDR.N    R0,??main_0+0x14
+     24              btn_pr_led.run(7);
+   \       0x3A   0x2107             MOVS     R1,#+7
+   \       0x3C   0x....             LDR.N    R0,??DataTable2_6
    \       0x3E   0x....'....        BL       _ZN10led_driver3runEi
-     24                  green_led.run(1);
+     25              
+     26            	while(1)
+     27            	{        
+     28                  red_led.run(1);
+   \                     ??main_0: (+1)
    \       0x42   0x2101             MOVS     R1,#+1
-   \       0x44   0x4807             LDR.N    R0,??main_0+0x18
+   \       0x44   0x....             LDR.N    R0,??DataTable2_7
    \       0x46   0x....'....        BL       _ZN10led_driver3runEi
-   \       0x4A   0xE7F2             B.N      ??main_1
-   \                     ??main_0:
-   \       0x4C   0x....'....        DC32     sys_timer
-   \       0x50   0x....'....        DC32     _Z18sys_timer_callbackj
-   \       0x54   0x....'....        DC32     bl_btn_led
-   \       0x58   0x....'....        DC32     kb_led
-   \       0x5C   0x....'....        DC32     btn_pr_led
-   \       0x60   0x....'....        DC32     red_led
-   \       0x64   0x....'....        DC32     green_led
-     25            	}
-     26          }
+   \       0x4A   0xE7FA             B.N      ??main_0
+     29            	}
+     30          }
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable2:
+   \        0x0   0x....'....        DC32     board_power
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable2_1:
+   \        0x0   0x5000'0300        DC32     0x50000300
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable2_2:
+   \        0x0   0x....'....        DC32     sys_timer
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable2_3:
+   \        0x0   0x....'....        DC32     _Z18sys_timer_callbackj
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable2_4:
+   \        0x0   0x....'....        DC32     bl_btn_led
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable2_5:
+   \        0x0   0x....'....        DC32     kb_led
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable2_6:
+   \        0x0   0x....'....        DC32     btn_pr_led
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable2_7:
+   \        0x0   0x....'....        DC32     red_led
 
    Maximum stack usage in bytes:
 
    .cstack Function
    ------- --------
+       8   PowerControl::PowerControl(uint32_t, uint32_t, uint32_t, uint32_t, uint32_t)
+      16   PowerControl::config(EChargeCurrents)
+        16   -> PowerControl::disableModulePwr()
+        16   -> PowerControl::disableSupply3V0()
+        16   -> PowerControl::enableCharge(EChargeCurrents)
+        16   -> nrf_gpio_cfg_output(uint32_t)
+       8   PowerControl::disableModulePwr()
+         8   -> nrf_gpio_pin_clear(uint32_t)
+       8   PowerControl::disableSupply3V0()
+         8   -> nrf_gpio_pin_clear(uint32_t)
+      16   PowerControl::enableCharge(EChargeCurrents)
+        16   -> nrf_gpio_cfg_input(uint32_t, nrf_gpio_pin_pull_t)
+        16   -> nrf_gpio_cfg_output(uint32_t)
+        16   -> nrf_gpio_pin_clear(uint32_t)
        0   Timer::setCallback(void (*)(uint32_t))
+      16   __sti__routine()
+        16   -> PowerControl::PowerControl(uint32_t, uint32_t, uint32_t, uint32_t, uint32_t)
        8   main
+         8   -> PowerControl::config(EChargeCurrents)
          8   -> Timer::init(uint32_t, uint32_t, bool)
          8   -> Timer::setCallback(void (*)(uint32_t))
          8   -> Timer::setIRQ(uint8_t, uint8_t)
          8   -> led_driver::run(int)
+      32   nrf_gpio_cfg(uint32_t, nrf_gpio_pin_dir_t, nrf_gpio_pin_input_t, nrf_gpio_pin_pull_t, nrf_gpio_pin_drive_t, nrf_gpio_pin_sense_t)
+        32   -> nrf_gpio_pin_port_decode(uint32_t *)
+      24   nrf_gpio_cfg_input(uint32_t, nrf_gpio_pin_pull_t)
+        24   -> nrf_gpio_cfg(uint32_t, nrf_gpio_pin_dir_t, nrf_gpio_pin_input_t, nrf_gpio_pin_pull_t, nrf_gpio_pin_drive_t, nrf_gpio_pin_sense_t)
+      16   nrf_gpio_cfg_output(uint32_t)
+        16   -> nrf_gpio_cfg(uint32_t, nrf_gpio_pin_dir_t, nrf_gpio_pin_input_t, nrf_gpio_pin_pull_t, nrf_gpio_pin_drive_t, nrf_gpio_pin_sense_t)
+      16   nrf_gpio_pin_clear(uint32_t)
+        16   -> nrf_gpio_pin_port_decode(uint32_t *)
+        16   -> nrf_gpio_port_out_clear(NRF_GPIO_Type *, uint32_t)
+       0   nrf_gpio_pin_port_decode(uint32_t *)
+       0   nrf_gpio_port_out_clear(NRF_GPIO_Type *, uint32_t)
 
 
    Section sizes:
 
    Bytes  Function/Label
    -----  --------------
+       4  ??DataTable2
+       4  ??DataTable2_1
+       4  ??DataTable2_2
+       4  ??DataTable2_3
+       4  ??DataTable2_4
+       4  ??DataTable2_5
+       4  ??DataTable2_6
+       4  ??DataTable2_7
+      20  PowerControl::PowerControl(uint32_t, uint32_t, uint32_t, uint32_t, uint32_t)
+      80  PowerControl::config(EChargeCurrents)
+      12  PowerControl::disableModulePwr()
+      12  PowerControl::disableSupply3V0()
+      66  PowerControl::enableCharge(EChargeCurrents)
        4  Timer::setCallback(void (*)(uint32_t))
-     104  main
+      24  __sti__routine()
+      20  board_power
+      76  main
+      72  nrf_gpio_cfg(uint32_t, nrf_gpio_pin_dir_t, nrf_gpio_pin_input_t, nrf_gpio_pin_pull_t, nrf_gpio_pin_drive_t, nrf_gpio_pin_sense_t)
+      30  nrf_gpio_cfg_input(uint32_t, nrf_gpio_pin_pull_t)
+      26  nrf_gpio_cfg_output(uint32_t)
+      26  nrf_gpio_pin_clear(uint32_t)
+      26  nrf_gpio_pin_port_decode(uint32_t *)
+       6  nrf_gpio_port_out_clear(NRF_GPIO_Type *, uint32_t)
+       4  -- Other
 
  
- 108 bytes in section .text
+  20 bytes in section .bss
+   4 bytes in section .init_array
+ 512 bytes in section .text
  
- 104 bytes of CODE memory (+ 4 bytes shared)
+ 322 bytes of CODE memory (+ 194 bytes shared)
+  20 bytes of DATA memory
 
 Errors: none
 Warnings: none

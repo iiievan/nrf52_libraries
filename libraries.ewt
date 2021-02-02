@@ -1196,6 +1196,9 @@
         <file>
             <name>$PROJ_DIR$\board\board.h</name>
         </file>
+        <file>
+            <name>$PROJ_DIR$\board\PowerControl.h</name>
+        </file>
     </group>
     <group>
         <name>cmsis</name>

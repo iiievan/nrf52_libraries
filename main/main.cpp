@@ -7,6 +7,9 @@
 #include "led_driver.h"
 #include "nrf_hw_pwm.h"
 #include "timer.h"
+#include "PowerControl.h"
+
+PowerControl board_power(CHRG_EN_PIN, VBAT_MEAS_PIN, MAIN_MEAS_PIN, SYS_3V0_PIN, MODULE_PWR);
 
 int main()
 {
@@ -14,13 +17,14 @@ int main()
     sys_timer.setCallback(sys_timer_callback);
     sys_timer.init(7, 125, true);
     
+    board_power.config(CHRG_MAX_CURRENT);
+    
     bl_btn_led.run(1);
     kb_led.run(3);
+    btn_pr_led.run(7);
     
   	while(1)
-  	{
-        btn_pr_led.run(1);
+  	{        
         red_led.run(1);
-        green_led.run(1);
   	}
 }

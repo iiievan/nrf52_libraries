@@ -28,8 +28,8 @@ class led_driver;
 #define RF_TX_EN_PIN            (PORT_0 | 10)  // P0.10
 #define RF_PDET_PIN             (PORT_0 | 2)   // P0.02
 
-#define CURRENT_INCREASE_PIN_1  (PORT_0 | 28)  // P0.28 MAIN_MEAS
-#define CURRENT_INCREASE_PIN_2  (PORT_0 | 29)  // P0.29 VBAT_MEAS   
+#define MAIN_MEAS_PIN           (PORT_0 | 28)  // P0.28 MAIN_MEAS
+#define VBAT_MEAS_PIN           (PORT_0 | 29)  // P0.29 VBAT_MEAS   
 #define CHRG_EN_PIN             (PORT_0 | 3)   // P0.03 CHPRG/PWKEY
 #define RF_POWER_ENABLE         (PORT_1 | 14)  // P1.14 3V0_RF_EN
 #define MODULE_PWR              (PORT_1 | 8)   // P1.08 GSM and GPS power enable

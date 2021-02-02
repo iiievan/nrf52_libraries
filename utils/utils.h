@@ -39,6 +39,12 @@ nrf_gpio_cfg(pin,															\
 #define UNUSED(x)  ((void)(x))
 #endif  //__cplusplus
                
+#define BIT(bit)           (1UL   <<     (bit))
+#define SETBIT(val, bit)   ((val) |=  BIT(bit))
+#define CLRBIT(val, bit)   ((val) &= ~BIT(bit))
+#define XORBIT(val, bit)   ((val) ^=  BIT(bit))
+#define TSTBIT(val, bit)   ((val)  &  BIT(bit))
+               
 extern  int random(void); // RAND_MAX assumed to be 32767
 extern  int rnd_max(int max);
 extern void seed_random(unsigned int seed);
