@@ -1,2 +1,2 @@
 # nrf52_libraries
-useful lybraries for nrf52 chips on c++
+useful libraries for nrf52 chips on c++
