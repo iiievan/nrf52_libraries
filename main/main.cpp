@@ -4,7 +4,23 @@
 #include "nrf.h"
 #include "nrf_gpio.h"
 
+#include "led_driver.h"
+#include "nrf_hw_pwm.h"
+#include "timer.h"
+
 int main()
 {
-  return 0;
+    sys_timer.setIRQ(0, TIMER_1MS_INT_PRIORITY);
+    sys_timer.setCallback(sys_timer_callback);
+    sys_timer.init(7, 125, true);
+    
+    bl_btn_led.run(1);
+    kb_led.run(3);
+    
+  	while(1)
+  	{
+        btn_pr_led.run(1);
+        red_led.run(1);
+        green_led.run(1);
+  	}
 }

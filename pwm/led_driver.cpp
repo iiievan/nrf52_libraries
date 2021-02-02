@@ -1,50 +1,48 @@
 #include "led_driver.h"
+#include "board.h"
 
+#ifdef _AUDIOGUDE_V2_BOARD
 uint32_t led_2_port_list[LEDS_NUM] = 
 {
-    (PORT_0 | 7),   // P0.07 LED_SYS_RED 
-    (PORT_0 | 26),  // P0.26 LED_BL_BTN 
-    (PORT_0 | 11),  // P0.11 LED_BTN_PR  
-    (PORT_0 | 25),  // P0.25 LED_KB
-    (PORT_0 | 8),   // P0.08 LED_BAT_1 
-    (PORT_0 | 6),   // P0.06 LED_BAT_2
-    (PORT_0 | 4),    // P0.04 LED_BAT_3    
-	(PORT_0 | 27),   // P0.27 LED_BAT_4 
-	(PORT_0 | 5)    // P0.05 LED_BAT_5 
+    LED_SYS_RED_PIN,    // P0.07 LED_SYS_RED 
+    LED_SYS_GREEN_PIN,  // P0.05 LED_SYS_GREEN
+    LED_BL_BTN_PIN,     // P0.26 LED_BL_BTN 
+    LED_BTN_PR_PIN,     // P0.11 LED_BTN_PR  
+    LED_KB_PIN,         // P0.25 LED_KB
+    LED_BAT_1_PIN,      // P0.08 LED_BAT_1 
+    LED_BAT_2_PIN,      // P0.27 LED_BAT_2
+    LED_BAT_3_PIN       // P0.06 LED_BAT_3 
 };
 
 // должен быть создан до того как будут использован в производных классах ниже.
 // иначе порушится вся карта пинов и каналов. Т.к. каждый led_driver является производным
 // при вызове своего конструктора он сначала вызовет конструктор по умолчанию hw_pwm() - который бессмысленен чуть менее чем полностью)
-//led_driver    charge_bar  ( led_2_port_list[LED_BAT_1],
-//                            led_2_port_list[LED_BAT_2],
-//                            led_2_port_list[LED_BAT_3], 128 ); 
+led_driver    charge_bar  ( led_2_port_list[LED_BAT_1],
+                            led_2_port_list[LED_BAT_2],
+                            led_2_port_list[LED_BAT_3], 128, &sys_timer);  
 
-led_driver    red_led     ( led_2_port_list[LED_SYS_RED],   MAX_PWM_VALUE, LED_SHORT_BLINK_MS );
-led_driver    bl_btn_led  ( led_2_port_list[LED_BL_BTN],    MAX_PWM_VALUE, LED_FAST_BLINK_MS );
-led_driver    btn_pr_led  ( led_2_port_list[LED_BTN_PR],    MAX_PWM_VALUE, LED_FAST_BLINK_MS );
-led_driver    kb_led      ( led_2_port_list[LED_KB],        MAX_PWM_VALUE, LED_FAST_BLINK_MS );
-led_driver    bat_led_1   ( led_2_port_list[LED_BAT_1],     MAX_PWM_VALUE, LED_BLINK_MS );
-led_driver    bat_led_2   ( led_2_port_list[LED_BAT_2],     MAX_PWM_VALUE, LED_BLINK_MS );
-led_driver    bat_led_3   ( led_2_port_list[LED_BAT_3],     MAX_PWM_VALUE, LED_BLINK_MS );
-led_driver    bat_led_4   ( led_2_port_list[LED_BAT_4],     MAX_PWM_VALUE, LED_BLINK_MS );
-led_driver    bat_led_5   ( led_2_port_list[LED_BAT_5],     MAX_PWM_VALUE, LED_BLINK_MS );
+led_driver    red_led     ( led_2_port_list[LED_SYS_RED],   &sys_timer, MAX_PWM_VALUE, LED_SHORT_BLINK_MS );
+led_driver    green_led   ( led_2_port_list[LED_SYS_GREEN], &sys_timer, MAX_PWM_VALUE, LED_SHORT_BLINK_MS );
+led_driver    bl_btn_led  ( led_2_port_list[LED_BL_BTN],    &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+led_driver    btn_pr_led  ( led_2_port_list[LED_BTN_PR],    &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+led_driver    kb_led      ( led_2_port_list[LED_KB],        &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
 
 
 led_driver* led_list[LEDS_NUM] =
 { 
     &red_led,
+    &green_led,
     &bl_btn_led,
     &btn_pr_led,
     &kb_led,
-    &bat_led_1, 
-    &bat_led_2,   
-    &bat_led_3,
-	&bat_led_4,
-	&bat_led_5,
+    NULL,    // по сути это LED_BAT_1..3 входят в модуль чардж бара.
+    NULL,    
+    NULL
 };
+#endif //_AUDIOGUDE_V2_BOARD
 
-led_driver::led_driver(uint32_t pin, uint16_t max_val, uint32_t f_time)
+led_driver::led_driver(uint32_t pin, Timer *pTmr, uint16_t max_val,  uint32_t f_time)
+: pTimer(pTmr)
 {
     if (max_val <= LED_BRIGHT_100)
     _max_val  = max_val;
@@ -55,7 +53,7 @@ led_driver::led_driver(uint32_t pin, uint16_t max_val, uint32_t f_time)
     
     set_fadetime(f_time);
     
-    _timer    = sys_tmr.get_mseconds() - _tout;
+    _timer    = pTimer->get_ms() - _tout;
     
     // добавляем пин, если еще не добавлен.
     add_pin(pin);
@@ -68,12 +66,17 @@ led_driver::led_driver(uint32_t pin, uint16_t max_val, uint32_t f_time)
     _run_up   = false;
     _run_down = false;
     
-    _num_of_rptions = -1; 
-
+    _num_of_rptions = -1;
 }
 
-led_driver::led_driver(uint32_t pin_1, uint32_t pin_2, uint32_t pin_3,  uint16_t clock_div,  uint16_t max_val,  uint32_t f_time) 
-: nrf_hw_pwm(clock_div, pin_1, pin_2, pin_3)
+led_driver::led_driver(uint32_t pin_1, 
+                       uint32_t pin_2, 
+                       uint32_t pin_3, 
+                       uint16_t clock_div, 
+                       Timer *pTmr,  
+                       uint16_t max_val,  
+                       uint32_t f_time) 
+: nrf_hw_pwm(clock_div, pin_1, pin_2, pin_3),pTimer(pTmr) 
 {
     if (max_val <= LED_BRIGHT_100)
     _max_val  = max_val;
@@ -84,7 +87,7 @@ led_driver::led_driver(uint32_t pin_1, uint32_t pin_2, uint32_t pin_3,  uint16_t
     
     set_fadetime(f_time);
     
-    _timer    = sys_tmr.get_mseconds() - _tout;
+    _timer    = pTimer->get_ms() - _tout;
     
     _led = get_led_num(pin_2);       // пин 2 является управляющим сам по себе одним светодиодом - первым
 
@@ -228,7 +231,7 @@ void led_driver::_stop(void)
     _run_up     = false;
     _run_down   = false;
 
-    _timer   = sys_tmr.get_mseconds() - _tout;
+    _timer   = pTimer->get_ms() - _tout;
 
     _bright_val     = 0;
     _fade_dir = true;
@@ -258,7 +261,7 @@ bool led_driver::_fade(void)
     {
         result = true;
 
-        if (sys_tmr.get_mseconds() - _timer > (uint64_t)_tout)
+        if (pTimer->get_ms() - _timer > (uint64_t)_tout)
         {
              if(_fade_dir)
              {
@@ -292,7 +295,7 @@ bool led_driver::_fade(void)
                  }
              }
              
-             _timer = sys_tmr.get_mseconds();
+             _timer = pTimer->get_ms();
         }
     }
 
@@ -308,7 +311,7 @@ bool led_driver::_fade_up(void)
     {
         result = true;
 
-        if (sys_tmr.get_mseconds() - _timer > (uint64_t)_tout)
+        if (pTimer->get_ms() - _timer > (uint64_t)_tout)
         {
             _bright_val += (int)_step;
 
@@ -323,9 +326,9 @@ bool led_driver::_fade_up(void)
             }
 
             if(_run_up == false)
-            { _timer   = sys_tmr.get_mseconds() - (uint64_t)_tout; }
+            { _timer   = pTimer->get_ms() - (uint64_t)_tout; }
             else
-            { _timer   = sys_tmr.get_mseconds(); }            
+            { _timer   = pTimer->get_ms(); }            
         }
     }
 
@@ -341,7 +344,7 @@ bool led_driver::_fade_down(void)
     {
         result = true;
 
-        if (sys_tmr.get_mseconds() - _timer > (uint64_t)_tout)
+        if (pTimer->get_ms() - _timer > (uint64_t)_tout)
         {
             _bright_val -= (int)_step;
 
@@ -357,9 +360,9 @@ bool led_driver::_fade_down(void)
             }
              
             if(_run_down == false)
-            { _timer   = sys_tmr.get_mseconds() - (uint64_t)_tout; }
+            { _timer   = pTimer->get_ms() - (uint64_t)_tout; }
             else
-            { _timer   = sys_tmr.get_mseconds(); } 
+            { _timer   = pTimer->get_ms(); } 
         }
     }
 

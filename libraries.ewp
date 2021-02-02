@@ -32,11 +32,11 @@
                 </option>
                 <option>
                     <name>Input description</name>
-                    <state></state>
+                    <state>Full formatting, without multibyte support.</state>
                 </option>
                 <option>
                     <name>Output description</name>
-                    <state></state>
+                    <state>Full formatting, without multibyte support.</state>
                 </option>
                 <option>
                     <name>GOutputBinary</name>
@@ -44,21 +44,21 @@
                 </option>
                 <option>
                     <name>OGCoreOrChip</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>GRuntimeLibSelect</name>
                     <version>0</version>
-                    <state>1</state>
+                    <state>2</state>
                 </option>
                 <option>
                     <name>GRuntimeLibSelectSlave</name>
                     <version>0</version>
-                    <state>1</state>
+                    <state>2</state>
                 </option>
                 <option>
                     <name>RTDescription</name>
-                    <state></state>
+                    <state>Use the full configuration of the C/C++ runtime library. Full locale interface, C locale, file descriptor support, multibytes in printf and scanf, and hex floats in strtod.</state>
                 </option>
                 <option>
                     <name>OGProductVersion</name>
@@ -78,11 +78,11 @@
                 </option>
                 <option>
                     <name>OGChipSelectEditMenu</name>
-                    <state>Default	None</state>
+                    <state>nRF52840_xxAA	NordicSemi nRF52840_xxAA</state>
                 </option>
                 <option>
                     <name>GenLowLevelInterface</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>GEndianModeBE</name>
@@ -112,12 +112,12 @@
                 </option>
                 <option>
                     <name>RTConfigPath2</name>
-                    <state>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</state>
+                    <state>$TOOLKIT_DIR$\inc\c\DLib_Config_Full.h</state>
                 </option>
                 <option>
                     <name>GBECoreSlave</name>
                     <version>27</version>
-                    <state>38</state>
+                    <state>39</state>
                 </option>
                 <option>
                     <name>OGUseCmsis</name>
@@ -134,11 +134,11 @@
                 <option>
                     <name>CoreVariant</name>
                     <version>27</version>
-                    <state>38</state>
+                    <state>39</state>
                 </option>
                 <option>
                     <name>GFPUDeviceSlave</name>
-                    <state>Default	None</state>
+                    <state>nRF52840_xxAA	NordicSemi nRF52840_xxAA</state>
                 </option>
                 <option>
                     <name>FPU2</name>
@@ -157,7 +157,7 @@
                 <option>
                     <name>GFPUCoreSlave2</name>
                     <version>27</version>
-                    <state>38</state>
+                    <state>39</state>
                 </option>
                 <option>
                     <name>OGCMSISPackSelectDevice</name>
@@ -198,7 +198,7 @@
                 </option>
                 <option>
                     <name>DSPExtension</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>TrustZone</name>
@@ -226,11 +226,8 @@
                     <name>CCDefines</name>
                     <state>NRF52840_XXAA</state>
                     <state>CONFIG_NFCT_PINS_AS_GPIOS</state>
-                    <state>APP_TIMER_V2</state>
-                    <state>APP_TIMER_V2_RTC1_ENABLED</state>
+                    <state>_AUDIOGUDE_V2_BOARD</state>
                     <state>DEBUG</state>
-                    <state>DEBUG_NRF</state>
-                    <state>FLOAT_ABI_HARD</state>
                 </option>
                 <option>
                     <name>CCPreprocFile</name>
@@ -363,6 +360,9 @@
                     <state>$PROJ_DIR$\cmsis</state>
                     <state>$PROJ_DIR$\cmsis\device</state>
                     <state>$PROJ_DIR$\cmsis\include</state>
+                    <state>$PROJ_DIR$\board</state>
+                    <state>$PROJ_DIR$\utils</state>
+                    <state>$PROJ_DIR$\timer</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1066,6 +1066,18 @@
         </settings>
     </configuration>
     <group>
+        <name>application</name>
+        <file>
+            <name>$PROJ_DIR$\utils\utils.c</name>
+        </file>
+    </group>
+    <group>
+        <name>board</name>
+        <file>
+            <name>$PROJ_DIR$\board\board.h</name>
+        </file>
+    </group>
+    <group>
         <name>cmsis</name>
         <file>
             <name>$PROJ_DIR$\cmsis\iar_startup_nrf52.s</name>
@@ -1081,6 +1093,21 @@
         </file>
         <file>
             <name>$PROJ_DIR$\cmsis\system_nrf52840.c</name>
+        </file>
+    </group>
+    <group>
+        <name>pwm</name>
+        <file>
+            <name>$PROJ_DIR$\pwm\led_driver.cpp</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\pwm\nrf_hw_pwm.cpp</name>
+        </file>
+    </group>
+    <group>
+        <name>timer</name>
+        <file>
+            <name>$PROJ_DIR$\timer\timer.cpp</name>
         </file>
     </group>
     <file>

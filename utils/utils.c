@@ -1,4 +1,3 @@
-#include "include.h"
 #include "utils.h"
 
 static unsigned long int _next = 1;
@@ -7,9 +6,9 @@ void seed_random(unsigned int seed)
 {
   if (seed == 0)
   {
-    u32 v[4];
+    uint32_t v[4];
     
-    for (u8 i = 0; i < 4; i++)
+    for (uint8_t i = 0; i < 4; i++)
     {
       NRF_RNG->EVENTS_VALRDY = 0;
       NRF_RNG->TASKS_START = 1;

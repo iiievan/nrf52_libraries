@@ -1,6 +1,9 @@
 #ifndef _UTILS_H
 #define _UTILS_H
 
+#include "nrf.h"
+#include "nrf_gpio.h"
+
 #ifdef _cplusplus
 extern "C" {
 #endif
@@ -29,6 +32,13 @@ nrf_gpio_cfg(pin,															\
              NRF_GPIO_PIN_S0S1,												\
              NRF_GPIO_PIN_NOSENSE);											\
 
+               
+#ifdef __cplusplus
+#define UNUSED(x)  (x = x)
+#else
+#define UNUSED(x)  ((void)(x))
+#endif  //__cplusplus
+               
 extern  int random(void); // RAND_MAX assumed to be 32767
 extern  int rnd_max(int max);
 extern void seed_random(unsigned int seed);

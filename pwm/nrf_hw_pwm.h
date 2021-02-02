@@ -1,8 +1,10 @@
-
 #ifndef __NRF_HW_PWM_H_
 #define __NRF_HW_PWM_H_
 
-#include "include.h"
+#include <intrinsics.h>
+#include <string.h>
+#include "nrf.h"
+#include "board.h"
 
 #ifdef NRF52840_XXAA
 #define HWPWM_MODULE_NUM   (4)
@@ -42,47 +44,6 @@ enum
    INFO_MAP_NUM
 };
 
-enum {
-    CHRG_LED1  =  0,   
-    CHRG_LED2,      
-    CHRG_LED3,     
-    CHRG_LED4,     
-    CHRG_LED5,
-    CHRG_LEDS_NUM,
-    SHTDWN  = -1    
-};
-
-typedef enum
-{
-    LED_SYS_RED = 0, 
-    LED_BL_BTN, 
-    LED_BTN_PR,   
-    LED_KB,
-    LED_BAT_1,
-    LED_BAT_2,
-    LED_BAT_3,
-	LED_BAT_4,
-    LED_BAT_5,
-    LEDS_NUM
-} onboard_leds_e;
-
-extern uint32_t led_2_port_list[];
-
-typedef enum
-{
-    LED_BRIGHT_0   = 0x00, 
-    LED_BRIGHT_10  = 0x19,
-    LED_BRIGHT_20  = 0x32,
-    LED_BRIGHT_30  = 0x4B, 
-    LED_BRIGHT_40  = 0x64,   
-    LED_BRIGHT_50  = 0x7D,     
-    LED_BRIGHT_60  = 0x96,    
-    LED_BRIGHT_70  = 0xAF,    
-    LED_BRIGHT_80  = 0xC8,
-    LED_BRIGHT_90  = 0xE1,
-    LED_BRIGHT_100 = 0xFF
-} leds_bright_e;
-
 class nrf_hw_pwm
 {
 public:
@@ -109,9 +70,9 @@ public:
                      int get_channel  (uint32_t pin);                                         // получить канал соответствующий конкретному пину     
                      int get_pwm_num  (uint32_t pin);                                         // получить номер ШИМ модуля, соответствующего конкретному пину.  
                      int get_led_num  (uint32_t pin);                                         // получить номер светодиода, соответствующего конкретному пину.      
-              
+#ifdef THREE_PIN_CHARGE_BAR             
                     void set_chrg_bar(int16_t led_num);                                       // управление зарядной полоской.
-  
+#endif  
  private:
                     void _run_sequence(uint8_t pwm_index);
                     void _setup(uint8_t pwm_index);
@@ -138,7 +99,5 @@ public:
 
 
 };
-
-//extern nrf_hw_pwm   hw_pwm;
 
 #endif /* __NRF_HW_PWM_H_ */

@@ -1,28 +1,27 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR ANSI C/C++ Compiler V8.40.1.212/W32 for ARM        02/Feb/2021  11:39:10
+// IAR ANSI C/C++ Compiler V8.40.1.212/W32 for ARM        02/Feb/2021  18:19:54
 // Copyright 1999-2019 IAR Systems AB.
 //
 //    Cpu mode     =  
 //    Endian       =  little
 //    Source file  =  E:\cpp\nrf52_libraries\cmsis\system_nrf52.c
 //    Command line =
-//        -f C:\Users\IF385~1.SHO\AppData\Local\Temp\EW5112.tmp
+//        -f C:\Users\IF385~1.SHO\AppData\Local\Temp\EW3B15.tmp
 //        (E:\cpp\nrf52_libraries\cmsis\system_nrf52.c -D NRF52840_XXAA -D
-//        CONFIG_NFCT_PINS_AS_GPIOS -D APP_TIMER_V2 -D
-//        APP_TIMER_V2_RTC1_ENABLED -D DEBUG -D DEBUG_NRF -D FLOAT_ABI_HARD
-//        -lCN E:\cpp\nrf52_libraries\main\List -lA
-//        E:\cpp\nrf52_libraries\main\List -o E:\cpp\nrf52_libraries\main\Obj
-//        --no_cse --no_unroll --no_inline --no_code_motion --no_tbaa
-//        --no_clustering --no_scheduling --debug --endian=little
-//        --cpu=Cortex-M3 -e --fpu=None --dlib_config "C:\Program Files
-//        (x86)\IAR Systems\Embedded Workbench
-//        8.3\arm\inc\c\DLib_Config_Normal.h" -I E:\cpp\nrf52_libraries\fsm\ -I
+//        CONFIG_NFCT_PINS_AS_GPIOS -D _AUDIOGUDE_V2_BOARD -D DEBUG -lCN
+//        E:\cpp\nrf52_libraries\main\List -lA E:\cpp\nrf52_libraries\main\List
+//        -o E:\cpp\nrf52_libraries\main\Obj --no_cse --no_unroll --no_inline
+//        --no_code_motion --no_tbaa --no_clustering --no_scheduling --debug
+//        --endian=little --cpu=Cortex-M4 -e --fpu=None --dlib_config
+//        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+//        8.3\arm\inc\c\DLib_Config_Full.h" -I E:\cpp\nrf52_libraries\fsm\ -I
 //        E:\cpp\nrf52_libraries\pwm\ -I E:\cpp\nrf52_libraries\spi\ -I
 //        E:\cpp\nrf52_libraries\usb\ -I E:\cpp\nrf52_libraries\main\ -I
 //        E:\cpp\nrf52_libraries\cmsis\ -I E:\cpp\nrf52_libraries\cmsis\device\
-//        -I E:\cpp\nrf52_libraries\cmsis\include\ -On --c++ --no_exceptions
-//        --no_rtti)
+//        -I E:\cpp\nrf52_libraries\cmsis\include\ -I
+//        E:\cpp\nrf52_libraries\board\ -I E:\cpp\nrf52_libraries\utils\ -I
+//        E:\cpp\nrf52_libraries\timer\ -On --c++ --no_exceptions --no_rtti)
 //    Locale       =  C
 //    List file    =  E:\cpp\nrf52_libraries\main\List\system_nrf52.s
 //

@@ -1,153 +1,145 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project>
     <fileVersion>4</fileVersion>
-    <fileChecksum>1506505578</fileChecksum>
+    <fileChecksum>1814559764</fileChecksum>
     <configuration>
         <name>main</name>
         <outputs>
-            <file>$PROJ_DIR$\main\Obj\main.xcl</file>
-            <file>$PROJ_DIR$\main\Exe\libraries.out</file>
-            <file>$PROJ_DIR$\main\Obj\libraries.pbd</file>
-            <file>$PROJ_DIR$\main.cpp</file>
-            <file>$PROJ_DIR$\main\Obj\main.o</file>
-            <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
-            <file>$PROJ_DIR$\bootloader\nrf_gpio.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_stdlib.h</file>
-            <file>$PROJ_DIR$\cmsis\nrf_gpio.h</file>
-            <file>$PROJ_DIR$\main\main.cpp</file>
-            <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\string.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\ctype.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
+            <file>$PROJ_DIR$\main\List\system_nrf52840.lst</file>
+            <file>$PROJ_DIR$\main\List\system_nrf52840.s</file>
+            <file>$PROJ_DIR$\cmsis\system_nrf52840.h</file>
+            <file>$PROJ_DIR$\main\Obj\system_nrf52.xcl</file>
+            <file>$TOOLKIT_DIR$\lib\m7M_tl.a</file>
+            <file>$PROJ_DIR$\main\Obj\system_nrf52.o</file>
+            <file>$TOOLKIT_DIR$\lib\dl7M_tln.a</file>
+            <file>$TOOLKIT_DIR$\lib\dlpp7M_tl_nc.a</file>
+            <file>$PROJ_DIR$\cmsis\include\core_cm4.h</file>
+            <file>$PROJ_DIR$\main\Obj\iar_startup_nrf52840.o</file>
+            <file>$PROJ_DIR$\main\Obj\system_nrf52.__cstat.et</file>
+            <file>$PROJ_DIR$\main\List\main.s</file>
+            <file>$PROJ_DIR$\main\Obj\system_nrf52840.o</file>
+            <file>$PROJ_DIR$\cmsis\device\nrf52_to_nrf52840.h</file>
+            <file>$PROJ_DIR$\cmsis\device\nrf52840_bitfields.h</file>
+            <file>$PROJ_DIR$\main\Obj\system_nrf52840.xcl</file>
+            <file>$PROJ_DIR$\main\List\main.lst</file>
+            <file>$TOOLKIT_DIR$\lib\rt7M_tl.a</file>
+            <file>$PROJ_DIR$\main\List\libraries.map</file>
+            <file>$PROJ_DIR$\main\List\system_nrf52.lst</file>
+            <file>$PROJ_DIR$\main\Obj\main.__cstat.et</file>
+            <file>$PROJ_DIR$\main\List\system_nrf52.s</file>
+            <file>$PROJ_DIR$\main\Obj\system_nrf52840.__cstat.et</file>
+            <file>$TOOLKIT_DIR$\inc\c\stdbool.h</file>
             <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\cmsis_iar.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_stdlib.h</file>
             <file>$TOOLKIT_DIR$\inc\c\iccarm_builtin.h</file>
+            <file>$PROJ_DIR$\main\Obj\libraries.pbd</file>
+            <file>$TOOLKIT_DIR$\inc\c\cmsis_iar.h</file>
             <file>$PROJ_DIR$\cmsis\device\nrf.h</file>
             <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
-            <file>$PROJ_DIR$\cmsis\include\core_cmSimd.h</file>
             <file>$PROJ_DIR$\cmsis\include\core_cmFunc.h</file>
             <file>$PROJ_DIR$\cmsis\device\nrf51_to_nrf52840.h</file>
             <file>$PROJ_DIR$\cmsis\include\core_cmInstr.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
             <file>$PROJ_DIR$\cmsis\device\compiler_abstraction.h</file>
             <file>$TOOLKIT_DIR$\inc\c\iar_intrinsics_common.h</file>
             <file>$PROJ_DIR$\cmsis\device\nrf52840.h</file>
-            <file>$PROJ_DIR$\cmsis\device\nrf52_to_nrf52840.h</file>
-            <file>$PROJ_DIR$\cmsis\include\core_cm4.h</file>
-            <file>$PROJ_DIR$\cmsis\device\nrf52840_bitfields.h</file>
-            <file>$PROJ_DIR$\main\List\system_nrf52.s</file>
-            <file>$PROJ_DIR$\main\List\libraries.map</file>
-            <file>$PROJ_DIR$\main\List\system_nrf52.lst</file>
-            <file>$PROJ_DIR$\cmsis\system_nrf52840.c</file>
-            <file>$PROJ_DIR$\main\Obj\iar_startup_nrf52.o</file>
-            <file>$PROJ_DIR$\cmsis\iar_startup_nrf52840.s</file>
-            <file>$PROJ_DIR$\cmsis\iar_startup_nrf52.s</file>
-            <file>$PROJ_DIR$\main\Obj\iar_startup_nrf52840.o</file>
-            <file>$PROJ_DIR$\main\Obj\system_nrf52.xcl</file>
-            <file>$PROJ_DIR$\cmsis\system_nrf52840.h</file>
-            <file>$PROJ_DIR$\cmsis\system_nrf52.c</file>
-            <file>$PROJ_DIR$\cmsis\system_nrf52.h</file>
-            <file>$PROJ_DIR$\main\Obj\system_nrf52840.xcl</file>
-            <file>$PROJ_DIR$\main\Obj\system_nrf52840.o</file>
-            <file>$PROJ_DIR$\main\Obj\system_nrf52.o</file>
-            <file>$PROJ_DIR$\main\List\main.s</file>
-            <file>$PROJ_DIR$\main\List\main.lst</file>
-            <file>$PROJ_DIR$\main\Obj\main.__cstat.et</file>
+            <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
+            <file>$PROJ_DIR$\main\Exe\libraries.out</file>
+            <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
+            <file>$PROJ_DIR$\cmsis\include\core_cmSimd.h</file>
+            <file>$PROJ_DIR$\main\Obj\main.o</file>
+            <file>$PROJ_DIR$\main\main.cpp</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\ctype.h</file>
+            <file>$PROJ_DIR$\main\Obj\main.xcl</file>
+            <file>$PROJ_DIR$\cmsis\nrf_gpio.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
             <file>$PROJ_DIR$\main\main_nRF5x.icf</file>
-            <file>$TOOLKIT_DIR$\lib\dlpp7M_tl_nc.a</file>
-            <file>$TOOLKIT_DIR$\lib\m7M_tl.a</file>
-            <file>$TOOLKIT_DIR$\lib\rt7M_tl.a</file>
-            <file>$TOOLKIT_DIR$\lib\dl7M_tln.a</file>
-            <file>$PROJ_DIR$\main\Obj\system_nrf52.__cstat.et</file>
-            <file>$PROJ_DIR$\main\Obj\system_nrf52840.__cstat.et</file>
-            <file>$TOOLKIT_DIR$\inc\c\stdbool.h</file>
-            <file>$PROJ_DIR$\main\List\system_nrf52840.lst</file>
-            <file>$PROJ_DIR$\main\List\system_nrf52840.s</file>
+            <file>$TOOLKIT_DIR$\inc\c\string.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
+            <file>$PROJ_DIR$\cmsis\iar_startup_nrf52840.s</file>
+            <file>$PROJ_DIR$\cmsis\system_nrf52.c</file>
+            <file>$PROJ_DIR$\cmsis\system_nrf52840.c</file>
+            <file>$PROJ_DIR$\cmsis\iar_startup_nrf52.s</file>
+            <file>$PROJ_DIR$\board\audiogude_v2board.h</file>
+            <file>$PROJ_DIR$\pwm\nrf_hw_pwm.h</file>
+            <file>$PROJ_DIR$\utils\utils.c</file>
+            <file>$PROJ_DIR$\main\Obj\utils.__cstat.et</file>
+            <file>$PROJ_DIR$\main\Obj\nrf_hw_pwm.__cstat.et</file>
+            <file>$PROJ_DIR$\main\Obj\led_driver.__cstat.et</file>
+            <file>$PROJ_DIR$\pwm\led_driver.h</file>
+            <file>$PROJ_DIR$\pwm\nrf_hw_pwm.cpp</file>
+            <file>$PROJ_DIR$\pwm\led_driver.cpp</file>
+            <file>$PROJ_DIR$\board\board.h</file>
+            <file>$PROJ_DIR$\main\Obj\led_driver.o</file>
+            <file>$PROJ_DIR$\main\Obj\nrf_hw_pwm.o</file>
+            <file>$PROJ_DIR$\main\Obj\led_driver.xcl</file>
+            <file>$PROJ_DIR$\main\Obj\nrf_hw_pwm.xcl</file>
+            <file>$PROJ_DIR$\main\Obj\utils.o</file>
+            <file>$PROJ_DIR$\main\Obj\timer.o</file>
+            <file>$PROJ_DIR$\main\Obj\timer.xcl</file>
+            <file>$PROJ_DIR$\main\Obj\utils.xcl</file>
+            <file>$PROJ_DIR$\main\List\timer.lst</file>
+            <file>$PROJ_DIR$\main\List\led_driver.s</file>
+            <file>$PROJ_DIR$\timer\timer.cpp</file>
+            <file>$PROJ_DIR$\main\List\timer.s</file>
+            <file>$PROJ_DIR$\timer\timer.h</file>
+            <file>$PROJ_DIR$\bootloader\bootloader.c</file>
+            <file>$PROJ_DIR$\main\List\utils.s</file>
+            <file>$PROJ_DIR$\board\audioguide_v2_board.h</file>
+            <file>$TOOLKIT_DIR$\lib\shb_l.a</file>
+            <file>$TOOLKIT_DIR$\lib\dlpp7M_tl_fc.a</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Full.h</file>
+            <file>$TOOLKIT_DIR$\lib\dl7M_tlf.a</file>
+            <file>$PROJ_DIR$\main\Obj\timer.__cstat.et</file>
+            <file>$TOOLKIT_DIR$\inc\cpp\xtr1common</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_float_setup.h</file>
+            <file>$PROJ_DIR$\utils\utils.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\math.h</file>
+            <file>$PROJ_DIR$\main\List\led_driver.lst</file>
+            <file>$TOOLKIT_DIR$\inc\cpp\cstdlib</file>
+            <file>$TOOLKIT_DIR$\inc\c\xtgmath.h</file>
+            <file>$PROJ_DIR$\main\List\utils.lst</file>
+            <file>$PROJ_DIR$\main\List\nrf_hw_pwm.lst</file>
+            <file>$PROJ_DIR$\main\List\nrf_hw_pwm.s</file>
         </outputs>
-        <file>
-            <name>[ROOT_NODE]</name>
-            <outputs>
-                <tool>
-                    <name>ILINK</name>
-                    <file> 1 35</file>
-                </tool>
-            </outputs>
-        </file>
         <file>
             <name>$PROJ_DIR$\main\Exe\libraries.out</name>
             <outputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 35</file>
+                    <file> 18</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 52 41 4 48 47 55 53 54 56</file>
+                    <file> 51 9 68 43 69 5 12 73 72 84 17 85 4 87</file>
                 </tool>
             </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\main.cpp</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 4</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 0</file>
-                </tool>
-            </outputs>
         </file>
         <file>
             <name>$PROJ_DIR$\main\main.cpp</name>
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 49 50 4</file>
+                    <file> 11 16 43</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 51</file>
+                    <file> 20</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 0</file>
+                    <file> 48</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 13 10 14 19 11 12 15 17 16 18 21 29 22 30 32 23 27 20 25 24 43 33 26 31 28 8 59 5 7</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\cmsis\system_nrf52840.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 61 60 47</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 58</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 46</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 23 10 14 19 11 12 59 18 21 29 22 30 32 27 20 25 24 43 33 26 31 28</file>
+                    <file> 52 34 39 24 86 50 53 35 47 41 26 37 29 38 8 30 33 28 31 42 2 14 32 13 36 49 23 46 25 64 92 90 95 89 94 59 67 91 83 80</file>
                 </tool>
             </inputs>
         </file>
@@ -156,16 +148,7 @@
             <outputs>
                 <tool>
                     <name>AARM</name>
-                    <file> 41</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\cmsis\iar_startup_nrf52.s</name>
-            <outputs>
-                <tool>
-                    <name>AARM</name>
-                    <file> 38</file>
+                    <file> 9</file>
                 </tool>
             </outputs>
         </file>
@@ -174,21 +157,141 @@
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 34 36 48</file>
+                    <file> 21 19 5</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 57</file>
+                    <file> 10</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 42</file>
+                    <file> 3</file>
                 </tool>
             </outputs>
         </file>
-        <forcedrebuild>
-            <name>$PROJ_DIR$\main.cpp</name>
-            <tool>ICCARM</tool>
-        </forcedrebuild>
+        <file>
+            <name>$PROJ_DIR$\cmsis\system_nrf52840.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 1 0 12</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 22</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 15</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 30 34 39 24 86 50 23 41 26 37 29 38 8 33 28 31 42 2 14 32 13 36</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>[ROOT_NODE]</name>
+            <outputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 40 18</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\utils\utils.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 82 96 72</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 61</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 75</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 91 29 38 8 30 34 39 24 86 50 33 28 26 31 42 2 14 32 13 36 49 23 46 53 25</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\pwm\nrf_hw_pwm.cpp</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 98 97 69</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 62</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 71</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 59 41 26 39 24 86 50 37 52 34 53 35 29 38 8 30 33 28 31 42 2 14 32 13 36 67 91 49 23 46 25 83</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\pwm\led_driver.cpp</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 77 93 68</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 63</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 70</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 64 41 26 39 24 86 50 37 92 34 90 95 89 94 46 53 25 29 38 8 30 33 28 31 42 2 14 32 13 36 59 52 35 67 91 49 23 83 80</file>
+                </tool>
+            </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\timer\timer.cpp</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 79 76 73</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 88</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 74</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 80 41 26 39 24 86 50 37 29 38 8 30 34 33 28 31 42 2 14 32 13 36 64 92 90 95 89 94 46 53 25 59 52 35 67 91 49 23 83</file>
+                </tool>
+            </inputs>
+        </file>
     </configuration>
 </project>

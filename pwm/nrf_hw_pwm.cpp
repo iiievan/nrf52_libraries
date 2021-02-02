@@ -1,4 +1,3 @@
-#include "include.h"
 #include "nrf_hw_pwm.h"
 
 NRF_PWM_Type* nrf_hw_pwm::_pwm_dev[] =
@@ -416,45 +415,7 @@ int nrf_hw_pwm::get_led_num(uint32_t pin)
     return led;
 }
 
-/*
-int8_t nrf_hw_pwm::light_up (uint32_t  pin)
-{
-    volatile int16_t led = _pin_2_led(pin); 
-    
-    if(led < ALRDY_IS)
-    { return REMOVED; }  
-    
-    write_chnl(led, LIGHT_UP);
-    
-    return STATE_OK;
-}
-
-
-int8_t nrf_hw_pwm::turn_off (uint32_t  pin)
-{
-    volatile int16_t led = _pin_2_led(pin); 
-    
-    if(led < ALRDY_IS)
-    { return REMOVED; }  
-    
-    write_chnl(led, TURN_OFF);
-        
-    return STATE_OK;
-}
-
-int8_t nrf_hw_pwm::pwm_set(uint32_t pin, uint32_t value)
-{
-    volatile int16_t led = _pin_2_led(pin); 
-    
-    if(led < ALRDY_IS)
-    { return REMOVED; }  
-    
-    write_chnl(led, value);
-        
-    return STATE_OK;
-}
-*/
-
+#ifdef THREE_PIN_CHARGE_BAR
 void nrf_hw_pwm::set_chrg_bar(int16_t led_num)
 {
     // не управляем ни чем если пины удалены.
@@ -506,9 +467,8 @@ void nrf_hw_pwm::set_chrg_bar(int16_t led_num)
         _old_chrg_bar_state = led_num;
 
     }
-
-
 }
+#endif // THREE_PIN_CHARGE_BAR
 
 
 

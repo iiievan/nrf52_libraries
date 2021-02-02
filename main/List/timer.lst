@@ -1,0 +1,844 @@
+###############################################################################
+#
+# IAR ANSI C/C++ Compiler V8.40.1.212/W32 for ARM         02/Feb/2021  18:20:24
+# Copyright 1999-2019 IAR Systems AB.
+#
+#    Cpu mode     =  
+#    Endian       =  little
+#    Source file  =  E:\cpp\nrf52_libraries\timer\timer.cpp
+#    Command line =
+#        -f C:\Users\IF385~1.SHO\AppData\Local\Temp\EWAF0A.tmp
+#        (E:\cpp\nrf52_libraries\timer\timer.cpp -D NRF52840_XXAA -D
+#        CONFIG_NFCT_PINS_AS_GPIOS -D _AUDIOGUDE_V2_BOARD -D DEBUG -lCN
+#        E:\cpp\nrf52_libraries\main\List -lA E:\cpp\nrf52_libraries\main\List
+#        -o E:\cpp\nrf52_libraries\main\Obj --no_cse --no_unroll --no_inline
+#        --no_code_motion --no_tbaa --no_clustering --no_scheduling --debug
+#        --endian=little --cpu=Cortex-M4 -e --fpu=None --dlib_config
+#        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
+#        8.3\arm\inc\c\DLib_Config_Full.h" -I E:\cpp\nrf52_libraries\fsm\ -I
+#        E:\cpp\nrf52_libraries\pwm\ -I E:\cpp\nrf52_libraries\spi\ -I
+#        E:\cpp\nrf52_libraries\usb\ -I E:\cpp\nrf52_libraries\main\ -I
+#        E:\cpp\nrf52_libraries\cmsis\ -I E:\cpp\nrf52_libraries\cmsis\device\
+#        -I E:\cpp\nrf52_libraries\cmsis\include\ -I
+#        E:\cpp\nrf52_libraries\board\ -I E:\cpp\nrf52_libraries\utils\ -I
+#        E:\cpp\nrf52_libraries\timer\ -On --c++ --no_exceptions --no_rtti)
+#    Locale       =  C
+#    List file    =  E:\cpp\nrf52_libraries\main\List\timer.lst
+#    Object file  =  E:\cpp\nrf52_libraries\main\Obj\timer.o
+#
+###############################################################################
+
+E:\cpp\nrf52_libraries\timer\timer.cpp
+      1          #include "Timer.h"
+
+   \                                 In section .text, align 2, keep-with-next
+   \   static __interwork __softfp void NVIC_EnableIRQ(IRQn_Type)
+   \                     _ZN30_INTERNAL_9_timer_cpp_4e19ece914NVIC_EnableIRQE9IRQn_Type: (+1)
+   \        0x0   0x2201             MOVS     R2,#+1
+   \        0x2   0xF010 0x011F      ANDS     R1,R0,#0x1F
+   \        0x6   0x408A             LSLS     R2,R2,R1
+   \        0x8   0x....'....        LDR.W    R1,??DataTable7_1  ;; 0xe000e100
+   \        0xC   0x0003             MOVS     R3,R0
+   \        0xE   0xB25B             SXTB     R3,R3            ;; SignExt  R3,R3,#+24,#+24
+   \       0x10   0x095B             LSRS     R3,R3,#+5
+   \       0x12   0xF841 0x2023      STR      R2,[R1, R3, LSL #+2]
+   \       0x16   0x4770             BX       LR               ;; return
+
+   \                                 In section .text, align 2, keep-with-next
+   \   static __interwork __softfp void NVIC_ClearPendingIRQ(IRQn_Type)
+   \                     _ZN30_INTERNAL_9_timer_cpp_4e19ece920NVIC_ClearPendingIRQE9IRQn_Type: (+1)
+   \        0x0   0x2201             MOVS     R2,#+1
+   \        0x2   0xF010 0x011F      ANDS     R1,R0,#0x1F
+   \        0x6   0x408A             LSLS     R2,R2,R1
+   \        0x8   0x....             LDR.N    R1,??DataTable7_2  ;; 0xe000e280
+   \        0xA   0x0003             MOVS     R3,R0
+   \        0xC   0xB25B             SXTB     R3,R3            ;; SignExt  R3,R3,#+24,#+24
+   \        0xE   0x095B             LSRS     R3,R3,#+5
+   \       0x10   0xF841 0x2023      STR      R2,[R1, R3, LSL #+2]
+   \       0x14   0x4770             BX       LR               ;; return
+
+   \                                 In section .text, align 2, keep-with-next
+   \   static __interwork __softfp void NVIC_SetPriority(IRQn_Type, uint32_t)
+   \                     _ZN30_INTERNAL_9_timer_cpp_4e19ece916NVIC_SetPriorityE9IRQn_Typej: (+1)
+   \        0x0   0xB410             PUSH     {R4}
+   \        0x2   0x0002             MOVS     R2,R0
+   \        0x4   0xB252             SXTB     R2,R2            ;; SignExt  R2,R2,#+24,#+24
+   \        0x6   0x2A00             CMP      R2,#+0
+   \        0x8   0xD509             BPL.N    ??NVIC_SetPriority_0
+   \        0xA   0x014A             LSLS     R2,R1,#+5
+   \        0xC   0x....             LDR.N    R3,??DataTable7_3  ;; 0xe000ed18
+   \        0xE   0x0004             MOVS     R4,R0
+   \       0x10   0xB264             SXTB     R4,R4            ;; SignExt  R4,R4,#+24,#+24
+   \       0x12   0xF014 0x040F      ANDS     R4,R4,#0xF
+   \       0x16   0x4423             ADD      R3,R3,R4
+   \       0x18   0xF803 0x2C04      STRB     R2,[R3, #-4]
+   \       0x1C   0xE004             B.N      ??NVIC_SetPriority_1
+   \                     ??NVIC_SetPriority_0: (+1)
+   \       0x1E   0x014A             LSLS     R2,R1,#+5
+   \       0x20   0x....             LDR.N    R3,??DataTable7_4  ;; 0xe000e400
+   \       0x22   0x0004             MOVS     R4,R0
+   \       0x24   0xB264             SXTB     R4,R4            ;; SignExt  R4,R4,#+24,#+24
+   \       0x26   0x551A             STRB     R2,[R3, R4]
+   \                     ??NVIC_SetPriority_1: (+1)
+   \       0x28   0xBC10             POP      {R4}
+   \       0x2A   0x4770             BX       LR               ;; return
+      2          #include "led_driver.h"
+      3          
+
+   \                                 In section .text, align 2, keep-with-next
+   \   __code __interwork __softfp Timer::subobject Timer(uint8_t)
+   \                     _ZN5TimerC2Eh: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+   \        0x4   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \        0x6   0x0020             MOVS     R0,R4
+   \        0x8   0x....'....        BL       _ZN5TimerC1Eh
+   \        0xC   0xBD10             POP      {R4,PC}          ;; return
+
+   \                                 In section .text, align 2, keep-with-next
+      4          Timer::Timer(uint8_t tmr_num)
+      5          {
+   \                     _ZN5TimerC1Eh: (+1)
+   \        0x0   0x2200             MOVS     R2,#+0
+   \        0x2   0x6082             STR      R2,[R0, #+8]
+   \        0x4   0x2200             MOVS     R2,#+0
+   \        0x6   0x2300             MOVS     R3,#+0
+   \        0x8   0xE9C0 0x2304      STRD     R2,R3,[R0, #+16]
+   \        0xC   0x2201             MOVS     R2,#+1
+   \        0xE   0x7602             STRB     R2,[R0, #+24]
+      6              switch(tmr_num)
+   \       0x10   0x000A             MOVS     R2,R1
+   \       0x12   0xB2D2             UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
+   \       0x14   0x2A00             CMP      R2,#+0
+   \       0x16   0xD006             BEQ.N    ??Timer_0
+   \       0x18   0x2A02             CMP      R2,#+2
+   \       0x1A   0xD00E             BEQ.N    ??Timer_1
+   \       0x1C   0xD308             BCC.N    ??Timer_2
+   \       0x1E   0x2A04             CMP      R2,#+4
+   \       0x20   0xD015             BEQ.N    ??Timer_3
+   \       0x22   0xD30F             BCC.N    ??Timer_4
+   \       0x24   0xE018             B.N      ??Timer_5
+      7              {        
+      8                  case 0:
+      9                      _TIMER = NRF_TIMER0;
+   \                     ??Timer_0: (+1)
+   \       0x26   0x....             LDR.N    R2,??DataTable7_5  ;; 0x40008000
+   \       0x28   0x6002             STR      R2,[R0, #+0]
+     10                      _IRQn = TIMER0_IRQn;
+   \       0x2A   0x2208             MOVS     R2,#+8
+   \       0x2C   0x7102             STRB     R2,[R0, #+4]
+     11                      break;
+   \       0x2E   0xE015             B.N      ??Timer_6
+     12                  case 1:
+     13                      _TIMER = NRF_TIMER1;
+   \                     ??Timer_2: (+1)
+   \       0x30   0x....             LDR.N    R2,??DataTable7_6  ;; 0x40009000
+   \       0x32   0x6002             STR      R2,[R0, #+0]
+     14                      _IRQn = TIMER1_IRQn;
+   \       0x34   0x2209             MOVS     R2,#+9
+   \       0x36   0x7102             STRB     R2,[R0, #+4]
+     15                      break;
+   \       0x38   0xE010             B.N      ??Timer_6
+     16                  case 2:
+     17                      _TIMER = NRF_TIMER2;
+   \                     ??Timer_1: (+1)
+   \       0x3A   0x....             LDR.N    R2,??DataTable7_7  ;; 0x4000a000
+   \       0x3C   0x6002             STR      R2,[R0, #+0]
+     18                      _IRQn = TIMER2_IRQn;
+   \       0x3E   0x220A             MOVS     R2,#+10
+   \       0x40   0x7102             STRB     R2,[R0, #+4]
+     19                      break;
+   \       0x42   0xE00B             B.N      ??Timer_6
+     20                  case 3:
+     21                      _TIMER = NRF_TIMER3;
+   \                     ??Timer_4: (+1)
+   \       0x44   0x....             LDR.N    R2,??DataTable7_8  ;; 0x4001a000
+   \       0x46   0x6002             STR      R2,[R0, #+0]
+     22                      _IRQn = TIMER3_IRQn;
+   \       0x48   0x221A             MOVS     R2,#+26
+   \       0x4A   0x7102             STRB     R2,[R0, #+4]
+     23                      break;
+   \       0x4C   0xE006             B.N      ??Timer_6
+     24                  case 4:
+     25                      _TIMER = NRF_TIMER4;
+   \                     ??Timer_3: (+1)
+   \       0x4E   0x....             LDR.N    R2,??DataTable7_9  ;; 0x4001b000
+   \       0x50   0x6002             STR      R2,[R0, #+0]
+     26                      _IRQn = TIMER4_IRQn;
+   \       0x52   0x221B             MOVS     R2,#+27
+   \       0x54   0x7102             STRB     R2,[R0, #+4]
+     27                      break;
+   \       0x56   0xE001             B.N      ??Timer_6
+     28                  default:
+     29                       _TIMER = nullptr;
+   \                     ??Timer_5: (+1)
+   \       0x58   0x2200             MOVS     R2,#+0
+   \       0x5A   0x6002             STR      R2,[R0, #+0]
+     30                      break;
+     31              }
+     32          }
+   \                     ??Timer_6: (+1)
+   \       0x5C   0x4770             BX       LR               ;; return
+     33          
+
+   \                                 In section .text, align 2, keep-with-next
+     34          void    Timer::init(uint32_t presc, uint32_t compare_val, bool circulary)
+     35          {
+   \                     _ZN5Timer4initEjjb: (+1)
+   \        0x0   0xB5F8             PUSH     {R3-R7,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+   \        0x4   0x000D             MOVS     R5,R1
+   \        0x6   0x0016             MOVS     R6,R2
+   \        0x8   0x001F             MOVS     R7,R3
+     36              _TIMER->MODE = TIMER_MODE_MODE_Timer << TIMER_MODE_MODE_Pos;
+   \        0xA   0x2000             MOVS     R0,#+0
+   \        0xC   0x6821             LDR      R1,[R4, #+0]
+   \        0xE   0xF8C1 0x0504      STR      R0,[R1, #+1284]
+     37              _TIMER->BITMODE = TIMER_BITMODE_BITMODE_24Bit << TIMER_BITMODE_BITMODE_Pos;
+   \       0x12   0x2002             MOVS     R0,#+2
+   \       0x14   0x6821             LDR      R1,[R4, #+0]
+   \       0x16   0xF8C1 0x0508      STR      R0,[R1, #+1288]
+     38          
+     39              _TIMER->PRESCALER = presc << TIMER_PRESCALER_PRESCALER_Pos;
+   \       0x1A   0x6820             LDR      R0,[R4, #+0]
+   \       0x1C   0xF8C0 0x5510      STR      R5,[R0, #+1296]
+     40              setCaptureCompare(0, compare_val, circulary);
+   \       0x20   0x003B             MOVS     R3,R7
+   \       0x22   0xB2DB             UXTB     R3,R3            ;; ZeroExt  R3,R3,#+24,#+24
+   \       0x24   0x0032             MOVS     R2,R6
+   \       0x26   0xB2D2             UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
+   \       0x28   0x2100             MOVS     R1,#+0
+   \       0x2A   0x0020             MOVS     R0,R4
+   \       0x2C   0x....'....        BL       _ZN5Timer17setCaptureCompareEhhb
+     41          
+     42              resume();
+   \       0x30   0x0020             MOVS     R0,R4
+   \       0x32   0x....'....        BL       _ZN5Timer6resumeEv
+     43          }
+   \       0x36   0xBDF1             POP      {R0,R4-R7,PC}    ;; return
+     44          
+     45           // cc_num:0..5, priority 0..7
+
+   \                                 In section .text, align 2, keep-with-next
+     46          void Timer::setIRQ(uint8_t cc_num, uint8_t priority)  
+     47          { 
+   \                     _ZN5Timer6setIRQEhh: (+1)
+   \        0x0   0xB570             PUSH     {R4-R6,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+   \        0x4   0x000D             MOVS     R5,R1
+   \        0x6   0x0016             MOVS     R6,R2
+     48              switch(cc_num)
+   \        0x8   0x0028             MOVS     R0,R5
+   \        0xA   0xB2C0             UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
+   \        0xC   0x2800             CMP      R0,#+0
+   \        0xE   0xD008             BEQ.N    ??setIRQ_0
+   \       0x10   0x2802             CMP      R0,#+2
+   \       0x12   0xD018             BEQ.N    ??setIRQ_1
+   \       0x14   0xD30E             BCC.N    ??setIRQ_2
+   \       0x16   0x2804             CMP      R0,#+4
+   \       0x18   0xD027             BEQ.N    ??setIRQ_3
+   \       0x1A   0xD31D             BCC.N    ??setIRQ_4
+   \       0x1C   0x2805             CMP      R0,#+5
+   \       0x1E   0xD02D             BEQ.N    ??setIRQ_5
+   \       0x20   0xE035             B.N      ??setIRQ_6
+     49              {
+     50                  case 0:
+     51                      _TIMER->INTENSET |= TIMER_INTENSET_COMPARE0_Enabled << TIMER_INTENSET_COMPARE0_Pos;
+   \                     ??setIRQ_0: (+1)
+   \       0x22   0x6820             LDR      R0,[R4, #+0]
+   \       0x24   0xF8D0 0x0304      LDR      R0,[R0, #+772]
+   \       0x28   0xF450 0x3080      ORRS     R0,R0,#0x10000
+   \       0x2C   0x6821             LDR      R1,[R4, #+0]
+   \       0x2E   0xF8C1 0x0304      STR      R0,[R1, #+772]
+     52                      break;
+   \       0x32   0xE02C             B.N      ??setIRQ_7
+     53                  case 1:
+     54                      _TIMER->INTENSET |= TIMER_INTENSET_COMPARE1_Enabled << TIMER_INTENSET_COMPARE1_Pos;
+   \                     ??setIRQ_2: (+1)
+   \       0x34   0x6820             LDR      R0,[R4, #+0]
+   \       0x36   0xF8D0 0x0304      LDR      R0,[R0, #+772]
+   \       0x3A   0xF450 0x3000      ORRS     R0,R0,#0x20000
+   \       0x3E   0x6821             LDR      R1,[R4, #+0]
+   \       0x40   0xF8C1 0x0304      STR      R0,[R1, #+772]
+     55                      break;
+   \       0x44   0xE023             B.N      ??setIRQ_7
+     56                  case 2:
+     57                      _TIMER->INTENSET |= TIMER_INTENSET_COMPARE2_Enabled << TIMER_INTENSET_COMPARE2_Pos;
+   \                     ??setIRQ_1: (+1)
+   \       0x46   0x6820             LDR      R0,[R4, #+0]
+   \       0x48   0xF8D0 0x0304      LDR      R0,[R0, #+772]
+   \       0x4C   0xF450 0x2080      ORRS     R0,R0,#0x40000
+   \       0x50   0x6821             LDR      R1,[R4, #+0]
+   \       0x52   0xF8C1 0x0304      STR      R0,[R1, #+772]
+     58                      break;
+   \       0x56   0xE01A             B.N      ??setIRQ_7
+     59                  case 3:
+     60                      _TIMER->INTENSET |= TIMER_INTENSET_COMPARE3_Enabled << TIMER_INTENSET_COMPARE3_Pos;
+   \                     ??setIRQ_4: (+1)
+   \       0x58   0x6820             LDR      R0,[R4, #+0]
+   \       0x5A   0xF8D0 0x0304      LDR      R0,[R0, #+772]
+   \       0x5E   0xF450 0x2000      ORRS     R0,R0,#0x80000
+   \       0x62   0x6821             LDR      R1,[R4, #+0]
+   \       0x64   0xF8C1 0x0304      STR      R0,[R1, #+772]
+     61                      break;
+   \       0x68   0xE011             B.N      ??setIRQ_7
+     62                  case 4:
+     63                      _TIMER->INTENSET |= TIMER_INTENSET_COMPARE4_Enabled << TIMER_INTENSET_COMPARE4_Pos;
+   \                     ??setIRQ_3: (+1)
+   \       0x6A   0x6820             LDR      R0,[R4, #+0]
+   \       0x6C   0xF8D0 0x0304      LDR      R0,[R0, #+772]
+   \       0x70   0xF450 0x1080      ORRS     R0,R0,#0x100000
+   \       0x74   0x6821             LDR      R1,[R4, #+0]
+   \       0x76   0xF8C1 0x0304      STR      R0,[R1, #+772]
+     64                      break;
+   \       0x7A   0xE008             B.N      ??setIRQ_7
+     65                  case 5:
+     66                      _TIMER->INTENSET |= TIMER_INTENSET_COMPARE5_Enabled << TIMER_INTENSET_COMPARE5_Pos;
+   \                     ??setIRQ_5: (+1)
+   \       0x7C   0x6820             LDR      R0,[R4, #+0]
+   \       0x7E   0xF8D0 0x0304      LDR      R0,[R0, #+772]
+   \       0x82   0xF450 0x1000      ORRS     R0,R0,#0x200000
+   \       0x86   0x6821             LDR      R1,[R4, #+0]
+   \       0x88   0xF8C1 0x0304      STR      R0,[R1, #+772]
+     67                      break;
+   \       0x8C   0xE7FF             B.N      ??setIRQ_7
+     68                  default:
+     69                      break;
+     70              }
+     71          
+     72              NVIC_SetPriority(_IRQn, priority);
+   \                     ??setIRQ_6: (+1)
+   \                     ??setIRQ_7: (+1)
+   \       0x8E   0x0031             MOVS     R1,R6
+   \       0x90   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
+   \       0x92   0xF994 0x0004      LDRSB    R0,[R4, #+4]
+   \       0x96   0x....'....        BL       _ZN30_INTERNAL_9_timer_cpp_4e19ece916NVIC_SetPriorityE9IRQn_Typej
+     73              NVIC_ClearPendingIRQ(_IRQn);
+   \       0x9A   0xF994 0x0004      LDRSB    R0,[R4, #+4]
+   \       0x9E   0x....'....        BL       _ZN30_INTERNAL_9_timer_cpp_4e19ece920NVIC_ClearPendingIRQE9IRQn_Type
+     74              NVIC_EnableIRQ(_IRQn);
+   \       0xA2   0xF994 0x0004      LDRSB    R0,[R4, #+4]
+   \       0xA6   0x....'....        BL       _ZN30_INTERNAL_9_timer_cpp_4e19ece914NVIC_EnableIRQE9IRQn_Type
+     75          }
+   \       0xAA   0xBD70             POP      {R4-R6,PC}       ;; return
+     76          
+
+   \                                 In section .text, align 2, keep-with-next
+     77          void Timer::setCaptureCompare(uint8_t cc_num, uint8_t value, bool circulary)  
+     78          { 
+   \                     _ZN5Timer17setCaptureCompareEhhb: (+1)
+   \        0x0   0xB430             PUSH     {R4,R5}
+     79              switch(cc_num)
+   \        0x2   0x000C             MOVS     R4,R1
+   \        0x4   0xB2E4             UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
+   \        0x6   0x2C00             CMP      R4,#+0
+   \        0x8   0xD008             BEQ.N    ??setCaptureCompare_0
+   \        0xA   0x2C02             CMP      R4,#+2
+   \        0xC   0xD012             BEQ.N    ??setCaptureCompare_1
+   \        0xE   0xD30B             BCC.N    ??setCaptureCompare_2
+   \       0x10   0x2C04             CMP      R4,#+4
+   \       0x12   0xD01B             BEQ.N    ??setCaptureCompare_3
+   \       0x14   0xD314             BCC.N    ??setCaptureCompare_4
+   \       0x16   0x2C05             CMP      R4,#+5
+   \       0x18   0xD01E             BEQ.N    ??setCaptureCompare_5
+   \       0x1A   0xE023             B.N      ??setCaptureCompare_6
+     80              {
+     81                  case 0:
+     82                      _TIMER->CC[0] = value;
+   \                     ??setCaptureCompare_0: (+1)
+   \       0x1C   0x0014             MOVS     R4,R2
+   \       0x1E   0xB2E4             UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
+   \       0x20   0x6805             LDR      R5,[R0, #+0]
+   \       0x22   0xF8C5 0x4540      STR      R4,[R5, #+1344]
+     83                      break;
+   \       0x26   0xE01D             B.N      ??setCaptureCompare_7
+     84                  case 1:
+     85                      _TIMER->CC[1] = value;
+   \                     ??setCaptureCompare_2: (+1)
+   \       0x28   0x0014             MOVS     R4,R2
+   \       0x2A   0xB2E4             UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
+   \       0x2C   0x6805             LDR      R5,[R0, #+0]
+   \       0x2E   0xF8C5 0x4544      STR      R4,[R5, #+1348]
+     86                      break;
+   \       0x32   0xE017             B.N      ??setCaptureCompare_7
+     87                  case 2:
+     88                      _TIMER->CC[2] = value;
+   \                     ??setCaptureCompare_1: (+1)
+   \       0x34   0x0014             MOVS     R4,R2
+   \       0x36   0xB2E4             UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
+   \       0x38   0x6805             LDR      R5,[R0, #+0]
+   \       0x3A   0xF8C5 0x4548      STR      R4,[R5, #+1352]
+     89                      break;
+   \       0x3E   0xE011             B.N      ??setCaptureCompare_7
+     90                  case 3:
+     91                      _TIMER->CC[3] = value;
+   \                     ??setCaptureCompare_4: (+1)
+   \       0x40   0x0014             MOVS     R4,R2
+   \       0x42   0xB2E4             UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
+   \       0x44   0x6805             LDR      R5,[R0, #+0]
+   \       0x46   0xF8C5 0x454C      STR      R4,[R5, #+1356]
+     92                      break;
+   \       0x4A   0xE00B             B.N      ??setCaptureCompare_7
+     93                  case 4:
+     94                      _TIMER->CC[4] = value;
+   \                     ??setCaptureCompare_3: (+1)
+   \       0x4C   0x0014             MOVS     R4,R2
+   \       0x4E   0xB2E4             UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
+   \       0x50   0x6805             LDR      R5,[R0, #+0]
+   \       0x52   0xF8C5 0x4550      STR      R4,[R5, #+1360]
+     95                      break;
+   \       0x56   0xE005             B.N      ??setCaptureCompare_7
+     96                  case 5:
+     97                      _TIMER->CC[5] = value;
+   \                     ??setCaptureCompare_5: (+1)
+   \       0x58   0x0014             MOVS     R4,R2
+   \       0x5A   0xB2E4             UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
+   \       0x5C   0x6805             LDR      R5,[R0, #+0]
+   \       0x5E   0xF8C5 0x4554      STR      R4,[R5, #+1364]
+     98                      break;
+   \       0x62   0xE7FF             B.N      ??setCaptureCompare_7
+     99                  default:
+    100                      break;
+    101              }
+    102          
+    103              if(circulary)
+   \                     ??setCaptureCompare_6: (+1)
+   \                     ??setCaptureCompare_7: (+1)
+   \       0x64   0x001C             MOVS     R4,R3
+   \       0x66   0xB2E4             UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
+   \       0x68   0x2C00             CMP      R4,#+0
+   \       0x6A   0xD02A             BEQ.N    ??setCaptureCompare_8
+    104              {
+    105                  switch(cc_num)
+   \       0x6C   0x000C             MOVS     R4,R1
+   \       0x6E   0xB2E4             UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
+   \       0x70   0x2C00             CMP      R4,#+0
+   \       0x72   0xD008             BEQ.N    ??setCaptureCompare_9
+   \       0x74   0x2C02             CMP      R4,#+2
+   \       0x76   0xD010             BEQ.N    ??setCaptureCompare_10
+   \       0x78   0xD30A             BCC.N    ??setCaptureCompare_11
+   \       0x7A   0x2C04             CMP      R4,#+4
+   \       0x7C   0xD017             BEQ.N    ??setCaptureCompare_12
+   \       0x7E   0xD311             BCC.N    ??setCaptureCompare_13
+   \       0x80   0x2C05             CMP      R4,#+5
+   \       0x82   0xD019             BEQ.N    ??setCaptureCompare_14
+   \       0x84   0xE01D             B.N      ??setCaptureCompare_15
+    106                  {
+    107                      case 0:
+    108                           _TIMER->SHORTS = TIMER_SHORTS_COMPARE0_CLEAR_Enabled << TIMER_SHORTS_COMPARE0_CLEAR_Pos;
+   \                     ??setCaptureCompare_9: (+1)
+   \       0x86   0x2401             MOVS     R4,#+1
+   \       0x88   0x6805             LDR      R5,[R0, #+0]
+   \       0x8A   0xF8C5 0x4200      STR      R4,[R5, #+512]
+    109                          break;
+   \       0x8E   0xE018             B.N      ??setCaptureCompare_8
+    110                      case 1:
+    111                           _TIMER->SHORTS = TIMER_SHORTS_COMPARE1_CLEAR_Enabled << TIMER_SHORTS_COMPARE1_CLEAR_Pos;
+   \                     ??setCaptureCompare_11: (+1)
+   \       0x90   0x2402             MOVS     R4,#+2
+   \       0x92   0x6805             LDR      R5,[R0, #+0]
+   \       0x94   0xF8C5 0x4200      STR      R4,[R5, #+512]
+    112                          break;
+   \       0x98   0xE013             B.N      ??setCaptureCompare_8
+    113                      case 2:
+    114                           _TIMER->SHORTS = TIMER_SHORTS_COMPARE2_CLEAR_Enabled << TIMER_SHORTS_COMPARE2_CLEAR_Pos;
+   \                     ??setCaptureCompare_10: (+1)
+   \       0x9A   0x2404             MOVS     R4,#+4
+   \       0x9C   0x6805             LDR      R5,[R0, #+0]
+   \       0x9E   0xF8C5 0x4200      STR      R4,[R5, #+512]
+    115                          break;
+   \       0xA2   0xE00E             B.N      ??setCaptureCompare_8
+    116                      case 3:
+    117                           _TIMER->SHORTS = TIMER_SHORTS_COMPARE3_CLEAR_Enabled << TIMER_SHORTS_COMPARE3_CLEAR_Pos;
+   \                     ??setCaptureCompare_13: (+1)
+   \       0xA4   0x2408             MOVS     R4,#+8
+   \       0xA6   0x6805             LDR      R5,[R0, #+0]
+   \       0xA8   0xF8C5 0x4200      STR      R4,[R5, #+512]
+    118                          break;
+   \       0xAC   0xE009             B.N      ??setCaptureCompare_8
+    119                      case 4:
+    120                           _TIMER->SHORTS = TIMER_SHORTS_COMPARE4_CLEAR_Enabled << TIMER_SHORTS_COMPARE4_CLEAR_Pos;
+   \                     ??setCaptureCompare_12: (+1)
+   \       0xAE   0x2410             MOVS     R4,#+16
+   \       0xB0   0x6805             LDR      R5,[R0, #+0]
+   \       0xB2   0xF8C5 0x4200      STR      R4,[R5, #+512]
+    121                          break;
+   \       0xB6   0xE004             B.N      ??setCaptureCompare_8
+    122                      case 5:
+    123                           _TIMER->SHORTS = TIMER_SHORTS_COMPARE5_CLEAR_Enabled << TIMER_SHORTS_COMPARE5_CLEAR_Pos;
+   \                     ??setCaptureCompare_14: (+1)
+   \       0xB8   0x2420             MOVS     R4,#+32
+   \       0xBA   0x6805             LDR      R5,[R0, #+0]
+   \       0xBC   0xF8C5 0x4200      STR      R4,[R5, #+512]
+    124                          break;
+   \       0xC0   0xE7FF             B.N      ??setCaptureCompare_8
+    125                      default:
+    126                          break;
+    127                  }      
+    128              }
+    129             
+    130          }
+   \                     ??setCaptureCompare_15: (+1)
+   \                     ??setCaptureCompare_8: (+1)
+   \       0xC2   0xBC30             POP      {R4,R5}
+   \       0xC4   0x4770             BX       LR               ;; return
+    131          
+
+   \                                 In section .text, align 2, keep-with-next
+    132          void   Timer::increment(uint32_t dT)
+    133          {
+   \                     _ZN5Timer9incrementEj: (+1)
+   \        0x0   0xB430             PUSH     {R4,R5}
+    134              __disable_interrupt();
+   \        0x2   0xB672             CPSID    I
+    135          
+    136              _time += dT;
+   \        0x4   0xE9D0 0x4504      LDRD     R4,R5,[R0, #+16]
+   \        0x8   0x000A             MOVS     R2,R1
+   \        0xA   0x2300             MOVS     R3,#+0
+   \        0xC   0x18A2             ADDS     R2,R4,R2
+   \        0xE   0x416B             ADCS     R3,R5,R3
+   \       0x10   0xE9C0 0x2304      STRD     R2,R3,[R0, #+16]
+    137          
+    138              __enable_interrupt();  
+   \       0x14   0xB662             CPSIE    I
+    139          }
+   \       0x16   0xBC30             POP      {R4,R5}
+   \       0x18   0x4770             BX       LR               ;; return
+    140          
+
+   \                                 In section .text, align 2, keep-with-next
+    141          uint64_t   Timer::get_ms(void) const
+    142          {
+   \                     _ZNK5Timer6get_msEv: (+1)
+   \        0x0   0x0002             MOVS     R2,R0
+    143              uint64_t res;
+    144              
+    145              __disable_interrupt();
+   \        0x2   0xB672             CPSID    I
+    146              res = _time;
+   \        0x4   0xE9D2 0x0104      LDRD     R0,R1,[R2, #+16]
+    147              __enable_interrupt();
+   \        0x8   0xB662             CPSIE    I
+    148              
+    149              return res; 
+   \        0xA   0x4770             BX       LR               ;; return
+    150          }
+    151          
+
+   \                                 In section .text, align 2, keep-with-next
+    152          uint64_t   Timer::get_us(void)
+    153          {
+   \                     _ZN5Timer6get_usEv: (+1)
+   \        0x0   0xE92D 0x03F0      PUSH     {R4-R9}
+   \        0x4   0x0002             MOVS     R2,R0
+    154              uint64_t res;
+    155          
+    156              __disable_interrupt();
+   \        0x6   0xB672             CPSID    I
+    157          
+    158              _TIMER->TASKS_CAPTURE[0] = 0;
+   \        0x8   0x2000             MOVS     R0,#+0
+   \        0xA   0x6811             LDR      R1,[R2, #+0]
+   \        0xC   0x6408             STR      R0,[R1, #+64]
+    159              _TIMER->TASKS_CAPTURE[0] = 1;
+   \        0xE   0x2001             MOVS     R0,#+1
+   \       0x10   0x6811             LDR      R1,[R2, #+0]
+   \       0x12   0x6408             STR      R0,[R1, #+64]
+    160          
+    161              res = (uint64_t)_TIMER->CC[0];
+   \       0x14   0x6810             LDR      R0,[R2, #+0]
+   \       0x16   0xF8D0 0x0540      LDR      R0,[R0, #+1344]
+   \       0x1A   0x2100             MOVS     R1,#+0
+    162          
+    163              __enable_interrupt();
+   \       0x1C   0xB662             CPSIE    I
+    164          
+    165              res += _time * 1000;
+   \       0x1E   0xE9D2 0x4504      LDRD     R4,R5,[R2, #+16]
+   \       0x22   0xF44F 0x767A      MOV      R6,#+1000
+   \       0x26   0x2700             MOVS     R7,#+0
+   \       0x28   0xFBA6 0x8904      UMULL    R8,R9,R6,R4
+   \       0x2C   0xFB06 0x9905      MLA      R9,R6,R5,R9
+   \       0x30   0xFB07 0x9904      MLA      R9,R7,R4,R9
+   \       0x34   0xEB10 0x0008      ADDS     R0,R0,R8
+   \       0x38   0xEB51 0x0109      ADCS     R1,R1,R9
+    166          
+    167              return res;  
+   \       0x3C   0xE8BD 0x03F0      POP      {R4-R9}
+   \       0x40   0x4770             BX       LR               ;; return
+    168          }
+    169          
+
+   \                                 In section .text, align 2, keep-with-next
+    170          void   Timer::pause()
+    171          {
+    172              _TIMER->TASKS_STOP = 1;
+   \                     _ZN5Timer5pauseEv: (+1)
+   \        0x0   0x2101             MOVS     R1,#+1
+   \        0x2   0x6802             LDR      R2,[R0, #+0]
+   \        0x4   0x6051             STR      R1,[R2, #+4]
+    173              _TIMER->TASKS_SHUTDOWN = 1;
+   \        0x6   0x2101             MOVS     R1,#+1
+   \        0x8   0x6802             LDR      R2,[R0, #+0]
+   \        0xA   0x6111             STR      R1,[R2, #+16]
+    174          
+    175              _is_paused = true;
+   \        0xC   0x2101             MOVS     R1,#+1
+   \        0xE   0x7601             STRB     R1,[R0, #+24]
+    176          }
+   \       0x10   0x4770             BX       LR               ;; return
+    177          
+
+   \                                 In section .text, align 2, keep-with-next
+    178          void   Timer::resume()
+    179          {
+    180              if(_is_paused)
+   \                     _ZN5Timer6resumeEv: (+1)
+   \        0x0   0x7E01             LDRB     R1,[R0, #+24]
+   \        0x2   0x2900             CMP      R1,#+0
+   \        0x4   0xD004             BEQ.N    ??resume_0
+    181              {
+    182                  _TIMER->TASKS_START = 1;
+   \        0x6   0x2101             MOVS     R1,#+1
+   \        0x8   0x6802             LDR      R2,[R0, #+0]
+   \        0xA   0x6011             STR      R1,[R2, #+0]
+    183                  _is_paused = false;
+   \        0xC   0x2100             MOVS     R1,#+0
+   \        0xE   0x7601             STRB     R1,[R0, #+24]
+    184              }
+    185          }
+   \                     ??resume_0: (+1)
+   \       0x10   0x4770             BX       LR               ;; return
+    186          
+
+   \                                 In section .text, align 2, keep-with-next
+    187          void   Timer::onIRQ()
+    188          {
+   \                     _ZN5Timer5onIRQEv: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+    189              _TIMER->EVENTS_COMPARE[0] = 0;
+   \        0x4   0x2000             MOVS     R0,#+0
+   \        0x6   0x6821             LDR      R1,[R4, #+0]
+   \        0x8   0xF8C1 0x0140      STR      R0,[R1, #+320]
+    190          
+    191              if (_on_irq_callback)
+   \        0xC   0x68A0             LDR      R0,[R4, #+8]
+   \        0xE   0x2800             CMP      R0,#+0
+   \       0x10   0xD002             BEQ.N    ??onIRQ_0
+    192              {
+    193                  _on_irq_callback(1);
+   \       0x12   0x2001             MOVS     R0,#+1
+   \       0x14   0x68A1             LDR      R1,[R4, #+8]
+   \       0x16   0x4788             BLX      R1
+    194              }
+    195          }
+   \                     ??onIRQ_0: (+1)
+   \       0x18   0xBD10             POP      {R4,PC}          ;; return
+    196          
+
+   \                                 In section .text, align 2, keep-with-next
+    197          void sys_timer_callback(uint32_t value)
+    198          {
+   \                     _Z18sys_timer_callbackj: (+1)
+   \        0x0   0xB538             PUSH     {R3-R5,LR}
+   \        0x2   0x0004             MOVS     R4,R0
+    199              static uint8_t activeLeds = 0;
+    200              
+    201              sys_timer.increment(value);
+   \        0x4   0x0021             MOVS     R1,R4
+   \        0x6   0x....             LDR.N    R0,??DataTable7
+   \        0x8   0x....'....        BL       _ZN5Timer9incrementEj
+    202              
+    203              activeLeds = led_drivers_handle();
+   \        0xC   0x....             LDR.N    R5,??DataTable7_10
+   \        0xE   0x....'....        BL       _Z18led_drivers_handlev
+   \       0x12   0x7028             STRB     R0,[R5, #+0]
+    204              
+    205              UNUSED(activeLeds);
+   \       0x14   0x7828             LDRB     R0,[R5, #+0]
+   \       0x16   0x7028             STRB     R0,[R5, #+0]
+    206          }
+   \       0x18   0xBD31             POP      {R0,R4,R5,PC}    ;; return
+
+   \                                 In section .bss, align 1
+   \                     `sys_timer_callback(uint32_t)::activeLeds`:
+   \        0x0                      DS8 1
+    207          
+
+   \                                 In section .text, align 2, keep-with-next
+   \   static __intrinsic __interwork __softfp void __sti__routine()
+   \                     __sti__routine: (+1)
+   \        0x0   0xB580             PUSH     {R7,LR}
+    208          Timer sys_timer(0);
+   \        0x2   0x2100             MOVS     R1,#+0
+   \        0x4   0x....'....        LDR.W    R0,??DataTable7
+   \        0x8   0x....'....        BL       _ZN5TimerC1Eh
+   \        0xC   0xBD01             POP      {R0,PC}          ;; return
+
+   \                                 In section .bss, align 8
+   \                     sys_timer:
+   \        0x0                      DS8 32
+    209          
+
+   \                                 In section .text, align 2, keep-with-next
+    210          extern "C" void TIMER0_IRQHandler(){ sys_timer.onIRQ(); }
+   \                     TIMER0_IRQHandler: (+1)
+   \        0x0   0xB580             PUSH     {R7,LR}
+   \        0x2   0x....             LDR.N    R0,??DataTable7
+   \        0x4   0x....'....        BL       _ZN5Timer5onIRQEv
+   \        0x8   0xBD01             POP      {R0,PC}          ;; return
+
+   \                                 In section .text, align 2, keep-with-next
+    211          extern "C" void TIMER1_IRQHandler(){ return; }
+   \                     TIMER1_IRQHandler: (+1)
+   \        0x0   0x4770             BX       LR               ;; return
+
+   \                                 In section .text, align 2, keep-with-next
+    212          extern "C" void TIMER2_IRQHandler(){ return; }
+   \                     TIMER2_IRQHandler: (+1)
+   \        0x0   0x4770             BX       LR               ;; return
+
+   \                                 In section .text, align 2, keep-with-next
+    213          extern "C" void TIMER3_IRQHandler(){ return; }
+   \                     TIMER3_IRQHandler: (+1)
+   \        0x0   0x4770             BX       LR               ;; return
+
+   \                                 In section .text, align 2, keep-with-next
+    214          extern "C" void TIMER4_IRQHandler(){ return; }
+   \                     TIMER4_IRQHandler: (+1)
+   \        0x0   0x4770             BX       LR               ;; return
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7:
+   \        0x0   0x....'....        DC32     sys_timer
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7_1:
+   \        0x0   0xE000'E100        DC32     0xe000e100
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7_2:
+   \        0x0   0xE000'E280        DC32     0xe000e280
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7_3:
+   \        0x0   0xE000'ED18        DC32     0xe000ed18
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7_4:
+   \        0x0   0xE000'E400        DC32     0xe000e400
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7_5:
+   \        0x0   0x4000'8000        DC32     0x40008000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7_6:
+   \        0x0   0x4000'9000        DC32     0x40009000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7_7:
+   \        0x0   0x4000'A000        DC32     0x4000a000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7_8:
+   \        0x0   0x4001'A000        DC32     0x4001a000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7_9:
+   \        0x0   0x4001'B000        DC32     0x4001b000
+
+   \                                 In section .text, align 4, keep-with-next
+   \                     ??DataTable7_10:
+   \        0x0   0x....'....        DC32     `sys_timer_callback(uint32_t)::activeLeds`
+
+   Maximum stack usage in bytes:
+
+   .cstack Function
+   ------- --------
+       0   NVIC_ClearPendingIRQ(IRQn_Type)
+       0   NVIC_EnableIRQ(IRQn_Type)
+       4   NVIC_SetPriority(IRQn_Type, uint32_t)
+       8   TIMER0_IRQHandler
+         8   -> Timer::onIRQ()
+       0   TIMER1_IRQHandler
+       0   TIMER2_IRQHandler
+       0   TIMER3_IRQHandler
+       0   TIMER4_IRQHandler
+       0   Timer::Timer(uint8_t)
+       0   Timer::get_ms() const
+      24   Timer::get_us()
+       8   Timer::increment(uint32_t)
+      24   Timer::init(uint32_t, uint32_t, bool)
+        24   -> Timer::resume()
+        24   -> Timer::setCaptureCompare(uint8_t, uint8_t, bool)
+       8   Timer::onIRQ()
+         8   -- Indirect call
+       0   Timer::pause()
+       0   Timer::resume()
+       8   Timer::setCaptureCompare(uint8_t, uint8_t, bool)
+      16   Timer::setIRQ(uint8_t, uint8_t)
+        16   -> NVIC_ClearPendingIRQ(IRQn_Type)
+        16   -> NVIC_EnableIRQ(IRQn_Type)
+        16   -> NVIC_SetPriority(IRQn_Type, uint32_t)
+       8   Timer::subobject Timer(uint8_t)
+         8   -> Timer::Timer(uint8_t)
+       8   __sti__routine()
+         8   -> Timer::Timer(uint8_t)
+      16   sys_timer_callback(uint32_t)
+        16   -> Timer::increment(uint32_t)
+        16   -> led_drivers_handle()
+
+
+   Section sizes:
+
+   Bytes  Function/Label
+   -----  --------------
+       4  ??DataTable7
+       4  ??DataTable7_1
+       4  ??DataTable7_10
+       4  ??DataTable7_2
+       4  ??DataTable7_3
+       4  ??DataTable7_4
+       4  ??DataTable7_5
+       4  ??DataTable7_6
+       4  ??DataTable7_7
+       4  ??DataTable7_8
+       4  ??DataTable7_9
+      22  NVIC_ClearPendingIRQ(IRQn_Type)
+      24  NVIC_EnableIRQ(IRQn_Type)
+      44  NVIC_SetPriority(IRQn_Type, uint32_t)
+      10  TIMER0_IRQHandler
+       2  TIMER1_IRQHandler
+       2  TIMER2_IRQHandler
+       2  TIMER3_IRQHandler
+       2  TIMER4_IRQHandler
+      94  Timer::Timer(uint8_t)
+      12  Timer::get_ms() const
+      66  Timer::get_us()
+      26  Timer::increment(uint32_t)
+      56  Timer::init(uint32_t, uint32_t, bool)
+      26  Timer::onIRQ()
+      18  Timer::pause()
+      18  Timer::resume()
+     198  Timer::setCaptureCompare(uint8_t, uint8_t, bool)
+     172  Timer::setIRQ(uint8_t, uint8_t)
+      14  Timer::subobject Timer(uint8_t)
+      14  __sti__routine()
+       1  activeLeds
+      32  sys_timer
+      26  sys_timer_callback(uint32_t)
+       4  -- Other
+
+ 
+  33 bytes in section .bss
+   4 bytes in section .init_array
+ 892 bytes in section .text
+ 
+ 896 bytes of CODE memory
+  33 bytes of DATA memory
+
+Errors: none
+Warnings: none

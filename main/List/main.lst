@@ -1,27 +1,27 @@
 ###############################################################################
 #
-# IAR ANSI C/C++ Compiler V8.40.1.212/W32 for ARM         02/Feb/2021  11:39:10
+# IAR ANSI C/C++ Compiler V8.40.1.212/W32 for ARM         02/Feb/2021  18:20:23
 # Copyright 1999-2019 IAR Systems AB.
 #
 #    Cpu mode     =  
 #    Endian       =  little
 #    Source file  =  E:\cpp\nrf52_libraries\main\main.cpp
 #    Command line =
-#        -f C:\Users\IF385~1.SHO\AppData\Local\Temp\EW5111.tmp
+#        -f C:\Users\IF385~1.SHO\AppData\Local\Temp\EWADE0.tmp
 #        (E:\cpp\nrf52_libraries\main\main.cpp -D NRF52840_XXAA -D
-#        CONFIG_NFCT_PINS_AS_GPIOS -D APP_TIMER_V2 -D APP_TIMER_V2_RTC1_ENABLED
-#        -D DEBUG -D DEBUG_NRF -D FLOAT_ABI_HARD -lCN
+#        CONFIG_NFCT_PINS_AS_GPIOS -D _AUDIOGUDE_V2_BOARD -D DEBUG -lCN
 #        E:\cpp\nrf52_libraries\main\List -lA E:\cpp\nrf52_libraries\main\List
 #        -o E:\cpp\nrf52_libraries\main\Obj --no_cse --no_unroll --no_inline
 #        --no_code_motion --no_tbaa --no_clustering --no_scheduling --debug
-#        --endian=little --cpu=Cortex-M3 -e --fpu=None --dlib_config
+#        --endian=little --cpu=Cortex-M4 -e --fpu=None --dlib_config
 #        "C:\Program Files (x86)\IAR Systems\Embedded Workbench
-#        8.3\arm\inc\c\DLib_Config_Normal.h" -I E:\cpp\nrf52_libraries\fsm\ -I
+#        8.3\arm\inc\c\DLib_Config_Full.h" -I E:\cpp\nrf52_libraries\fsm\ -I
 #        E:\cpp\nrf52_libraries\pwm\ -I E:\cpp\nrf52_libraries\spi\ -I
 #        E:\cpp\nrf52_libraries\usb\ -I E:\cpp\nrf52_libraries\main\ -I
 #        E:\cpp\nrf52_libraries\cmsis\ -I E:\cpp\nrf52_libraries\cmsis\device\
-#        -I E:\cpp\nrf52_libraries\cmsis\include\ -On --c++ --no_exceptions
-#        --no_rtti)
+#        -I E:\cpp\nrf52_libraries\cmsis\include\ -I
+#        E:\cpp\nrf52_libraries\board\ -I E:\cpp\nrf52_libraries\utils\ -I
+#        E:\cpp\nrf52_libraries\timer\ -On --c++ --no_exceptions --no_rtti)
 #    Locale       =  C
 #    List file    =  E:\cpp\nrf52_libraries\main\List\main.lst
 #    Object file  =  E:\cpp\nrf52_libraries\main\Obj\main.o
@@ -35,33 +35,98 @@ E:\cpp\nrf52_libraries\main\main.cpp
       4          #include "nrf.h"
       5          #include "nrf_gpio.h"
       6          
+      7          #include "led_driver.h"
 
-   \                                 In section .text, align 2, keep-with-next
-      7          int main()
-      8          {
-      9            return 0;
-   \                     main: (+1)
-   \        0x0   0x2000             MOVS     R0,#+0
+   \                                 In section .text, align 2
+   \   __interwork __softfp void Timer::setCallback(void (*)(uint32_t))
+   \                     _ZN5Timer11setCallbackEPFvjE: (+1)
+   \        0x0   0x6081             STR      R1,[R0, #+8]
    \        0x2   0x4770             BX       LR               ;; return
-     10          }
+      8          #include "nrf_hw_pwm.h"
+      9          #include "timer.h"
+     10          
+
+   \                                 In section .text, align 4, keep-with-next
+     11          int main()
+     12          {
+   \                     main: (+1)
+   \        0x0   0xB510             PUSH     {R4,LR}
+     13              sys_timer.setIRQ(0, TIMER_1MS_INT_PRIORITY);
+   \        0x2   0x4C12             LDR.N    R4,??main_0
+   \        0x4   0x2205             MOVS     R2,#+5
+   \        0x6   0x2100             MOVS     R1,#+0
+   \        0x8   0x0020             MOVS     R0,R4
+   \        0xA   0x....'....        BL       _ZN5Timer6setIRQEhh
+     14              sys_timer.setCallback(sys_timer_callback);
+   \        0xE   0x4910             LDR.N    R1,??main_0+0x4
+   \       0x10   0x0020             MOVS     R0,R4
+   \       0x12   0x....'....        BL       _ZN5Timer11setCallbackEPFvjE
+     15              sys_timer.init(7, 125, true);
+   \       0x16   0x2301             MOVS     R3,#+1
+   \       0x18   0x227D             MOVS     R2,#+125
+   \       0x1A   0x2107             MOVS     R1,#+7
+   \       0x1C   0x0020             MOVS     R0,R4
+   \       0x1E   0x....'....        BL       _ZN5Timer4initEjjb
+     16              
+     17              bl_btn_led.run(1);
+   \       0x22   0x2101             MOVS     R1,#+1
+   \       0x24   0x480B             LDR.N    R0,??main_0+0x8
+   \       0x26   0x....'....        BL       _ZN10led_driver3runEi
+     18              kb_led.run(3);
+   \       0x2A   0x2103             MOVS     R1,#+3
+   \       0x2C   0x480A             LDR.N    R0,??main_0+0xC
+   \       0x2E   0x....'....        BL       _ZN10led_driver3runEi
+     19              
+     20            	while(1)
+     21            	{
+     22                  btn_pr_led.run(1);
+   \                     ??main_1: (+1)
+   \       0x32   0x2101             MOVS     R1,#+1
+   \       0x34   0x4809             LDR.N    R0,??main_0+0x10
+   \       0x36   0x....'....        BL       _ZN10led_driver3runEi
+     23                  red_led.run(1);
+   \       0x3A   0x2101             MOVS     R1,#+1
+   \       0x3C   0x4808             LDR.N    R0,??main_0+0x14
+   \       0x3E   0x....'....        BL       _ZN10led_driver3runEi
+     24                  green_led.run(1);
+   \       0x42   0x2101             MOVS     R1,#+1
+   \       0x44   0x4807             LDR.N    R0,??main_0+0x18
+   \       0x46   0x....'....        BL       _ZN10led_driver3runEi
+   \       0x4A   0xE7F2             B.N      ??main_1
+   \                     ??main_0:
+   \       0x4C   0x....'....        DC32     sys_timer
+   \       0x50   0x....'....        DC32     _Z18sys_timer_callbackj
+   \       0x54   0x....'....        DC32     bl_btn_led
+   \       0x58   0x....'....        DC32     kb_led
+   \       0x5C   0x....'....        DC32     btn_pr_led
+   \       0x60   0x....'....        DC32     red_led
+   \       0x64   0x....'....        DC32     green_led
+     25            	}
+     26          }
 
    Maximum stack usage in bytes:
 
    .cstack Function
    ------- --------
-       0   main
+       0   Timer::setCallback(void (*)(uint32_t))
+       8   main
+         8   -> Timer::init(uint32_t, uint32_t, bool)
+         8   -> Timer::setCallback(void (*)(uint32_t))
+         8   -> Timer::setIRQ(uint8_t, uint8_t)
+         8   -> led_driver::run(int)
 
 
    Section sizes:
 
    Bytes  Function/Label
    -----  --------------
-       4  main
+       4  Timer::setCallback(void (*)(uint32_t))
+     104  main
 
  
- 4 bytes in section .text
+ 108 bytes in section .text
  
- 4 bytes of CODE memory
+ 104 bytes of CODE memory (+ 4 bytes shared)
 
 Errors: none
 Warnings: none

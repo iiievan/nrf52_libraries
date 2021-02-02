@@ -1,14 +1,39 @@
 #ifndef _LED_DRIVER_H
 #define _LED_DRIVER_H
 
-#include "include.h"
+#include <intrinsics.h>
+#include <math.h>
+#include "nrf.h"
 #include "nrf_hw_pwm.h"
+#include "Timer.h"
+#include "board.h"
+
+typedef enum
+{
+    LED_BRIGHT_0   = 0x00, 
+    LED_BRIGHT_10  = 0x19,
+    LED_BRIGHT_20  = 0x32,
+    LED_BRIGHT_30  = 0x4B, 
+    LED_BRIGHT_40  = 0x64,   
+    LED_BRIGHT_50  = 0x7D,     
+    LED_BRIGHT_60  = 0x96,    
+    LED_BRIGHT_70  = 0xAF,    
+    LED_BRIGHT_80  = 0xC8,
+    LED_BRIGHT_90  = 0xE1,
+    LED_BRIGHT_100 = 0xFF
+} leds_bright_e;
 
 class led_driver : public nrf_hw_pwm
 {
 public:
-            led_driver(uint32_t pin, uint16_t max_val = LED_BRIGHT_100,  uint32_t f_time = LED_SHORT_BLINK_MS);                              // msec - rise and fall time to max value
-            led_driver(uint32_t pin_1, uint32_t pin_2, uint32_t pin_3, uint16_t clock_div,  uint16_t max_val = LED_BRIGHT_100,  uint32_t f_time = LED_SHORT_BLINK_MS); 
+            led_driver(uint32_t pin, Timer *pTmr, uint16_t max_val = LED_BRIGHT_100,  uint32_t f_time = LED_SHORT_BLINK_MS); // msec - rise and fall time to max value
+            led_driver(uint32_t pin_1, 
+                       uint32_t pin_2, 
+                       uint32_t pin_3, 
+                       uint16_t clock_div, 
+                       Timer *pTmr,  
+                       uint16_t max_val = LED_BRIGHT_100,  
+                       uint32_t f_time = LED_SHORT_BLINK_MS); 
             
             void go_power_down(void);   // переводит модуль pwm в режим низкого потреблени€, может быть вызван однократно из любого модул€ светодиода
 
@@ -28,7 +53,8 @@ public:
     
             // размещаетс€ в цикле.
             bool handle(void);          // функци€ дл€ обработки в цикле    
-    
+            
+           Timer *pTimer;
 private:
 
              bool _fade(void);          // плавное увеличение и уменьшение €ркости  
@@ -68,22 +94,6 @@ T nod(T a, T b)
     
     return a;
 }
-
-extern led_driver red_led;       
-extern led_driver bl_btn_led; 
-extern led_driver btn_pr_led;  
-extern led_driver kb_led;
-extern led_driver bat_led_1;
-extern led_driver bat_led_2;
-extern led_driver bat_led_3;
-extern led_driver bat_led_4;
-extern led_driver bat_led_5;
-// LED_BAT_1..3 вход€т в специйический модуль изза нехватки пинов
-// управл€ютс€ отдельно в set_chrg_bar
-// LED_BAT_2 нужен дл€ индикации критического разр€да батареи морганием, потому дл€ него заведен драйвер charge_bar.
-//extern led_driver charge_bar;     
-
-extern led_driver* led_list[];
 
 extern uint8_t led_drivers_handle(void);
 
