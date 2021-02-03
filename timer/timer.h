@@ -12,6 +12,8 @@
 #define RTC_INT_PRIORITY        (7)
 #define GPIO_INT_PRIORITY       (7)
 
+#define DELAY_1US               (4)
+
 class Timer
 {
 public:
@@ -26,6 +28,8 @@ public:
               bool   checkBusy()  const  { return _is_paused; }
           uint64_t   get_ms(void) const;
           uint64_t   get_us(void);
+              void   delay_ms(uint32_t ms);
+              void   delay_us(uint32_t us);
 
               void   onIRQ();
               void   setIRQ(uint8_t cc_num, uint8_t priority);   // cc_num:0..5, priority:0..7
@@ -41,7 +45,7 @@ private:
               bool  _is_paused { true };
 }; 
 
-void sys_timer_callback(uint32_t value);
+extern void sys_timer_callback(uint32_t value);
 extern Timer sys_timer;
 
 extern "C" void TIMER0_IRQHandler();

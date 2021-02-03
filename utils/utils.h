@@ -45,6 +45,9 @@ nrf_gpio_cfg(pin,															\
 #define XORBIT(val, bit)   ((val) ^=  BIT(bit))
 #define TSTBIT(val, bit)   ((val)  &  BIT(bit))
                
+
+#define WATCHDOGRESET (NRF_WDT->RR[0] = 0x6E524635)
+               
 extern  int random(void); // RAND_MAX assumed to be 32767
 extern  int rnd_max(int max);
 extern void seed_random(unsigned int seed);

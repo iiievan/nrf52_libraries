@@ -363,6 +363,7 @@
                     <state>$PROJ_DIR$\board</state>
                     <state>$PROJ_DIR$\utils</state>
                     <state>$PROJ_DIR$\timer</state>
+                    <state>$PROJ_DIR$\adc</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1065,6 +1066,12 @@
             <data />
         </settings>
     </configuration>
+    <group>
+        <name>adc</name>
+        <file>
+            <name>$PROJ_DIR$\adc\ADC.cpp</name>
+        </file>
+    </group>
     <group>
         <name>application</name>
         <file>

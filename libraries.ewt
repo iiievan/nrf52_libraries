@@ -1186,6 +1186,12 @@
         </settings>
     </configuration>
     <group>
+        <name>adc</name>
+        <file>
+            <name>$PROJ_DIR$\adc\ADC.cpp</name>
+        </file>
+    </group>
+    <group>
         <name>application</name>
         <file>
             <name>$PROJ_DIR$\utils\utils.c</name>

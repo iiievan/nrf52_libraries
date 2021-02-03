@@ -1,6 +1,9 @@
 #include "Timer.h"
 #include "led_driver.h"
 
+#include "ADC.h"
+#include "ADC.cpp" // because this is template of class
+
 Timer::Timer(uint8_t tmr_num)
 {
     switch(tmr_num)
@@ -149,6 +152,27 @@ uint64_t   Timer::get_ms(void) const
     return res; 
 }
 
+
+void Timer::delay_ms(uint32_t ms)
+{
+    uint64_t time = get_ms();
+    
+    time += (uint64_t)ms;
+    
+    do 
+    {
+        __WFI();
+        WATCHDOGRESET;
+    }while (time > get_ms());
+}
+
+#pragma optimize=none
+void Timer::delay_us(uint32_t us)
+{
+	for(; us; us--)
+		for(volatile uint32_t j = DELAY_1US; j; j--);
+}
+
 uint64_t   Timer::get_us(void)
 {
     uint64_t res;
@@ -194,13 +218,22 @@ void   Timer::onIRQ()
     }
 }
 
+#define ADC_MEAS_INTERVAL  (300)    // in milliseconds
 void sys_timer_callback(uint32_t value)
 {
-    static uint8_t activeLeds = 0;
+    static  uint8_t activeLeds = 0;    
+    static uint64_t adcTmr = 0;
     
     sys_timer.increment(value);
     
     activeLeds = led_drivers_handle();
+    
+    // periodically start measure task for adc
+    if((sys_timer.get_ms() - adcTmr) > ADC_MEAS_INTERVAL)
+    {
+        adcTmr = sys_timer.get_ms();
+        adc_unite.measure();
+    }
     
     UNUSED(activeLeds);
 }

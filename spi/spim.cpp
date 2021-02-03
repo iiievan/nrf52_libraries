@@ -44,7 +44,7 @@ void spim::init(uint32_t freq)
                         SPI_CONFIG_ORDER_MsbFirst;
     _SPIM->ORC       = 0xFF;
 	
-	_SPIM->INTENSET = SPIM_INTENSET_ENDTX_Msk;
+	_SPIM->INTENSET = SPIM_INTENSET_ENDTX_Enabled << SPIM_INTENSET_ENDTX_Pos;
 
     nrf_drv_common_irq_enable(_IRQn,SPI_INT_PRIORITY);
 }
@@ -56,6 +56,8 @@ void  spim::deinit(void)
     _SPIM->PSEL.MISO = PIN_DISCONNECTED;
     _SPIM->PSEL.MOSI = PIN_DISCONNECTED;
     _SPIM->PSEL.SCK  = PIN_DISCONNECTED;
+
+    _SPIM->INTENCLR = SPIM_INTENCLR_ENDTX_Disabled << SPIM_INTENCLR_ENDTX_Pos;
 	
 	disable();
 }

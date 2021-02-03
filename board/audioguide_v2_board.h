@@ -26,15 +26,15 @@ class led_driver;
 //#define RF_SWANT_PIN          (PORT_XX | x)  // pulled up to +3.0V
 #define RF_RX_EN_PIN            (PORT_0 | 9)   // P0.09
 #define RF_TX_EN_PIN            (PORT_0 | 10)  // P0.10
-#define RF_PDET_PIN             (PORT_0 | 2)   // P0.02
+#define RF_PDET_PIN             (PORT_0 | 2)   // P0.02                                     // AIN0
 
-#define MAIN_MEAS_PIN           (PORT_0 | 28)  // P0.28 MAIN_MEAS
-#define VBAT_MEAS_PIN           (PORT_0 | 29)  // P0.29 VBAT_MEAS   
+#define MAIN_MEAS_PIN           (PORT_0 | 28)  // P0.28 MAIN_MEAS_PIN                       // AIN4
+#define VBAT_MEAS_PIN           (PORT_0 | 29)  // P0.29 VBAT_MEAS                           // AIN5  
 #define CHRG_EN_PIN             (PORT_0 | 3)   // P0.03 CHPRG/PWKEY
 #define RF_POWER_ENABLE         (PORT_1 | 14)  // P1.14 3V0_RF_EN
 #define MODULE_PWR              (PORT_1 | 8)   // P1.08 GSM and GPS power enable
-#define JACK_5_PIN              (PORT_0 | 30)  // P0.30
-#define JACK_6_PIN              (PORT_0 | 31)  // P0.31
+#define JACK_5_PIN              (PORT_0 | 30)  // P0.30                                     // AIN6
+#define JACK_6_PIN              (PORT_0 | 31)  // P0.31                                     // AIN7
 #define SYS_3V0_PIN             (PORT_1 | 7)   // P1.07
 
 #define BUZZER                  (PORT_0 | 4)   // P0.04 BUZZER
@@ -67,7 +67,6 @@ class led_driver;
 #define LED_BAT_1_PIN           (PORT_0 | 8)   // P0.08 LED_BAT_1 
 #define LED_BAT_2_PIN           (PORT_0 | 27)  // P0.27 LED_BAT_2 
 #define LED_BAT_3_PIN           (PORT_0 | 6)   // P0.06 LED_BAT_3
-
 
 enum 
 {
