@@ -1222,6 +1222,9 @@
         </file>
     </group>
     <group>
+        <name>fsm</name>
+    </group>
+    <group>
         <name>pwm</name>
         <file>
             <name>$PROJ_DIR$\pwm\led_driver.cpp</name>

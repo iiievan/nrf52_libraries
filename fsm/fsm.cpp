@@ -38,8 +38,8 @@ void finite_state_machine::processing(bool trigger)
     {
         if (this->interval == 0)
         {
-            this->interval = (_prog_ptr[this->stage].interval + (TIME_DELTA - 1)) / TIME_DELTA;         //перед действием - чтоб можно было поправить в обработчике-модификаторе
-                                                                                                                 //округление в большую сторону кратно TICK_COUNT_INTERVAL
+            this->interval = (_prog_ptr[this->stage].interval + (TIME_DELTA - 1)) / TIME_DELTA;         // before the action - so that you can fix it in the handler-modifier
+                                                                                                        // rounding up is a multiple of TICK_COUNT_INTERVAL
             if (this->interval == 0)
             {
                 this->interval = 1;                                                 
@@ -47,17 +47,17 @@ void finite_state_machine::processing(bool trigger)
 
             switch (_prog_ptr[this->stage].action_type)
             {
-                case OBJECT:                                                      // либо работаем с объектом напрямую   
+                case OBJECT:                                                      // or we work with the object directly  
                     control_iface_action(led);               
                     break;
 
-                case NO_TO_DO:                                                    // либо ничего не делать - просто отмотали время и попытки
+                case NO_TO_DO:                                                    // or do nothing - just rewind time and attempts
                     break;
 
-                default:                                                          // либо вызвать ф-цию управления объектом(интерфейсом)
-                    cf = (control_func_t)(_prog_ptr[this->stage].param);          // параметр считать указателем на функцию
+                default:                                                          // or call the object (interface) control function
+                    cf = (control_func_t)(_prog_ptr[this->stage].param);          // the parameter is considered a pointer to the function
                     cf_result = cf(led);
-                    // если в итоге нужно управлять интерфейсом то управляем
+                    // if in the end you need to manage the interface then manage
                     if (cf_result == true)                                    
                     {
                         control_iface_action(led);
@@ -68,18 +68,18 @@ void finite_state_machine::processing(bool trigger)
         else
         {
             this->interval--;
-            if (this->interval == 0)                                                // если интервал отмотался или автомат поправил значение - проверку количества попыток
+            if (this->interval == 0)                                                // if the interval is unrolled or the machine has corrected the value - check the number of attempts
             {
                 this->count--;
                 if (this->count == 0)
                 {
                     this->stage++;
                     this->count = _prog_ptr[this->stage].count;
-                    if (this->count == 0)                                          // проверка окончания программы автомата
+                    if (this->count == 0)                                          // checking the end of the machine program
                     {
                         this->stage = -1;
                         result = FSM_RELEASE;
-                        break;                                                      // Относится к Do {} While();
+                        break;                                                      
                     }
                 }
             }
@@ -92,7 +92,8 @@ void finite_state_machine::processing(bool trigger)
 bool finite_state_machine::control_iface_action(void const *param)
 {
     bool result = false;
-    // опраделяем интерфейс и управляющее воздействие.
+    
+    // define the interface and control action.
     switch(_iface)
     {
         case FSM_LED :
@@ -118,7 +119,7 @@ bool finite_state_machine::control_iface_action(void const *param)
 
 
 //-------------------------------------------------------------------------------------------------
-// Автомат mchn_hello: приветствие светодиодами, заставка.
+// Machine mchn_hello: приветствие светодиодами, заставка.
 //-------------------------------------------------------------------------------------------------
 
 static bool func_blink_kb_1_time(led_driver *led)
@@ -157,7 +158,7 @@ finite_state_machine mchn_hello(FSM_LED, LED_FSM_HELLO, hello_prog);
 
 
 //-------------------------------------------------------------------------------------------------
-// Автомат mchn_charging: обозначение что устройство на зарядке.
+// Machine mchn_charging: обозначение что устройство на зарядке.
 //-------------------------------------------------------------------------------------------------
 static bool func_blink_kb_2_times(led_driver *led)
 {
@@ -184,7 +185,7 @@ static const fsm_step_t charging_prog[] =
 {
     {  2,   500, MOD_LED_KB, (void const*)func_blink_kb_2_times },    
     {  1,   800, NO_TO_DO,   NULL   },
-    {  1,   5, NO_TO_DO,     (void const*)charging_end },
+    {  1,     5, NO_TO_DO,     (void const*)charging_end },
 
     {0}
 };
@@ -195,7 +196,7 @@ finite_state_machine mchn_charging(FSM_LED, LED_FSM_CHARGING, charging_prog);
 
 
 //-------------------------------------------------------------------------------------------------
-// Автомат mchn_usb_connected: обозначение что подключено USB
+// Machine mchn_usb_connected: обозначение что подключено USB
 //-------------------------------------------------------------------------------------------------
 static bool func_blink_kb_3_times(led_driver *led)
 {
@@ -235,6 +236,6 @@ finite_state_machine * const fsm_list[4] =
     &mchn_hello,
     &mchn_charging,
     &mchn_usb_connected,
-    nullptr                    // нужен чтобы шерстить список
+    nullptr               // needed for poll list purpose
 };
 

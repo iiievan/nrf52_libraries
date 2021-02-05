@@ -15,19 +15,19 @@ typedef enum
     #define countof(a)  (sizeof(a) / sizeof(*(a)))
 #endif
 
-// по сути урезанная карточка автомата, предоставляющая его интрефейс и id
+// essentially a stripped-down machine card that provides its interface and id
 typedef struct _fsm_iface_link_t_
 {
   _fsm_iface_link_t_() : iface(FSM_LED),fsm_id(FSM_NOINIT){}
   
     fsm_interface_t     iface;
-           fsm_id_t     fsm_id;
+       fsmEventID_t     fsm_id;
 } fsm_iface_link_t;
 
 typedef struct
 {
          fsm_interface_t    fsm_iface;  //can_iface_t
-                fsm_id_t    fsm_id;     //can_ctl_func_id_t
+            fsmEventID_t    fsm_id;     //can_ctl_func_id_t
     finite_state_machine   *fsm;        //state_machine_func_t
             fsm_status_t   *fsm_sts;    //state_machine_status_t
 } fsm_list_t;
@@ -37,24 +37,24 @@ class fsm_sheduler
 public:    
                             fsm_sheduler(finite_state_machine * const *list): _fsm_list(list),_list_size(countof(list)) {} 
 
-                   // функции управления автоматами из логики программы ->
-                   bool     fsm_in_fifo_added(fsm_id_t fsm_id);                     // проверка, добавлен ли автомат в очередь
-                   bool     fsm_execute(fsm_id_t fsm_id, fsm_trigger_t fsm_action); // команда на исполнение автомата. true - нужный автомат есть в списке, false - его нет в списке
-                   void     delayed_start_handler(void);                            // обработка отложенного старта автомата
-           fsm_status_t     fsm_sts_get(fsm_id_t func_id);                          // актуализация статуса автомата
-                   void     kill_all_active_fsm(void);                              // убивает все активные на данный момент автоматы
-                  // <- функции управления автоматами из логики программы
+                   // automatic control functions from the program logic ->
+                   bool     fsm_in_fifo_added(fsmEventID_t fsm_id);                     // checking if the machine is added to the queue
+                   bool     fsm_execute(fsmEventID_t fsm_id, fsm_trigger_t fsm_action); // command to execute the machine. true - the required machine is in the list, false - it is not in the list
+                   void     delayed_start_handler(void);                                // delayed start processing
+           fsm_status_t     fsm_sts_get(fsmEventID_t func_id);                          // updating the machine status
+                   void     kill_all_active_fsm(void);                                  // kills all currently active machines
+                  // <- automatic control functions from the program logic
 
-                   bool     extra_fsm_handler(void);                               // на случай если необходима экстренная обработка автоматов(быстрее чем TIME_DELTA)
-                   void     execute_sheduler(void);                                // шедулер крутится в основном цикле.
+                   bool     extra_fsm_handler(void);                                    // in case emergency processing of fsm needed (faster than TIME_DELTA)
+                   void     handle(void);                                               // the scheduler spins in the main cycle.
 
 private:  
 
-    fifo<fsm_iface_link_t, MAX_FSM_FIFO_LEN> _TOTAL_FSM_FIFO;   // буфер вообще всех автоматов
-    fifo<fsm_iface_link_t, MAX_ACTIVE_FSM>   _ACTIVE_FSM_FIFO;  // буфер активных в данный момент автоматов    
+    fifo<fsm_iface_link_t, MAX_FSM_FIFO_LEN> _TOTAL_FSM_FIFO;   // buffer of all machines in general
+    fifo<fsm_iface_link_t, MAX_ACTIVE_FSM>   _ACTIVE_FSM_FIFO;  // buffer of currently active machines    
 
-    finite_state_machine * const    *_fsm_list;    // указатель на список объектов fsm для обработки.
-                 const  uint32_t    _list_size;    // размер списка автоматов         
+    finite_state_machine * const   *_fsm_list;    // a pointer to a list of fsm objects to process.
+                 const  uint32_t    _list_size;   // machine list size         
 };
 
 extern fsm_sheduler led_list_fsm_sheduler;

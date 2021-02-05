@@ -195,14 +195,14 @@ void PowerControl::showBatt()
 #endif  //_AUDIOGUDE_V2_BOARD
 
 #ifdef _AUDIOGUDE_V3_BOARD    
-    if(current_bar > last_bar_value)
+    if(current_bar_value > last_bar_value)
     {
-        for(int i = last_bar_value; i <= current_bar; i++)
+        for(int i = last_bar_value; i <= current_bar_value; i++)
           _chargeLeds[i]->light_up();
     }
     else
     {
-        for(int i = _last_bar_value; i > _current_bar; i--)
+        for(int i = last_bar_value; i > current_bar_value; i--)
           _chargeLeds[i]->turn_off();
     }
     

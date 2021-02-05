@@ -118,11 +118,6 @@ void nrf_hw_pwm::set_clock_div(uint8_t div )
     }
 }
 
-/**
- * Add pin to this group.
- * @param pin Pin to add
- * @return true if add succeeded, or pin is already added
- */
 int8_t nrf_hw_pwm::add_pin(uint32_t pin)
 {
     volatile      int        ch = CHNL_NA;

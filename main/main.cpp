@@ -21,13 +21,46 @@ int main()
     
     power_manager.config(CHRG_MAX_CURRENT);
     
+#ifdef _AUDIOGUDE_V2_BOARD    
+    charge_bar.set_chrg_bar(CHARGE_LED_1);
+    sys_timer.delay_ms(1300);
+    charge_bar.set_chrg_bar(SHTDWN);
+    charge_bar.set_chrg_bar(CHARGE_LED_2);
+    sys_timer.delay_ms(1300);
+    charge_bar.set_chrg_bar(SHTDWN);
+    charge_bar.set_chrg_bar(CHARGE_LED_3);
+    sys_timer.delay_ms(1300);
+    charge_bar.set_chrg_bar(SHTDWN);
+    charge_bar.set_chrg_bar(CHARGE_LED_4);
+    sys_timer.delay_ms(1300);
+    charge_bar.set_chrg_bar(SHTDWN);
+    charge_bar.set_chrg_bar(CHARGE_LED_5);
+    sys_timer.delay_ms(1300);
+    charge_bar.set_chrg_bar(SHTDWN);
+    charge_bar.run(1);
+    red_led.run(5);
+#endif //_AUDIOGUDE_V2_BOARD
+    
+#ifdef _AUDIOGUDE_V3_BOARD  
+    charge_led_1.run(1);
+    sys_timer.delay_ms(1300);
+    charge_led_1.run(2);
+    sys_timer.delay_ms(1300);
+    charge_led_1.run(3);
+    sys_timer.delay_ms(1300);
+    charge_led_1.run(4);
+    sys_timer.delay_ms(1300);
+    charge_led_1.run(5);
+    sys_timer.delay_ms(1300);
+#endif //_AUDIOGUDE_V3_BOARD
+    
     bl_btn_led.run(1);
     kb_led.run(3);
     btn_pr_led.run(7);
     
   	while(1)
-  	{        
-        red_led.run(1);
+  	{   
+        green_led.run(1);
         power_manager.handle();
   	}
 }

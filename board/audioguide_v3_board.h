@@ -90,7 +90,8 @@ enum
     CHARGE_LED_3,
     CHARGE_LED_4,
     CHARGE_LED_5,
-    CHARGE_LED_NUM
+    CHARGE_LED_NUM,
+    SHTDWN  = -1 
 };
    
 extern led_driver green_led;   

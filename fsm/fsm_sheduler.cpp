@@ -38,7 +38,7 @@ bool fsm_sheduler::fsm_execute(fsm_id_t fsm_id, fsm_trigger_t fsm_action)
     bool func_result = false;
     int list_index = 0;
 
-    // не добавляем к выполенинию новыф автоматы при активном выполнении пометки позиции или автомате подсветки клавиатуры.
+    // не добавляем к выполенинию новые автоматы при активном выполнении пометки позиции или автомате подсветки клавиатуры.
     if (fsm_action == FSM_KILL ||
         fsm_id == LED_FSM_MARK_GPS_POSITION ||
         fsm_id == LED_FSM_KB_TOGGLE ||  

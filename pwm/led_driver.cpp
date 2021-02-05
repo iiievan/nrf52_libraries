@@ -137,8 +137,6 @@ led_driver::led_driver(uint32_t pin_1,
     _run_down = false;
     
     _num_of_rptions = -1; 
-
-    set_chrg_bar(SHTDWN);
 }
 
 void led_driver::go_power_down(void)

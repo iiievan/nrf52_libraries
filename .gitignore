@@ -9,10 +9,8 @@ settings/*.wsdt
 settings/*.wspos  
 
 # IAR Debug Exe  
-/Exe/ 
+[Ee]xe/
+[Oo]bj/
+[Ll]ist/
 
-# IAR Debug Obj  
-Obj/
-List/
-List/
 

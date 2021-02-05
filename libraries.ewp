@@ -226,7 +226,7 @@
                     <name>CCDefines</name>
                     <state>NRF52840_XXAA</state>
                     <state>CONFIG_NFCT_PINS_AS_GPIOS</state>
-                    <state>_AUDIOGUDE_V2_BOARD</state>
+                    <state>_AUDIOGUDE_V3_BOARD</state>
                     <state>DEBUG</state>
                 </option>
                 <option>
@@ -655,15 +655,15 @@
                 <option>
                     <name>OOCOutputFormat</name>
                     <version>3</version>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>OCOutputOverride</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>OOCOutputFile</name>
-                    <state></state>
+                    <state>audioguide_v2.hex</state>
                 </option>
                 <option>
                     <name>OOCCommandLineProducer</name>
@@ -671,7 +671,7 @@
                 </option>
                 <option>
                     <name>OOCObjCopyEnable</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
             </data>
         </settings>
@@ -1104,6 +1104,9 @@
         <file>
             <name>$PROJ_DIR$\cmsis\system_nrf52840.c</name>
         </file>
+    </group>
+    <group>
+        <name>fsm</name>
     </group>
     <group>
         <name>pwm</name>
