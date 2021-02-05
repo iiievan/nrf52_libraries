@@ -11,7 +11,7 @@
 #define CHRG_BAT_OK                 (0.95)
 #define CHRG_BAT_HYST_OK            (0.87)
 #define CHRG_BAT_OFF_MV             (4000)
-#define CHARGING_VBAT_MEAS_INTERVAL (50)   // in seconds
+#define CHARGING_VBAT_MEAS_INTERVAL (150)   // in seconds
 #define VINPLUG_CNT_DEF             (20)
 
 

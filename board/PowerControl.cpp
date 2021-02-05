@@ -116,8 +116,10 @@ void    PowerControl::handle()
     if((_ms_timer.get_ms() - chargingTmr) > (CHARGING_VBAT_MEAS_INTERVAL * 1000))
     {
         chargingTmr = _ms_timer.get_ms();
-        disableCharge();
+        disableCharge();        
         _ms_timer.delay_ms(10);
+        _ADC.measure();
+        _ms_timer.delay_ms(2);
     }
     
     // update the charger status
