@@ -10,27 +10,8 @@
 #define ADC_REF_MV         (600.0)
 #define ADC_CODE_MAX       (4096.0)
 #define ADC_INT_PRIORITY   (7)
+#define ADC_MEAS_INTERVAL  (300)            // in milliseconds
 
-
-typedef enum
-{
-    GAIN_1DIV6 = 0,
-    GAIN_1DIV5,
-    GAIN_1DIV4,
-    GAIN_1DIV3,
-    GAIN_1DIV2,
-    GAIN_1,
-    GAIN_2,
-    GAIN_4
-} EADCGain;
-
-typedef enum
-{
-    BYPASS,
-    PULLDOWN,
-    PULLUP,
-    VDD1_2
-} EADCPull;
 
 typedef enum
 {
@@ -45,23 +26,19 @@ typedef enum
     AIN_7,
     AIN_VDD,
     AIN_VDDHDIV5    
-} EADCChannels;
+} EADCInputs;
+
 
 typedef enum
 {
-    ACQ_3us = 0,
-    ACQ_5us,
-    ACQ_10us,
-    ACQ_15us,
-    ACQ_20us,
-    ACQ_40us    
-} EADCAcquisitionTime;
-
-typedef enum
-{
-    INTERNAL = 0,
-    VDD1DIV4 
-} EADCReferenceVoltage;
+    VIN_ADC_VALUE   = AIN_4,
+    VBAT_ADC_VALUE  = AIN_5,
+    PDET_ADC_VALUE  = AIN_0,
+    JACK5_ADC_VALUE = AIN_6,
+    JACK6_ADC_VALUE = AIN_7,
+    INNER_VDD       = AIN_VDD  
+}EADCChannels;
+#define ADC_CHANNELS_NUM  (6) // 1..8
 
 typedef enum
 {
@@ -73,18 +50,18 @@ typedef enum
 
 struct ADCChannel_t
 {
-EADCChannels     aInput_num  {AIN_NC};
+EADCChannels     channel_num;
  const float     mVolts_c;               // millivolts translation coefficient
  const float     filt_threshold;         // filter applying threshold 
  const float     exponent_c;             // exponential approximation coefficient
        float     scaled_value  {0.0f};   // raw adc value after applying mVolts_ñ
        float     filt_value    {0.0f};   // result filtered value  
  
-                 ADCChannel_t(EADCChannels ain,
-                              float mV_c  =  6 * ADC_REF_MV/ADC_CODE_MAX, 
-                              float f_th  = 300.0f, 
-                              float exp_c = 0.5f)
-                 : aInput_num(ain), mVolts_c(mV_c), filt_threshold(f_th), exponent_c(exp_c)
+                 ADCChannel_t(EADCChannels channel,
+                                     float mV_c  =  6 * ADC_REF_MV/ADC_CODE_MAX, 
+                                     float f_th  = 300.0f, 
+                                     float exp_c = 0.5f)
+                 : channel_num(channel), mVolts_c(mV_c), filt_threshold(f_th), exponent_c(exp_c)
                  { }
  
  ADCChannel_t&   scaleRaw(int16_t raw) 
@@ -108,24 +85,71 @@ EADCChannels     aInput_num  {AIN_NC};
                  }
 };  
 
+typedef enum
+{
+    ACQ_3us = 0,
+    ACQ_5us,
+    ACQ_10us,
+    ACQ_15us,
+    ACQ_20us,
+    ACQ_40us    
+} EADCAcquisitionTime;
+
+typedef enum
+{
+    INTERNAL = 0,
+    VDD1DIV4 
+} EADCReferenceVoltage;
+
+typedef enum
+{
+    GAIN_1DIV6 = 0,
+    GAIN_1DIV5,
+    GAIN_1DIV4,
+    GAIN_1DIV3,
+    GAIN_1DIV2,
+    GAIN_1,
+    GAIN_2,
+    GAIN_4
+} EADCGain;
+
+typedef enum
+{
+    BYPASS,
+    PULLDOWN,
+    PULLUP,
+    VDD1_2
+} EADCPull;
+
+// configuration preferences of adc channel
+struct ADCConfig_t
+{
+                EADCGain    gain;
+                EADCPull    pull;
+     EADCAcquisitionTime    acq_us      {ACQ_20us};
+    EADCReferenceVoltage    reference   {INTERNAL};
+
+                            ADCConfig_t(EADCGain gain,
+                                        EADCPull pull = BYPASS,
+                             EADCAcquisitionTime acq = ACQ_20us,
+                            EADCReferenceVoltage reference = INTERNAL)
+                            : gain(gain), pull(pull), acq_us(acq), reference(reference) 
+                            { }
+}; 
+
 
 template <auto ch_num = AIN_CH_MAX>
 class ADC
 {
 public:
-                     ADC(EADCGain common_gain, EADCPull common_pull, EADCAcquisitionTime acq = ACQ_20us, EADCResolution resolution = RES_12B);
+                     ADC(EADCResolution resolution = RES_12B);
 
               void   init();
-              void   configChannel(EADCChannels channel,
-                                   EADCGain common_gain, 
-                                   EADCPull common_pull, 
-                                   EADCAcquisitionTime acq = ACQ_20us, 
-                                   EADCReferenceVoltage refVoltage = INTERNAL); 
               void   deinit();
               void   enable()  { NRF_SAADC->ENABLE = SAADC_ENABLE_ENABLE_Enabled;  } 
               void   disable() { NRF_SAADC->ENABLE = SAADC_ENABLE_ENABLE_Disabled; }
-
               bool   isBusy()  { return (bool)NRF_SAADC->EVENTS_STARTED; }
+              
               void   measure();
              float   get(EADCChannels channel);             
 
@@ -135,6 +159,8 @@ public:
             
 private:
       ADCChannel_t   _ch_list[ch_num];
+       ADCConfig_t   _config_list[ch_num];
+
            int16_t   _raw_adc_value[ch_num];
     EADCResolution   _resolution;
 
@@ -143,5 +169,15 @@ private:
 
           uint64_t  _time {0}; // the timer itself
               bool  _is_paused { true };
-}; 
+};
+
+extern ADC<ADC_CHANNELS_NUM> adc_unite;
+extern void adc_callback();
+extern "C" void SAADC_IRQHandler();
+
+#include "ADC.cpp" // because this is template of class
+
+
+
 #endif // __ADC_H
+

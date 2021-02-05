@@ -1,13 +1,13 @@
 ###############################################################################
 #
-# IAR ANSI C/C++ Compiler V8.40.1.212/W32 for ARM         03/Feb/2021  19:31:03
+# IAR ANSI C/C++ Compiler V8.40.1.212/W32 for ARM         05/Feb/2021  12:20:14
 # Copyright 1999-2019 IAR Systems AB.
 #
 #    Cpu mode     =  
 #    Endian       =  little
 #    Source file  =  E:\cpp\nrf52_libraries\pwm\led_driver.cpp
 #    Command line =
-#        -f C:\Users\IF385~1.SHO\AppData\Local\Temp\EW7F52.tmp
+#        -f C:\Users\IF385~1.SHO\AppData\Local\Temp\EWB7A3.tmp
 #        (E:\cpp\nrf52_libraries\pwm\led_driver.cpp -D NRF52840_XXAA -D
 #        CONFIG_NFCT_PINS_AS_GPIOS -D _AUDIOGUDE_V2_BOARD -D DEBUG -lCN
 #        E:\cpp\nrf52_libraries\main\List -lA E:\cpp\nrf52_libraries\main\List
@@ -172,13 +172,13 @@ E:\cpp\nrf52_libraries\pwm\led_driver.cpp
    \                                 In section .data, align 4
      31          led_driver* led_list[LEDS_NUM] =
    \                     led_list:
-   \        0x0   0x....'....        DC32 red_led, green_led, bl_btn_led, btn_pr_led, kb_led, 0x0, 0x0, 0x0
+   \        0x0   0x....'....        DC32 red_led, green_led, bl_btn_led, btn_pr_led, kb_led, charge_bar
    \              0x....'....  
    \              0x....'....  
    \              0x....'....  
    \              0x....'....  
-   \              0x0000'0000  
-   \              0x0000'0000  
+   \              0x....'....  
+   \       0x18   0x0000'0000        DC32 0x0, 0x0
    \              0x0000'0000  
      32          { 
      33              &red_led,
@@ -186,12 +186,51 @@ E:\cpp\nrf52_libraries\pwm\led_driver.cpp
      35              &bl_btn_led,
      36              &btn_pr_led,
      37              &kb_led,
-     38              NULL,    // по сути это LED_BAT_1..3 входят в модуль чардж бара.
+     38              &charge_bar,    // по сути это LED_BAT_1..3 входят в модуль чардж бара.
      39              NULL,    
      40              NULL
      41          };
      42          #endif //_AUDIOGUDE_V2_BOARD
      43          
+     44          #ifdef _AUDIOGUDE_V3_BOARD
+     45          uint32_t led_2_port_list[LEDS_NUM] = 
+     46          {
+     47              LED_SYS_GREEN_PIN,  // P0.07 LED_SYS_GREEN 
+     48              LED_BL_BTN_PIN,     // P0.26 LED_BL_BTN 
+     49              LED_BTN_PR_PIN,     // P0.11 LED_BTN_PR  
+     50              LED_KB_PIN,         // P0.25 LED_KB
+     51              LED_BAT_1_PIN,      // P0.08 LED_BAT_1 
+     52              LED_BAT_2_PIN,      // P0.06 LED_BAT_2
+     53              LED_BAT_3_PIN,      // P0.04 LED_BAT_3 
+     54              LED_BAT_4_PIN,      // P0.27 LED_BAT_4
+     55              LED_BAT_5_PIN       // P0.05 LED_BAT_5 
+     56          };
+     57          
+     58          
+     59          led_driver    green_led   ( led_2_port_list[LED_SYS_GREEN], &sys_timer, MAX_PWM_VALUE, LED_SHORT_BLINK_MS );
+     60          led_driver    bl_btn_led  ( led_2_port_list[LED_BL_BTN],    &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+     61          led_driver    btn_pr_led  ( led_2_port_list[LED_BTN_PR],    &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+     62          led_driver    kb_led      ( led_2_port_list[LED_KB],        &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+     63          led_driver    charge_led_1( led_2_port_list[LED_BAT_1],     &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+     64          led_driver    charge_led_2( led_2_port_list[LED_BAT_2],     &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+     65          led_driver    charge_led_3( led_2_port_list[LED_BAT_3],     &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+     66          led_driver    charge_led_4( led_2_port_list[LED_BAT_4],     &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+     67          led_driver    charge_led_5( led_2_port_list[LED_BAT_5],     &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+     68          
+     69          led_driver* led_list[LEDS_NUM] =
+     70          { 
+     71              &green_led,
+     72              &bl_btn_led,
+     73              &btn_pr_led,
+     74              &kb_led,
+     75              &charge_led_1,
+     76              &charge_led_2,    
+     77              &charge_led_3,
+     78              &charge_led_4,   
+     79              &charge_led_5
+     80          };
+     81          #endif
+     82          
 
    \                                 In section .text, align 2, keep-with-next
    \   __code __interwork __softfp led_driver::subobject led_driver(uint32_t, Timer *, uint16_t, uint32_t)
@@ -206,9 +245,9 @@ E:\cpp\nrf52_libraries\pwm\led_driver.cpp
    \       0x10   0xBD16             POP      {R1,R2,R4,PC}    ;; return
 
    \                                 In section .text, align 2, keep-with-next
-     44          led_driver::led_driver(uint32_t pin, Timer *pTmr, uint16_t max_val,  uint32_t f_time)
-     45          : pTimer(pTmr)
-     46          {
+     83          led_driver::led_driver(uint32_t pin, Timer *pTmr, uint16_t max_val,  uint32_t f_time)
+     84          : pTimer(pTmr)
+     85          {
    \                     _ZN10led_driverC1EjP5Timertj: (+1)
    \        0x0   0xE92D 0x41F0      PUSH     {R4-R8,LR}
    \        0x4   0x0004             MOVS     R4,R0
@@ -219,30 +258,30 @@ E:\cpp\nrf52_libraries\pwm\led_driver.cpp
    \        0xE   0x0020             MOVS     R0,R4
    \       0x10   0x....'....        BL       _ZN10nrf_hw_pwmC2Ev
    \       0x14   0xF8C4 0x800C      STR      R8,[R4, #+12]
-     47              if (max_val <= LED_BRIGHT_100)
+     86              if (max_val <= LED_BRIGHT_100)
    \       0x18   0x0030             MOVS     R0,R6
    \       0x1A   0xB280             UXTH     R0,R0            ;; ZeroExt  R0,R0,#+16,#+16
    \       0x1C   0xF5B0 0x7F80      CMP      R0,#+256
    \       0x20   0xDA01             BGE.N    ??led_driver_0
-     48              _max_val  = max_val;
+     87              _max_val  = max_val;
    \       0x22   0x84A6             STRH     R6,[R4, #+36]
    \       0x24   0xE001             B.N      ??led_driver_1
-     49              else
-     50              _max_val = LED_BRIGHT_100;
+     88              else
+     89              _max_val = LED_BRIGHT_100;
    \                     ??led_driver_0: (+1)
    \       0x26   0x20FF             MOVS     R0,#+255
    \       0x28   0x84A0             STRH     R0,[R4, #+36]
-     51              
-     52              _fade_time = f_time;
+     90              
+     91              _fade_time = f_time;
    \                     ??led_driver_1: (+1)
    \       0x2A   0x62A7             STR      R7,[R4, #+40]
-     53              
-     54              set_fadetime(f_time);
+     92              
+     93              set_fadetime(f_time);
    \       0x2C   0x0039             MOVS     R1,R7
    \       0x2E   0x0020             MOVS     R0,R4
    \       0x30   0x....'....        BL       _ZN10led_driver12set_fadetimeEj
-     55              
-     56              _timer    = pTimer->get_ms() - _tout;
+     94              
+     95              _timer    = pTimer->get_ms() - _tout;
    \       0x34   0x68E0             LDR      R0,[R4, #+12]
    \       0x36   0x....'....        BL       _ZNK5Timer6get_msEv
    \       0x3A   0x6A22             LDR      R2,[R4, #+32]
@@ -250,42 +289,42 @@ E:\cpp\nrf52_libraries\pwm\led_driver.cpp
    \       0x3E   0x1A80             SUBS     R0,R0,R2
    \       0x40   0x4199             SBCS     R1,R1,R3
    \       0x42   0xE9C4 0x0106      STRD     R0,R1,[R4, #+24]
-     57              
-     58              // добавляем пин, если еще не добавлен.
-     59              add_pin(pin);
+     96              
+     97              // добавляем пин, если еще не добавлен.
+     98              add_pin(pin);
    \       0x46   0x0029             MOVS     R1,R5
    \       0x48   0x0020             MOVS     R0,R4
    \       0x4A   0x....'....        BL       _ZN10nrf_hw_pwm7add_pinEj
-     60          
-     61              _led = get_led_num(pin);
+     99          
+    100              _led = get_led_num(pin);
    \       0x4E   0x0029             MOVS     R1,R5
    \       0x50   0x0020             MOVS     R0,R4
    \       0x52   0x....'....        BL       _ZN10nrf_hw_pwm11get_led_numEj
    \       0x56   0xF884 0x002C      STRB     R0,[R4, #+44]
-     62          
-     63              _bright_val      = 0;
+    101          
+    102              _bright_val      = 0;
    \       0x5A   0x2000             MOVS     R0,#+0
    \       0x5C   0x6320             STR      R0,[R4, #+48]
-     64              _fade_dir = true;
+    103              _fade_dir = true;
    \       0x5E   0x2001             MOVS     R0,#+1
    \       0x60   0xF884 0x002D      STRB     R0,[R4, #+45]
-     65              _run      = false;
+    104              _run      = false;
    \       0x64   0x2000             MOVS     R0,#+0
    \       0x66   0x7420             STRB     R0,[R4, #+16]
-     66              _run_up   = false;
+    105              _run_up   = false;
    \       0x68   0x2000             MOVS     R0,#+0
    \       0x6A   0x7460             STRB     R0,[R4, #+17]
-     67              _run_down = false;
+    106              _run_down = false;
    \       0x6C   0x2000             MOVS     R0,#+0
    \       0x6E   0x74A0             STRB     R0,[R4, #+18]
-     68              
-     69              _num_of_rptions = -1;
+    107              
+    108              _num_of_rptions = -1;
    \       0x70   0xF05F 0x30FF      MOVS     R0,#-1
    \       0x74   0x6160             STR      R0,[R4, #+20]
-     70          }
+    109          }
    \       0x76   0x0020             MOVS     R0,R4
    \       0x78   0xE8BD 0x81F0      POP      {R4-R8,PC}       ;; return
-     71          
+    110          
 
    \                                 In section .text, align 2, keep-with-next
    \   __code __interwork __softfp led_driver::subobject led_driver(uint32_t, uint32_t, uint32_t, uint16_t, Timer *, uint16_t, uint32_t)
@@ -306,15 +345,15 @@ E:\cpp\nrf52_libraries\pwm\led_driver.cpp
    \       0x20   0xBD10             POP      {R4,PC}          ;; return
 
    \                                 In section .text, align 2, keep-with-next
-     72          led_driver::led_driver(uint32_t pin_1, 
-     73                                 uint32_t pin_2, 
-     74                                 uint32_t pin_3, 
-     75                                 uint16_t clock_div, 
-     76                                 Timer *pTmr,  
-     77                                 uint16_t max_val,  
-     78                                 uint32_t f_time) 
-     79          : nrf_hw_pwm(clock_div, pin_1, pin_2, pin_3),pTimer(pTmr) 
-     80          {
+    111          led_driver::led_driver(uint32_t pin_1, 
+    112                                 uint32_t pin_2, 
+    113                                 uint32_t pin_3, 
+    114                                 uint16_t clock_div, 
+    115                                 Timer *pTmr,  
+    116                                 uint16_t max_val,  
+    117                                 uint32_t f_time) 
+    118          : nrf_hw_pwm(clock_div, pin_1, pin_2, pin_3),pTimer(pTmr) 
+    119          {
    \                     _ZN10led_driverC1EjjjtP5Timertj: (+1)
    \        0x0   0xE92D 0x4FF8      PUSH     {R3-R11,LR}
    \        0x4   0x0005             MOVS     R5,R0
@@ -333,30 +372,30 @@ E:\cpp\nrf52_libraries\pwm\led_driver.cpp
    \       0x24   0x0028             MOVS     R0,R5
    \       0x26   0x....'....        BL       _ZN10nrf_hw_pwmC2Etjjj
    \       0x2A   0xF8C5 0x800C      STR      R8,[R5, #+12]
-     81              if (max_val <= LED_BRIGHT_100)
+    120              if (max_val <= LED_BRIGHT_100)
    \       0x2E   0x0020             MOVS     R0,R4
    \       0x30   0xB280             UXTH     R0,R0            ;; ZeroExt  R0,R0,#+16,#+16
    \       0x32   0xF5B0 0x7F80      CMP      R0,#+256
    \       0x36   0xDA01             BGE.N    ??led_driver_2
-     82              _max_val  = max_val;
+    121              _max_val  = max_val;
    \       0x38   0x84AC             STRH     R4,[R5, #+36]
    \       0x3A   0xE001             B.N      ??led_driver_3
-     83              else
-     84              _max_val = LED_BRIGHT_100;
+    122              else
+    123              _max_val = LED_BRIGHT_100;
    \                     ??led_driver_2: (+1)
    \       0x3C   0x20FF             MOVS     R0,#+255
    \       0x3E   0x84A8             STRH     R0,[R5, #+36]
-     85              
-     86              _fade_time = f_time;
+    124              
+    125              _fade_time = f_time;
    \                     ??led_driver_3: (+1)
    \       0x40   0x62AF             STR      R7,[R5, #+40]
-     87              
-     88              set_fadetime(f_time);
+    126              
+    127              set_fadetime(f_time);
    \       0x42   0x0039             MOVS     R1,R7
    \       0x44   0x0028             MOVS     R0,R5
    \       0x46   0x....'....        BL       _ZN10led_driver12set_fadetimeEj
-     89              
-     90              _timer    = pTimer->get_ms() - _tout;
+    128              
+    129              _timer    = pTimer->get_ms() - _tout;
    \       0x4A   0x68E8             LDR      R0,[R5, #+12]
    \       0x4C   0x....'....        BL       _ZNK5Timer6get_msEv
    \       0x50   0x6A2A             LDR      R2,[R5, #+32]
@@ -364,94 +403,94 @@ E:\cpp\nrf52_libraries\pwm\led_driver.cpp
    \       0x54   0x1A80             SUBS     R0,R0,R2
    \       0x56   0x4199             SBCS     R1,R1,R3
    \       0x58   0xE9C5 0x0106      STRD     R0,R1,[R5, #+24]
-     91              
-     92              _led = get_led_num(pin_2);       // пин 2 является управляющим сам по себе одним светодиодом - первым
+    130              
+    131              _led = get_led_num(pin_2);       // пин 2 является управляющим сам по себе одним светодиодом - первым
    \       0x5C   0x0031             MOVS     R1,R6
    \       0x5E   0x0028             MOVS     R0,R5
    \       0x60   0x....'....        BL       _ZN10nrf_hw_pwm11get_led_numEj
    \       0x64   0xF885 0x002C      STRB     R0,[R5, #+44]
-     93          
-     94              _bright_val      = 0;
+    132          
+    133              _bright_val      = 0;
    \       0x68   0x2000             MOVS     R0,#+0
    \       0x6A   0x6328             STR      R0,[R5, #+48]
-     95              _fade_dir = true;
+    134              _fade_dir = true;
    \       0x6C   0x2001             MOVS     R0,#+1
    \       0x6E   0xF885 0x002D      STRB     R0,[R5, #+45]
-     96              _run      = false;
+    135              _run      = false;
    \       0x72   0x2000             MOVS     R0,#+0
    \       0x74   0x7428             STRB     R0,[R5, #+16]
-     97              _run_up   = false;
+    136              _run_up   = false;
    \       0x76   0x2000             MOVS     R0,#+0
    \       0x78   0x7468             STRB     R0,[R5, #+17]
-     98              _run_down = false;
+    137              _run_down = false;
    \       0x7A   0x2000             MOVS     R0,#+0
    \       0x7C   0x74A8             STRB     R0,[R5, #+18]
-     99              
-    100              _num_of_rptions = -1; 
+    138              
+    139              _num_of_rptions = -1; 
    \       0x7E   0xF05F 0x30FF      MOVS     R0,#-1
    \       0x82   0x6168             STR      R0,[R5, #+20]
-    101          
-    102              set_chrg_bar(SHTDWN);
+    140          
+    141              set_chrg_bar(SHTDWN);
    \       0x84   0xF05F 0x31FF      MOVS     R1,#-1
    \       0x88   0x0028             MOVS     R0,R5
    \       0x8A   0x....'....        BL       _ZN10nrf_hw_pwm12set_chrg_barEs
-    103          }
+    142          }
    \       0x8E   0x0028             MOVS     R0,R5
    \       0x90   0xE8BD 0x8FF2      POP      {R1,R4-R11,PC}   ;; return
-    104          
+    143          
 
    \                                 In section .text, align 2, keep-with-next
-    105          void led_driver::go_power_down(void)
-    106          {  
+    144          void led_driver::go_power_down(void)
+    145          {  
    \                     _ZN10led_driver13go_power_downEv: (+1)
    \        0x0   0xB538             PUSH     {R3-R5,LR}
    \        0x2   0x0004             MOVS     R4,R0
-    107              for(uint8_t pwm = 0; pwm < HWPWM_MODULE_NUM; pwm++)
+    146              for(uint8_t pwm = 0; pwm < HWPWM_MODULE_NUM; pwm++)
    \        0x4   0x2500             MOVS     R5,#+0
    \                     ??go_power_down_0: (+1)
    \        0x6   0x0028             MOVS     R0,R5
    \        0x8   0xB2C0             UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
    \        0xA   0x2804             CMP      R0,#+4
    \        0xC   0xDA06             BGE.N    ??go_power_down_1
-    108              { nrf_hw_pwm::stop(pwm); }
+    147              { nrf_hw_pwm::stop(pwm); }
    \        0xE   0x0029             MOVS     R1,R5
    \       0x10   0xB2C9             UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
    \       0x12   0x0020             MOVS     R0,R4
    \       0x14   0x....'....        BL       _ZN10nrf_hw_pwm4stopEh
    \       0x18   0x1C6D             ADDS     R5,R5,#+1
    \       0x1A   0xE7F4             B.N      ??go_power_down_0
-    109          }
+    148          }
    \                     ??go_power_down_1: (+1)
    \       0x1C   0xBD31             POP      {R0,R4,R5,PC}    ;; return
-    110          
-    111          // функция рассичтывает период между инкрементацией свечения светодиода и  
-    112          // шаг инкрементации, так чтобы уложиться во период времени за который 
-    113          // свечение светодиода поднимется(или опустится) на заданную величину.
+    149          
+    150          // функция рассичтывает период между инкрементацией свечения светодиода и  
+    151          // шаг инкрементации, так чтобы уложиться во период времени за который 
+    152          // свечение светодиода поднимется(или опустится) на заданную величину.
 
    \                                 In section .text, align 2, keep-with-next
-    114          void led_driver::set_fadetime(uint32_t f_time)
-    115          {       
+    153          void led_driver::set_fadetime(uint32_t f_time)
+    154          {       
    \                     _ZN10led_driver12set_fadetimeEj: (+1)
    \        0x0   0xB538             PUSH     {R3-R5,LR}
    \        0x2   0x0004             MOVS     R4,R0
    \        0x4   0x000D             MOVS     R5,R1
-    116             volatile int nod;
-    117            
-    118              // рассчитываем наибольший общий делитель
-    119              if( _max_val >= f_time)
+    155             volatile int nod;
+    156            
+    157              // рассчитываем наибольший общий делитель
+    158              if( _max_val >= f_time)
    \        0x6   0x8CA0             LDRH     R0,[R4, #+36]
    \        0x8   0x42A8             CMP      R0,R5
    \        0xA   0xD315             BCC.N    ??set_fadetime_0
-    120              {
-    121                    nod = ::nod<int>((int)f_time,(int)_max_val);
+    159              {
+    160                    nod = ::nod<int>((int)f_time,(int)_max_val);
    \        0xC   0x8CA1             LDRH     R1,[R4, #+36]
    \        0xE   0x0028             MOVS     R0,R5
    \       0x10   0x....'....        BL       _Z3nodIiET_S0_S0_
    \       0x14   0x9000             STR      R0,[SP, #+0]
-    122                  _tout = (uint32_t)nod;
+    161                  _tout = (uint32_t)nod;
    \       0x16   0x9800             LDR      R0,[SP, #+0]
    \       0x18   0x6220             STR      R0,[R4, #+32]
-    123                  _step = (uint8_t)round((double)(_max_val/(f_time/nod)));
+    162                  _step = (uint8_t)round((double)(_max_val/(f_time/nod)));
    \       0x1A   0x9800             LDR      R0,[SP, #+0]
    \       0x1C   0xFBB5 0xF0F0      UDIV     R0,R5,R0
    \       0x20   0x8CA1             LDRH     R1,[R4, #+36]
@@ -461,16 +500,16 @@ E:\cpp\nrf52_libraries\pwm\led_driver.cpp
    \       0x2E   0x....'....        BL       __aeabi_d2iz
    \       0x32   0xF884 0x0026      STRB     R0,[R4, #+38]
    \       0x36   0xE014             B.N      ??set_fadetime_1
-    124              }
-    125              else
-    126              {
-    127                    nod = ::nod<int>((int)f_time,(int)_max_val);
+    163              }
+    164              else
+    165              {
+    166                    nod = ::nod<int>((int)f_time,(int)_max_val);
    \                     ??set_fadetime_0: (+1)
    \       0x38   0x8CA1             LDRH     R1,[R4, #+36]
    \       0x3A   0x0028             MOVS     R0,R5
    \       0x3C   0x....'....        BL       _Z3nodIiET_S0_S0_
    \       0x40   0x9000             STR      R0,[SP, #+0]
-    128                  _tout = (uint32_t)round((double)(f_time/(_max_val/nod)));
+    167                  _tout = (uint32_t)round((double)(f_time/(_max_val/nod)));
    \       0x42   0x8CA0             LDRH     R0,[R4, #+36]
    \       0x44   0x9900             LDR      R1,[SP, #+0]
    \       0x46   0xFB90 0xF0F1      SDIV     R0,R0,R1
@@ -479,243 +518,243 @@ E:\cpp\nrf52_libraries\pwm\led_driver.cpp
    \       0x52   0x....'....        BL       round
    \       0x56   0x....'....        BL       __aeabi_d2uiz
    \       0x5A   0x6220             STR      R0,[R4, #+32]
-    129                  _step = nod;
+    168                  _step = nod;
    \       0x5C   0x9800             LDR      R0,[SP, #+0]
    \       0x5E   0xF884 0x0026      STRB     R0,[R4, #+38]
-    130              }
-    131          }
+    169              }
+    170          }
    \                     ??set_fadetime_1: (+1)
    \       0x62   0xBD31             POP      {R0,R4,R5,PC}    ;; return
-    132          
+    171          
 
    \                                 In section .text, align 2, keep-with-next
-    133          void led_driver::light_up() 
-    134          {
+    172          void led_driver::light_up() 
+    173          {
    \                     _ZN10led_driver8light_upEv: (+1)
    \        0x0   0xB510             PUSH     {R4,LR}
    \        0x2   0x0004             MOVS     R4,R0
-    135              __disable_interrupt();
+    174              __disable_interrupt();
    \        0x4   0xB672             CPSID    I
-    136            
-    137              _stop();    
+    175            
+    176              _stop();    
    \        0x6   0x0020             MOVS     R0,R4
    \        0x8   0x....'....        BL       _ZN10led_driver5_stopEv
-    138              write_chnl(_led, LIGHT_UP);
+    177              write_chnl(_led, LIGHT_UP);
    \        0xC   0x2300             MOVS     R3,#+0
    \        0xE   0x22FF             MOVS     R2,#+255
    \       0x10   0xF894 0x102C      LDRB     R1,[R4, #+44]
    \       0x14   0x0020             MOVS     R0,R4
    \       0x16   0x....'....        BL       _ZN10nrf_hw_pwm10write_chnlEhjb
-    139              
-    140              __enable_interrupt();
+    178              
+    179              __enable_interrupt();
    \       0x1A   0xB662             CPSIE    I
-    141          } 
+    180          } 
    \       0x1C   0xBD10             POP      {R4,PC}          ;; return
-    142          
-    143          // погасить светодиод полностью
+    181          
+    182          // погасить светодиод полностью
 
    \                                 In section .text, align 2, keep-with-next
-    144          void led_driver::turn_off() 
-    145          {
+    183          void led_driver::turn_off() 
+    184          {
    \                     _ZN10led_driver8turn_offEv: (+1)
    \        0x0   0xB510             PUSH     {R4,LR}
    \        0x2   0x0004             MOVS     R4,R0
-    146              __disable_interrupt();
+    185              __disable_interrupt();
    \        0x4   0xB672             CPSID    I
-    147            
-    148              _stop();
+    186            
+    187              _stop();
    \        0x6   0x0020             MOVS     R0,R4
    \        0x8   0x....'....        BL       _ZN10led_driver5_stopEv
-    149              write_chnl(_led, TURN_OFF); 
+    188              write_chnl(_led, TURN_OFF); 
    \        0xC   0x2300             MOVS     R3,#+0
    \        0xE   0x2200             MOVS     R2,#+0
    \       0x10   0xF894 0x102C      LDRB     R1,[R4, #+44]
    \       0x14   0x0020             MOVS     R0,R4
    \       0x16   0x....'....        BL       _ZN10nrf_hw_pwm10write_chnlEhjb
-    150              
-    151              __enable_interrupt();
+    189              
+    190              __enable_interrupt();
    \       0x1A   0xB662             CPSIE    I
-    152          }
+    191          }
    \       0x1C   0xBD10             POP      {R4,PC}          ;; return
-    153          
-    154          // установить нужную яркость светодиода
+    192          
+    193          // установить нужную яркость светодиода
 
    \                                 In section .text, align 2, keep-with-next
-    155          void led_driver::bright_set(uint32_t value) 
-    156          {   
+    194          void led_driver::bright_set(uint32_t value) 
+    195          {   
    \                     _ZN10led_driver10bright_setEj: (+1)
    \        0x0   0xB538             PUSH     {R3-R5,LR}
    \        0x2   0x0004             MOVS     R4,R0
    \        0x4   0x000D             MOVS     R5,R1
-    157              __disable_interrupt();
+    196              __disable_interrupt();
    \        0x6   0xB672             CPSID    I
-    158          
-    159              _stop(); 
+    197          
+    198              _stop(); 
    \        0x8   0x0020             MOVS     R0,R4
    \        0xA   0x....'....        BL       _ZN10led_driver5_stopEv
-    160              _bright_val = value;
+    199              _bright_val = value;
    \        0xE   0x6325             STR      R5,[R4, #+48]
-    161              write_chnl(_led, value);
+    200              write_chnl(_led, value);
    \       0x10   0x2300             MOVS     R3,#+0
    \       0x12   0x002A             MOVS     R2,R5
    \       0x14   0xF894 0x102C      LDRB     R1,[R4, #+44]
    \       0x18   0x0020             MOVS     R0,R4
    \       0x1A   0x....'....        BL       _ZN10nrf_hw_pwm10write_chnlEhjb
-    162              
-    163              __enable_interrupt();
+    201              
+    202              __enable_interrupt();
    \       0x1E   0xB662             CPSIE    I
-    164          }
+    203          }
    \       0x20   0xBD31             POP      {R0,R4,R5,PC}    ;; return
-    165          
+    204          
 
    \                                 In section .text, align 2, keep-with-next
-    166          void led_driver::run(void)
-    167          { 
+    205          void led_driver::run(void)
+    206          { 
    \                     _ZN10led_driver3runEv: (+1)
    \        0x0   0xB510             PUSH     {R4,LR}
    \        0x2   0x0004             MOVS     R4,R0
-    168              __disable_interrupt();
+    207              __disable_interrupt();
    \        0x4   0xB672             CPSID    I
-    169            
-    170              if (!_need_finish())
+    208            
+    209              if (!_need_finish())
    \        0x6   0x0020             MOVS     R0,R4
    \        0x8   0x....'....        BL       _ZN10led_driver12_need_finishEv
    \        0xC   0x2800             CMP      R0,#+0
    \        0xE   0xD104             BNE.N    ??run_0
-    171              {      
-    172                _run = true;
+    210              {      
+    211                _run = true;
    \       0x10   0x2001             MOVS     R0,#+1
    \       0x12   0x7420             STRB     R0,[R4, #+16]
-    173                // запускаем на бесконечное количество вспышек
-    174                _num_of_rptions = -1;
+    212                // запускаем на бесконечное количество вспышек
+    213                _num_of_rptions = -1;
    \       0x14   0xF05F 0x30FF      MOVS     R0,#-1
    \       0x18   0x6160             STR      R0,[R4, #+20]
-    175              }
-    176              
-    177              __enable_interrupt();
+    214              }
+    215              
+    216              __enable_interrupt();
    \                     ??run_0: (+1)
    \       0x1A   0xB662             CPSIE    I
-    178          } 
+    217          } 
    \       0x1C   0xBD10             POP      {R4,PC}          ;; return
-    179          
+    218          
 
    \                                 In section .text, align 2, keep-with-next
-    180          void led_driver::run(int repetitions)
-    181          { 
-    182              __disable_interrupt();
+    219          void led_driver::run(int repetitions)
+    220          { 
+    221              __disable_interrupt();
    \                     _ZN10led_driver3runEi: (+1)
    \        0x0   0xB672             CPSID    I
-    183              
-    184              // не запускаем драйвер если не 
-    185              // отработаны повторы с предыдущей команды запуска.
-    186              if (_num_of_rptions < 0)
+    222              
+    223              // не запускаем драйвер если не 
+    224              // отработаны повторы с предыдущей команды запуска.
+    225              if (_num_of_rptions < 0)
    \        0x2   0x6942             LDR      R2,[R0, #+20]
    \        0x4   0x2A00             CMP      R2,#+0
    \        0x6   0xD502             BPL.N    ??run_1
-    187              {
-    188                  _num_of_rptions = repetitions;
+    226              {
+    227                  _num_of_rptions = repetitions;
    \        0x8   0x6141             STR      R1,[R0, #+20]
-    189              
-    190                  _run = true;
+    228              
+    229                  _run = true;
    \        0xA   0x2201             MOVS     R2,#+1
    \        0xC   0x7402             STRB     R2,[R0, #+16]
-    191              }
-    192              
-    193              __enable_interrupt();
+    230              }
+    231              
+    232              __enable_interrupt();
    \                     ??run_1: (+1)
    \        0xE   0xB662             CPSIE    I
-    194          }
+    233          }
    \       0x10   0x4770             BX       LR               ;; return
-    195          
+    234          
 
    \                                 In section .text, align 2, keep-with-next
-    196          void led_driver::run_up(void)
-    197          { 
+    235          void led_driver::run_up(void)
+    236          { 
    \                     _ZN10led_driver6run_upEv: (+1)
    \        0x0   0xB510             PUSH     {R4,LR}
    \        0x2   0x0004             MOVS     R4,R0
-    198              __disable_interrupt();
+    237              __disable_interrupt();
    \        0x4   0xB672             CPSID    I
-    199            
-    200              // если не требуется завершения предыдущей команды
-    201              if (!_need_finish())
+    238            
+    239              // если не требуется завершения предыдущей команды
+    240              if (!_need_finish())
    \        0x6   0x0020             MOVS     R0,R4
    \        0x8   0x....'....        BL       _ZN10led_driver12_need_finishEv
    \        0xC   0x2800             CMP      R0,#+0
    \        0xE   0xD105             BNE.N    ??run_up_0
-    202              { 
-    203                  if(_bright_val < _max_val)    
+    241              { 
+    242                  if(_bright_val < _max_val)    
    \       0x10   0x6B20             LDR      R0,[R4, #+48]
    \       0x12   0x8CA1             LDRH     R1,[R4, #+36]
    \       0x14   0x4288             CMP      R0,R1
    \       0x16   0xDA01             BGE.N    ??run_up_0
-    204                  _run_up = true;
+    243                  _run_up = true;
    \       0x18   0x2001             MOVS     R0,#+1
    \       0x1A   0x7460             STRB     R0,[R4, #+17]
-    205              }
-    206              
-    207              __enable_interrupt();
+    244              }
+    245              
+    246              __enable_interrupt();
    \                     ??run_up_0: (+1)
    \       0x1C   0xB662             CPSIE    I
-    208          } 
+    247          } 
    \       0x1E   0xBD10             POP      {R4,PC}          ;; return
-    209          
+    248          
 
    \                                 In section .text, align 2, keep-with-next
-    210          void led_driver::run_down(void)
-    211          { 
+    249          void led_driver::run_down(void)
+    250          { 
    \                     _ZN10led_driver8run_downEv: (+1)
    \        0x0   0xB510             PUSH     {R4,LR}
    \        0x2   0x0004             MOVS     R4,R0
-    212              __disable_interrupt();
+    251              __disable_interrupt();
    \        0x4   0xB672             CPSID    I
-    213              
-    214              // если не требуется завершения предыдущей команды
-    215              if (!_need_finish())
+    252              
+    253              // если не требуется завершения предыдущей команды
+    254              if (!_need_finish())
    \        0x6   0x0020             MOVS     R0,R4
    \        0x8   0x....'....        BL       _ZN10led_driver12_need_finishEv
    \        0xC   0x2800             CMP      R0,#+0
    \        0xE   0xD104             BNE.N    ??run_down_0
-    216              { 
-    217                  // Закомментил: уменьшаем с текущего значения яркости
-    218                  //_bright_val = _max_val;
-    219                if(_bright_val > 0)
+    255              { 
+    256                  // Закомментил: уменьшаем с текущего значения яркости
+    257                  //_bright_val = _max_val;
+    258                if(_bright_val > 0)
    \       0x10   0x6B20             LDR      R0,[R4, #+48]
    \       0x12   0x2801             CMP      R0,#+1
    \       0x14   0xDB01             BLT.N    ??run_down_0
-    220                  _run_down = true;
+    259                  _run_down = true;
    \       0x16   0x2001             MOVS     R0,#+1
    \       0x18   0x74A0             STRB     R0,[R4, #+18]
-    221              }
-    222              
-    223              __enable_interrupt();
+    260              }
+    261              
+    262              __enable_interrupt();
    \                     ??run_down_0: (+1)
    \       0x1A   0xB662             CPSIE    I
-    224          } 
+    263          } 
    \       0x1C   0xBD10             POP      {R4,PC}          ;; return
-    225          
+    264          
 
    \                                 In section .text, align 2, keep-with-next
-    226          void led_driver::_stop(void)   
-    227          {  
+    265          void led_driver::_stop(void)   
+    266          {  
    \                     _ZN10led_driver5_stopEv: (+1)
    \        0x0   0xB510             PUSH     {R4,LR}
    \        0x2   0x0004             MOVS     R4,R0
-    228              _num_of_rptions = -1;
+    267              _num_of_rptions = -1;
    \        0x4   0xF05F 0x30FF      MOVS     R0,#-1
    \        0x8   0x6160             STR      R0,[R4, #+20]
-    229          
-    230              _run        = false;
+    268          
+    269              _run        = false;
    \        0xA   0x2000             MOVS     R0,#+0
    \        0xC   0x7420             STRB     R0,[R4, #+16]
-    231              _run_up     = false;
+    270              _run_up     = false;
    \        0xE   0x2000             MOVS     R0,#+0
    \       0x10   0x7460             STRB     R0,[R4, #+17]
-    232              _run_down   = false;
+    271              _run_down   = false;
    \       0x12   0x2000             MOVS     R0,#+0
    \       0x14   0x74A0             STRB     R0,[R4, #+18]
-    233          
-    234              _timer   = pTimer->get_ms() - _tout;
+    272          
+    273              _timer   = pTimer->get_ms() - _tout;
    \       0x16   0x68E0             LDR      R0,[R4, #+12]
    \       0x18   0x....'....        BL       _ZNK5Timer6get_msEv
    \       0x1C   0x6A22             LDR      R2,[R4, #+32]
@@ -723,82 +762,82 @@ E:\cpp\nrf52_libraries\pwm\led_driver.cpp
    \       0x20   0x1A80             SUBS     R0,R0,R2
    \       0x22   0x4199             SBCS     R1,R1,R3
    \       0x24   0xE9C4 0x0106      STRD     R0,R1,[R4, #+24]
-    235          
-    236              _bright_val     = 0;
+    274          
+    275              _bright_val     = 0;
    \       0x28   0x2000             MOVS     R0,#+0
    \       0x2A   0x6320             STR      R0,[R4, #+48]
-    237              _fade_dir = true;
+    276              _fade_dir = true;
    \       0x2C   0x2001             MOVS     R0,#+1
    \       0x2E   0xF884 0x002D      STRB     R0,[R4, #+45]
-    238              
-    239          }
+    277              
+    278          }
    \       0x32   0xBD10             POP      {R4,PC}          ;; return
-    240          
+    279          
 
    \                                 In section .text, align 2, keep-with-next
-    241          bool led_driver::handle(void) 
-    242          {  
+    280          bool led_driver::handle(void) 
+    281          {  
    \                     _ZN10led_driver6handleEv: (+1)
    \        0x0   0xB538             PUSH     {R3-R5,LR}
    \        0x2   0x0004             MOVS     R4,R0
-    243               bool result = false;
+    282               bool result = false;
    \        0x4   0x2500             MOVS     R5,#+0
-    244          
-    245              if(_fade())
+    283          
+    284              if(_fade())
    \        0x6   0x0020             MOVS     R0,R4
    \        0x8   0x....'....        BL       _ZN10led_driver5_fadeEv
    \        0xC   0x2800             CMP      R0,#+0
    \        0xE   0xD001             BEQ.N    ??handle_0
-    246                  result = true;
+    285                  result = true;
    \       0x10   0x2001             MOVS     R0,#+1
    \       0x12   0x0005             MOVS     R5,R0
-    247              if(_fade_up())
+    286              if(_fade_up())
    \                     ??handle_0: (+1)
    \       0x14   0x0020             MOVS     R0,R4
    \       0x16   0x....'....        BL       _ZN10led_driver8_fade_upEv
    \       0x1A   0x2800             CMP      R0,#+0
    \       0x1C   0xD001             BEQ.N    ??handle_1
-    248                  result = true;
+    287                  result = true;
    \       0x1E   0x2001             MOVS     R0,#+1
    \       0x20   0x0005             MOVS     R5,R0
-    249              if(_fade_down())
+    288              if(_fade_down())
    \                     ??handle_1: (+1)
    \       0x22   0x0020             MOVS     R0,R4
    \       0x24   0x....'....        BL       _ZN10led_driver10_fade_downEv
    \       0x28   0x2800             CMP      R0,#+0
    \       0x2A   0xD001             BEQ.N    ??handle_2
-    250                  result = true;
+    289                  result = true;
    \       0x2C   0x2001             MOVS     R0,#+1
    \       0x2E   0x0005             MOVS     R5,R0
-    251          
-    252              return result;
+    290          
+    291              return result;
    \                     ??handle_2: (+1)
    \       0x30   0x0028             MOVS     R0,R5
    \       0x32   0xB2C0             UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
    \       0x34   0xBD32             POP      {R1,R4,R5,PC}    ;; return
-    253          }
-    254          
-    255          // размещается в прерывании.
+    292          }
+    293          
+    294          // размещается в прерывании.
 
    \                                 In section .text, align 2, keep-with-next
-    256          bool led_driver::_fade(void)   
-    257          {   
+    295          bool led_driver::_fade(void)   
+    296          {   
    \                     _ZN10led_driver5_fadeEv: (+1)
    \        0x0   0xB5F8             PUSH     {R3-R7,LR}
    \        0x2   0x0004             MOVS     R4,R0
-    258              bool result = false;
+    297              bool result = false;
    \        0x4   0x2500             MOVS     R5,#+0
-    259          
-    260              if(_run)
+    298          
+    299              if(_run)
    \        0x6   0x7C20             LDRB     R0,[R4, #+16]
    \        0x8   0x2800             CMP      R0,#+0
    \        0xA   0xD06A             BEQ.N    ??_fade_0
-    261              {
-    262                  result = true;
+    300              {
+    301                  result = true;
    \        0xC   0x2001             MOVS     R0,#+1
    \        0xE   0x0005             MOVS     R5,R0
-    263          
-    264                  if (pTimer->get_ms() - _timer > (uint64_t)_tout)
+    302          
+    303                  if (pTimer->get_ms() - _timer > (uint64_t)_tout)
    \       0x10   0x68E0             LDR      R0,[R4, #+12]
    \       0x12   0x....'....        BL       _ZNK5Timer6get_msEv
    \       0x16   0x6A22             LDR      R2,[R4, #+32]
@@ -811,43 +850,43 @@ E:\cpp\nrf52_libraries\pwm\led_driver.cpp
    \       0x26   0xD301             BCC.N    ??_fade_1
    \       0x28   0x4282             CMP      R2,R0
    \       0x2A   0xD25A             BCS.N    ??_fade_0
-    265                  {
-    266                       if(_fade_dir)
+    304                  {
+    305                       if(_fade_dir)
    \                     ??_fade_1: (+1)
    \       0x2C   0xF894 0x002D      LDRB     R0,[R4, #+45]
    \       0x30   0x2800             CMP      R0,#+0
    \       0x32   0xD023             BEQ.N    ??_fade_2
-    267                       {
-    268                           _bright_val += (int)_step;
+    306                       {
+    307                           _bright_val += (int)_step;
    \       0x34   0x6B20             LDR      R0,[R4, #+48]
    \       0x36   0xF894 0x1026      LDRB     R1,[R4, #+38]
    \       0x3A   0x1840             ADDS     R0,R0,R1
    \       0x3C   0x6320             STR      R0,[R4, #+48]
-    269                           if(_bright_val < (int)_max_val )
+    308                           if(_bright_val < (int)_max_val )
    \       0x3E   0x6B20             LDR      R0,[R4, #+48]
    \       0x40   0x8CA1             LDRH     R1,[R4, #+36]
    \       0x42   0x4288             CMP      R0,R1
    \       0x44   0xDA07             BGE.N    ??_fade_3
-    270                           { write_chnl(_led,_bright_val); }
+    309                           { write_chnl(_led,_bright_val); }
    \       0x46   0x2300             MOVS     R3,#+0
    \       0x48   0x6B22             LDR      R2,[R4, #+48]
    \       0x4A   0xF894 0x102C      LDRB     R1,[R4, #+44]
    \       0x4E   0x0020             MOVS     R0,R4
    \       0x50   0x....'....        BL       _ZN10nrf_hw_pwm10write_chnlEhjb
    \       0x54   0xE040             B.N      ??_fade_4
-    271                           else
-    272                           { 
-    273                               _bright_val = (int)_max_val;
+    310                           else
+    311                           { 
+    312                               _bright_val = (int)_max_val;
    \                     ??_fade_3: (+1)
    \       0x56   0x8CA0             LDRH     R0,[R4, #+36]
    \       0x58   0x6320             STR      R0,[R4, #+48]
-    274                               write_chnl(_led,_bright_val);
+    313                               write_chnl(_led,_bright_val);
    \       0x5A   0x2300             MOVS     R3,#+0
    \       0x5C   0x6B22             LDR      R2,[R4, #+48]
    \       0x5E   0xF894 0x102C      LDRB     R1,[R4, #+44]
    \       0x62   0x0020             MOVS     R0,R4
    \       0x64   0x....'....        BL       _ZN10nrf_hw_pwm10write_chnlEhjb
-    275                               _fade_dir = !_fade_dir;
+    314                               _fade_dir = !_fade_dir;
    \       0x68   0xF894 0x002D      LDRB     R0,[R4, #+45]
    \       0x6C   0x2800             CMP      R0,#+0
    \       0x6E   0xD101             BNE.N    ??_fade_5
@@ -858,40 +897,40 @@ E:\cpp\nrf52_libraries\pwm\led_driver.cpp
    \                     ??_fade_6: (+1)
    \       0x76   0xF884 0x002D      STRB     R0,[R4, #+45]
    \       0x7A   0xE02D             B.N      ??_fade_4
-    276                           }
-    277                       }
-    278                       else
-    279                       { 
-    280                           _bright_val -= (int)_step;
+    315                           }
+    316                       }
+    317                       else
+    318                       { 
+    319                           _bright_val -= (int)_step;
    \                     ??_fade_2: (+1)
    \       0x7C   0x6B21             LDR      R1,[R4, #+48]
    \       0x7E   0xF894 0x0026      LDRB     R0,[R4, #+38]
    \       0x82   0x1A09             SUBS     R1,R1,R0
    \       0x84   0x6321             STR      R1,[R4, #+48]
-    281                           if(_bright_val > 0 )
+    320                           if(_bright_val > 0 )
    \       0x86   0x6B20             LDR      R0,[R4, #+48]
    \       0x88   0x2801             CMP      R0,#+1
    \       0x8A   0xDB07             BLT.N    ??_fade_7
-    282                           { write_chnl(_led,_bright_val); }
+    321                           { write_chnl(_led,_bright_val); }
    \       0x8C   0x2300             MOVS     R3,#+0
    \       0x8E   0x6B22             LDR      R2,[R4, #+48]
    \       0x90   0xF894 0x102C      LDRB     R1,[R4, #+44]
    \       0x94   0x0020             MOVS     R0,R4
    \       0x96   0x....'....        BL       _ZN10nrf_hw_pwm10write_chnlEhjb
    \       0x9A   0xE01D             B.N      ??_fade_4
-    283                           else
-    284                           { 
-    285                               _bright_val = 0;
+    322                           else
+    323                           { 
+    324                               _bright_val = 0;
    \                     ??_fade_7: (+1)
    \       0x9C   0x2000             MOVS     R0,#+0
    \       0x9E   0x6320             STR      R0,[R4, #+48]
-    286                               write_chnl(_led,_bright_val);
+    325                               write_chnl(_led,_bright_val);
    \       0xA0   0x2300             MOVS     R3,#+0
    \       0xA2   0x6B22             LDR      R2,[R4, #+48]
    \       0xA4   0xF894 0x102C      LDRB     R1,[R4, #+44]
    \       0xA8   0x0020             MOVS     R0,R4
    \       0xAA   0x....'....        BL       _ZN10nrf_hw_pwm10write_chnlEhjb
-    287                               _fade_dir = !_fade_dir;
+    326                               _fade_dir = !_fade_dir;
    \       0xAE   0xF894 0x002D      LDRB     R0,[R4, #+45]
    \       0xB2   0x2800             CMP      R0,#+0
    \       0xB4   0xD101             BNE.N    ??_fade_8
@@ -901,64 +940,64 @@ E:\cpp\nrf52_libraries\pwm\led_driver.cpp
    \       0xBA   0x2000             MOVS     R0,#+0
    \                     ??_fade_9: (+1)
    \       0xBC   0xF884 0x002D      STRB     R0,[R4, #+45]
-    288            
-    289                               if(--_num_of_rptions == 0)
+    327            
+    328                               if(--_num_of_rptions == 0)
    \       0xC0   0x6960             LDR      R0,[R4, #+20]
    \       0xC2   0x1E40             SUBS     R0,R0,#+1
    \       0xC4   0x6160             STR      R0,[R4, #+20]
    \       0xC6   0x6960             LDR      R0,[R4, #+20]
    \       0xC8   0x2800             CMP      R0,#+0
    \       0xCA   0xD105             BNE.N    ??_fade_4
-    290                               {   
-    291                                  _stop();
+    329                               {   
+    330                                  _stop();
    \       0xCC   0x0020             MOVS     R0,R4
    \       0xCE   0x....'....        BL       _ZN10led_driver5_stopEv
-    292            
-    293                                  return result;
+    331            
+    332                                  return result;
    \       0xD2   0x0028             MOVS     R0,R5
    \       0xD4   0xB2C0             UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
    \       0xD6   0xE006             B.N      ??_fade_10
-    294                               }
-    295                           }
-    296                       }
-    297                       
-    298                       _timer = pTimer->get_ms();
+    333                               }
+    334                           }
+    335                       }
+    336                       
+    337                       _timer = pTimer->get_ms();
    \                     ??_fade_4: (+1)
    \       0xD8   0x68E0             LDR      R0,[R4, #+12]
    \       0xDA   0x....'....        BL       _ZNK5Timer6get_msEv
    \       0xDE   0xE9C4 0x0106      STRD     R0,R1,[R4, #+24]
-    299                  }
-    300              }
-    301          
-    302              return result;
+    338                  }
+    339              }
+    340          
+    341              return result;
    \                     ??_fade_0: (+1)
    \       0xE2   0x0028             MOVS     R0,R5
    \       0xE4   0xB2C0             UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
    \                     ??_fade_10: (+1)
    \       0xE6   0xBDF2             POP      {R1,R4-R7,PC}    ;; return
-    303          }  
-    304          
-    305          // размещается в прерывании.
+    342          }  
+    343          
+    344          // размещается в прерывании.
 
    \                                 In section .text, align 2, keep-with-next
-    306          bool led_driver::_fade_up(void)   
-    307          {   
+    345          bool led_driver::_fade_up(void)   
+    346          {   
    \                     _ZN10led_driver8_fade_upEv: (+1)
    \        0x0   0xB5F8             PUSH     {R3-R7,LR}
    \        0x2   0x0004             MOVS     R4,R0
-    308              bool result = false;
+    347              bool result = false;
    \        0x4   0x2500             MOVS     R5,#+0
-    309          
-    310              if(_run_up)
+    348          
+    349              if(_run_up)
    \        0x6   0x7C60             LDRB     R0,[R4, #+17]
    \        0x8   0x2800             CMP      R0,#+0
    \        0xA   0xD03D             BEQ.N    ??_fade_up_0
-    311              {
-    312                  result = true;
+    350              {
+    351                  result = true;
    \        0xC   0x2001             MOVS     R0,#+1
    \        0xE   0x0005             MOVS     R5,R0
-    313          
-    314                  if (pTimer->get_ms() - _timer > (uint64_t)_tout)
+    352          
+    353                  if (pTimer->get_ms() - _timer > (uint64_t)_tout)
    \       0x10   0x68E0             LDR      R0,[R4, #+12]
    \       0x12   0x....'....        BL       _ZNK5Timer6get_msEv
    \       0x16   0x6A22             LDR      R2,[R4, #+32]
@@ -971,50 +1010,50 @@ E:\cpp\nrf52_libraries\pwm\led_driver.cpp
    \       0x26   0xD301             BCC.N    ??_fade_up_1
    \       0x28   0x4282             CMP      R2,R0
    \       0x2A   0xD22D             BCS.N    ??_fade_up_0
-    315                  {
-    316                      _bright_val += (int)_step;
+    354                  {
+    355                      _bright_val += (int)_step;
    \                     ??_fade_up_1: (+1)
    \       0x2C   0x6B20             LDR      R0,[R4, #+48]
    \       0x2E   0xF894 0x1026      LDRB     R1,[R4, #+38]
    \       0x32   0x1840             ADDS     R0,R0,R1
    \       0x34   0x6320             STR      R0,[R4, #+48]
-    317          
-    318                      if(_bright_val < (int)_max_val )
+    356          
+    357                      if(_bright_val < (int)_max_val )
    \       0x36   0x6B20             LDR      R0,[R4, #+48]
    \       0x38   0x8CA1             LDRH     R1,[R4, #+36]
    \       0x3A   0x4288             CMP      R0,R1
    \       0x3C   0xDA07             BGE.N    ??_fade_up_2
-    319                      { write_chnl(_led,_bright_val); }
+    358                      { write_chnl(_led,_bright_val); }
    \       0x3E   0x2300             MOVS     R3,#+0
    \       0x40   0x6B22             LDR      R2,[R4, #+48]
    \       0x42   0xF894 0x102C      LDRB     R1,[R4, #+44]
    \       0x46   0x0020             MOVS     R0,R4
    \       0x48   0x....'....        BL       _ZN10nrf_hw_pwm10write_chnlEhjb
    \       0x4C   0xE00A             B.N      ??_fade_up_3
-    320                      else
-    321                      { 
-    322                          _bright_val = (int)_max_val;
+    359                      else
+    360                      { 
+    361                          _bright_val = (int)_max_val;
    \                     ??_fade_up_2: (+1)
    \       0x4E   0x8CA0             LDRH     R0,[R4, #+36]
    \       0x50   0x6320             STR      R0,[R4, #+48]
-    323                          write_chnl(_led,_bright_val);
+    362                          write_chnl(_led,_bright_val);
    \       0x52   0x2300             MOVS     R3,#+0
    \       0x54   0x6B22             LDR      R2,[R4, #+48]
    \       0x56   0xF894 0x102C      LDRB     R1,[R4, #+44]
    \       0x5A   0x0020             MOVS     R0,R4
    \       0x5C   0x....'....        BL       _ZN10nrf_hw_pwm10write_chnlEhjb
-    324          
-    325                          _run_up = false;
+    363          
+    364                          _run_up = false;
    \       0x60   0x2000             MOVS     R0,#+0
    \       0x62   0x7460             STRB     R0,[R4, #+17]
-    326                      }
-    327          
-    328                      if(_run_up == false)
+    365                      }
+    366          
+    367                      if(_run_up == false)
    \                     ??_fade_up_3: (+1)
    \       0x64   0x7C60             LDRB     R0,[R4, #+17]
    \       0x66   0x2800             CMP      R0,#+0
    \       0x68   0xD109             BNE.N    ??_fade_up_4
-    329                      { _timer   = pTimer->get_ms() - (uint64_t)_tout; }
+    368                      { _timer   = pTimer->get_ms() - (uint64_t)_tout; }
    \       0x6A   0x68E0             LDR      R0,[R4, #+12]
    \       0x6C   0x....'....        BL       _ZNK5Timer6get_msEv
    \       0x70   0x6A22             LDR      R2,[R4, #+32]
@@ -1023,43 +1062,43 @@ E:\cpp\nrf52_libraries\pwm\led_driver.cpp
    \       0x76   0x4199             SBCS     R1,R1,R3
    \       0x78   0xE9C4 0x0106      STRD     R0,R1,[R4, #+24]
    \       0x7C   0xE004             B.N      ??_fade_up_0
-    330                      else
-    331                      { _timer   = pTimer->get_ms(); }            
+    369                      else
+    370                      { _timer   = pTimer->get_ms(); }            
    \                     ??_fade_up_4: (+1)
    \       0x7E   0x68E0             LDR      R0,[R4, #+12]
    \       0x80   0x....'....        BL       _ZNK5Timer6get_msEv
    \       0x84   0xE9C4 0x0106      STRD     R0,R1,[R4, #+24]
-    332                  }
-    333              }
-    334          
-    335              return result;
+    371                  }
+    372              }
+    373          
+    374              return result;
    \                     ??_fade_up_0: (+1)
    \       0x88   0x0028             MOVS     R0,R5
    \       0x8A   0xB2C0             UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
    \       0x8C   0xBDF2             POP      {R1,R4-R7,PC}    ;; return
-    336          } 
-    337          
-    338          // размещается в прерывании.
+    375          } 
+    376          
+    377          // размещается в прерывании.
 
    \                                 In section .text, align 2, keep-with-next
-    339          bool led_driver::_fade_down(void)   
-    340          {   
+    378          bool led_driver::_fade_down(void)   
+    379          {   
    \                     _ZN10led_driver10_fade_downEv: (+1)
    \        0x0   0xB5F8             PUSH     {R3-R7,LR}
    \        0x2   0x0004             MOVS     R4,R0
-    341              bool result = false;
+    380              bool result = false;
    \        0x4   0x2500             MOVS     R5,#+0
-    342          
-    343              if(_run_down)
+    381          
+    382              if(_run_down)
    \        0x6   0x7CA0             LDRB     R0,[R4, #+18]
    \        0x8   0x2800             CMP      R0,#+0
    \        0xA   0xD03C             BEQ.N    ??_fade_down_0
-    344              {
-    345                  result = true;
+    383              {
+    384                  result = true;
    \        0xC   0x2001             MOVS     R0,#+1
    \        0xE   0x0005             MOVS     R5,R0
-    346          
-    347                  if (pTimer->get_ms() - _timer > (uint64_t)_tout)
+    385          
+    386                  if (pTimer->get_ms() - _timer > (uint64_t)_tout)
    \       0x10   0x68E0             LDR      R0,[R4, #+12]
    \       0x12   0x....'....        BL       _ZNK5Timer6get_msEv
    \       0x16   0x6A22             LDR      R2,[R4, #+32]
@@ -1072,50 +1111,50 @@ E:\cpp\nrf52_libraries\pwm\led_driver.cpp
    \       0x26   0xD301             BCC.N    ??_fade_down_1
    \       0x28   0x4282             CMP      R2,R0
    \       0x2A   0xD22C             BCS.N    ??_fade_down_0
-    348                  {
-    349                      _bright_val -= (int)_step;
+    387                  {
+    388                      _bright_val -= (int)_step;
    \                     ??_fade_down_1: (+1)
    \       0x2C   0x6B21             LDR      R1,[R4, #+48]
    \       0x2E   0xF894 0x0026      LDRB     R0,[R4, #+38]
    \       0x32   0x1A09             SUBS     R1,R1,R0
    \       0x34   0x6321             STR      R1,[R4, #+48]
-    350          
-    351                      if(_bright_val > 0 )
+    389          
+    390                      if(_bright_val > 0 )
    \       0x36   0x6B20             LDR      R0,[R4, #+48]
    \       0x38   0x2801             CMP      R0,#+1
    \       0x3A   0xDB07             BLT.N    ??_fade_down_2
-    352                      { write_chnl(_led,_bright_val); }
+    391                      { write_chnl(_led,_bright_val); }
    \       0x3C   0x2300             MOVS     R3,#+0
    \       0x3E   0x6B22             LDR      R2,[R4, #+48]
    \       0x40   0xF894 0x102C      LDRB     R1,[R4, #+44]
    \       0x44   0x0020             MOVS     R0,R4
    \       0x46   0x....'....        BL       _ZN10nrf_hw_pwm10write_chnlEhjb
    \       0x4A   0xE00A             B.N      ??_fade_down_3
-    353                      else
-    354                      { 
-    355                          _bright_val = 0;
+    392                      else
+    393                      { 
+    394                          _bright_val = 0;
    \                     ??_fade_down_2: (+1)
    \       0x4C   0x2000             MOVS     R0,#+0
    \       0x4E   0x6320             STR      R0,[R4, #+48]
-    356          
-    357                          write_chnl(_led,_bright_val); 
+    395          
+    396                          write_chnl(_led,_bright_val); 
    \       0x50   0x2300             MOVS     R3,#+0
    \       0x52   0x6B22             LDR      R2,[R4, #+48]
    \       0x54   0xF894 0x102C      LDRB     R1,[R4, #+44]
    \       0x58   0x0020             MOVS     R0,R4
    \       0x5A   0x....'....        BL       _ZN10nrf_hw_pwm10write_chnlEhjb
-    358          
-    359                          _run_down = false;
+    397          
+    398                          _run_down = false;
    \       0x5E   0x2000             MOVS     R0,#+0
    \       0x60   0x74A0             STRB     R0,[R4, #+18]
-    360                      }
-    361                       
-    362                      if(_run_down == false)
+    399                      }
+    400                       
+    401                      if(_run_down == false)
    \                     ??_fade_down_3: (+1)
    \       0x62   0x7CA0             LDRB     R0,[R4, #+18]
    \       0x64   0x2800             CMP      R0,#+0
    \       0x66   0xD109             BNE.N    ??_fade_down_4
-    363                      { _timer   = pTimer->get_ms() - (uint64_t)_tout; }
+    402                      { _timer   = pTimer->get_ms() - (uint64_t)_tout; }
    \       0x68   0x68E0             LDR      R0,[R4, #+12]
    \       0x6A   0x....'....        BL       _ZNK5Timer6get_msEv
    \       0x6E   0x6A22             LDR      R2,[R4, #+32]
@@ -1124,44 +1163,44 @@ E:\cpp\nrf52_libraries\pwm\led_driver.cpp
    \       0x74   0x4199             SBCS     R1,R1,R3
    \       0x76   0xE9C4 0x0106      STRD     R0,R1,[R4, #+24]
    \       0x7A   0xE004             B.N      ??_fade_down_0
-    364                      else
-    365                      { _timer   = pTimer->get_ms(); } 
+    403                      else
+    404                      { _timer   = pTimer->get_ms(); } 
    \                     ??_fade_down_4: (+1)
    \       0x7C   0x68E0             LDR      R0,[R4, #+12]
    \       0x7E   0x....'....        BL       _ZNK5Timer6get_msEv
    \       0x82   0xE9C4 0x0106      STRD     R0,R1,[R4, #+24]
-    366                  }
-    367              }
-    368          
-    369              return result;
+    405                  }
+    406              }
+    407          
+    408              return result;
    \                     ??_fade_down_0: (+1)
    \       0x86   0x0028             MOVS     R0,R5
    \       0x88   0xB2C0             UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
    \       0x8A   0xBDF2             POP      {R1,R4-R7,PC}    ;; return
-    370          } 
-    371          
+    409          } 
+    410          
 
    \                                 In section .text, align 2, keep-with-next
-    372          bool led_driver::_need_finish(void)
-    373          {
+    411          bool led_driver::_need_finish(void)
+    412          {
    \                     _ZN10led_driver12_need_finishEv: (+1)
    \        0x0   0x0001             MOVS     R1,R0
-    374              if ( _num_of_rptions > 1)
+    413              if ( _num_of_rptions > 1)
    \        0x2   0x6948             LDR      R0,[R1, #+20]
    \        0x4   0x2802             CMP      R0,#+2
    \        0x6   0xDB03             BLT.N    ??_need_finish_0
-    375              { 
-    376                  // драйвер запущен на несколько повторений или
-    377                  // на бесконечное количество делаем это последним
-    378                  _num_of_rptions = 1;
+    414              { 
+    415                  // драйвер запущен на несколько повторений или
+    416                  // на бесконечное количество делаем это последним
+    417                  _num_of_rptions = 1;
    \        0x8   0x2001             MOVS     R0,#+1
    \        0xA   0x6148             STR      R0,[R1, #+20]
-    379                  return true;
+    418                  return true;
    \        0xC   0x2001             MOVS     R0,#+1
    \        0xE   0xE010             B.N      ??_need_finish_1
-    380              } 
-    381              else
-    382              if ( _run_up || _run_down )
+    419              } 
+    420              else
+    421              if ( _run_up || _run_down )
    \                     ??_need_finish_0: (+1)
    \       0x10   0x7C48             LDRB     R0,[R1, #+17]
    \       0x12   0x2800             CMP      R0,#+0
@@ -1169,15 +1208,15 @@ E:\cpp\nrf52_libraries\pwm\led_driver.cpp
    \       0x16   0x7C88             LDRB     R0,[R1, #+18]
    \       0x18   0x2800             CMP      R0,#+0
    \       0x1A   0xD001             BEQ.N    ??_need_finish_3
-    383              {   
-    384                  // даем завершиться восходящему или нисходящему градиенту
-    385                  return true; 
+    422              {   
+    423                  // даем завершиться восходящему или нисходящему градиенту
+    424                  return true; 
    \                     ??_need_finish_2: (+1)
    \       0x1C   0x2001             MOVS     R0,#+1
    \       0x1E   0xE008             B.N      ??_need_finish_1
-    386              }
-    387              else
-    388              if (_run &&( _num_of_rptions < 0))
+    425              }
+    426              else
+    427              if (_run &&( _num_of_rptions < 0))
    \                     ??_need_finish_3: (+1)
    \       0x20   0x7C08             LDRB     R0,[R1, #+16]
    \       0x22   0x2800             CMP      R0,#+0
@@ -1185,79 +1224,79 @@ E:\cpp\nrf52_libraries\pwm\led_driver.cpp
    \       0x26   0x6948             LDR      R0,[R1, #+20]
    \       0x28   0x2800             CMP      R0,#+0
    \       0x2A   0xD501             BPL.N    ??_need_finish_4
-    389              {
-    390                  // выключаем только по отдельному запуску turn_off() в цикле если запущен
-    391                  // на бесконечный повтор
-    392                  //turn_off();
-    393                  return true;
+    428              {
+    429                  // выключаем только по отдельному запуску turn_off() в цикле если запущен
+    430                  // на бесконечный повтор
+    431                  //turn_off();
+    432                  return true;
    \       0x2C   0x2001             MOVS     R0,#+1
    \       0x2E   0xE000             B.N      ??_need_finish_1
-    394              }
-    395              else
-    396              { 
-    397                  return false;
+    433              }
+    434              else
+    435              { 
+    436                  return false;
    \                     ??_need_finish_4: (+1)
    \       0x30   0x2000             MOVS     R0,#+0
    \                     ??_need_finish_1: (+1)
    \       0x32   0x4770             BX       LR               ;; return
-    398              }  
-    399          }
-    400          
+    437              }  
+    438          }
+    439          
 
    \                                 In section .text, align 2, keep-with-next
-    401          uint8_t led_drivers_handle(void)
-    402          {
+    440          uint8_t led_drivers_handle(void)
+    441          {
    \                     _Z18led_drivers_handlev: (+1)
    \        0x0   0xB570             PUSH     {R4-R6,LR}
-    403              bool busy = false;
+    442              bool busy = false;
    \        0x2   0x2400             MOVS     R4,#+0
-    404              uint8_t  result = 0;
+    443              uint8_t  result = 0;
    \        0x4   0x2500             MOVS     R5,#+0
-    405              
-    406             //обработка драйверов светодиодов
-    407             for ( uint32_t i = 0; i < LEDS_NUM; i++)
+    444              
+    445             //обработка драйверов светодиодов
+    446             for ( uint32_t i = 0; i < LEDS_NUM; i++)
    \        0x6   0x2600             MOVS     R6,#+0
    \                     ??led_drivers_handle_0: (+1)
    \        0x8   0x2E08             CMP      R6,#+8
    \        0xA   0xD212             BCS.N    ??led_drivers_handle_1
-    408             { 
-    409                if(led_list[i] != NULL)
+    447             { 
+    448                if(led_list[i] != NULL)
    \        0xC   0x....             LDR.N    R1,??DataTable2_8
    \        0xE   0xF851 0x0026      LDR      R0,[R1, R6, LSL #+2]
    \       0x12   0x2800             CMP      R0,#+0
    \       0x14   0xD004             BEQ.N    ??led_drivers_handle_2
-    410                { busy = led_list[i]->handle(); } 
+    449                { busy = led_list[i]->handle(); } 
    \       0x16   0xF851 0x0026      LDR      R0,[R1, R6, LSL #+2]
    \       0x1A   0x....'....        BL       _ZN10led_driver6handleEv
    \       0x1E   0x0004             MOVS     R4,R0
-    411                 
-    412                // защелкиваем защелку       
-    413                if(busy)
+    450                 
+    451                // защелкиваем защелку       
+    452                if(busy)
    \                     ??led_drivers_handle_2: (+1)
    \       0x20   0x0020             MOVS     R0,R4
    \       0x22   0xB2C0             UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
    \       0x24   0x2800             CMP      R0,#+0
    \       0x26   0xD002             BEQ.N    ??led_drivers_handle_3
-    414                { 
-    415                    busy = false;
+    453                { 
+    454                    busy = false;
    \       0x28   0x2000             MOVS     R0,#+0
    \       0x2A   0x0004             MOVS     R4,R0
-    416                    result++;
+    455                    result++;
    \       0x2C   0x1C6D             ADDS     R5,R5,#+1
-    417                }
-    418             }
+    456                }
+    457             }
    \                     ??led_drivers_handle_3: (+1)
    \       0x2E   0x1C76             ADDS     R6,R6,#+1
    \       0x30   0xE7EA             B.N      ??led_drivers_handle_0
-    419          
-    420             // флажок нужен для того чтобы показать 
-    421             // сколько светодиодов сейчас обрабатываеться
-    422             return result;
+    458          
+    459             // флажок нужен для того чтобы показать 
+    460             // сколько светодиодов сейчас обрабатываеться
+    461             return result;
    \                     ??led_drivers_handle_1: (+1)
    \       0x32   0x0028             MOVS     R0,R5
    \       0x34   0xB2C0             UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
    \       0x36   0xBD70             POP      {R4-R6,PC}       ;; return
-    423          }
+    462          }
 
    \                                 In section .text, align 4, keep-with-next
    \                     ??DataTable2:
@@ -1294,7 +1333,7 @@ E:\cpp\nrf52_libraries\pwm\led_driver.cpp
    \                                 In section .text, align 4, keep-with-next
    \                     ??DataTable2_8:
    \        0x0   0x....'....        DC32     led_list
-    424          
+    463          
 
    Maximum stack usage in bytes:
 

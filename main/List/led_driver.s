@@ -1,13 +1,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR ANSI C/C++ Compiler V8.40.1.212/W32 for ARM        03/Feb/2021  19:31:03
+// IAR ANSI C/C++ Compiler V8.40.1.212/W32 for ARM        05/Feb/2021  12:20:14
 // Copyright 1999-2019 IAR Systems AB.
 //
 //    Cpu mode     =  
 //    Endian       =  little
 //    Source file  =  E:\cpp\nrf52_libraries\pwm\led_driver.cpp
 //    Command line =
-//        -f C:\Users\IF385~1.SHO\AppData\Local\Temp\EW7F52.tmp
+//        -f C:\Users\IF385~1.SHO\AppData\Local\Temp\EWB7A3.tmp
 //        (E:\cpp\nrf52_libraries\pwm\led_driver.cpp -D NRF52840_XXAA -D
 //        CONFIG_NFCT_PINS_AS_GPIOS -D _AUDIOGUDE_V2_BOARD -D DEBUG -lCN
 //        E:\cpp\nrf52_libraries\main\List -lA E:\cpp\nrf52_libraries\main\List
@@ -184,19 +184,59 @@ kb_led:
 //   31 led_driver* led_list[LEDS_NUM] =
 led_list:
         DATA32
-        DC32 red_led, green_led, bl_btn_led, btn_pr_led, kb_led, 0x0, 0x0, 0x0
+        DC32 red_led, green_led, bl_btn_led, btn_pr_led, kb_led, charge_bar
+        DC32 0x0, 0x0
 //   32 { 
 //   33     &red_led,
 //   34     &green_led,
 //   35     &bl_btn_led,
 //   36     &btn_pr_led,
 //   37     &kb_led,
-//   38     NULL,    // по сути это LED_BAT_1..3 входят в модуль чардж бара.
+//   38     &charge_bar,    // по сути это LED_BAT_1..3 входят в модуль чардж бара.
 //   39     NULL,    
 //   40     NULL
 //   41 };
 //   42 #endif //_AUDIOGUDE_V2_BOARD
 //   43 
+//   44 #ifdef _AUDIOGUDE_V3_BOARD
+//   45 uint32_t led_2_port_list[LEDS_NUM] = 
+//   46 {
+//   47     LED_SYS_GREEN_PIN,  // P0.07 LED_SYS_GREEN 
+//   48     LED_BL_BTN_PIN,     // P0.26 LED_BL_BTN 
+//   49     LED_BTN_PR_PIN,     // P0.11 LED_BTN_PR  
+//   50     LED_KB_PIN,         // P0.25 LED_KB
+//   51     LED_BAT_1_PIN,      // P0.08 LED_BAT_1 
+//   52     LED_BAT_2_PIN,      // P0.06 LED_BAT_2
+//   53     LED_BAT_3_PIN,      // P0.04 LED_BAT_3 
+//   54     LED_BAT_4_PIN,      // P0.27 LED_BAT_4
+//   55     LED_BAT_5_PIN       // P0.05 LED_BAT_5 
+//   56 };
+//   57 
+//   58 
+//   59 led_driver    green_led   ( led_2_port_list[LED_SYS_GREEN], &sys_timer, MAX_PWM_VALUE, LED_SHORT_BLINK_MS );
+//   60 led_driver    bl_btn_led  ( led_2_port_list[LED_BL_BTN],    &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+//   61 led_driver    btn_pr_led  ( led_2_port_list[LED_BTN_PR],    &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+//   62 led_driver    kb_led      ( led_2_port_list[LED_KB],        &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+//   63 led_driver    charge_led_1( led_2_port_list[LED_BAT_1],     &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+//   64 led_driver    charge_led_2( led_2_port_list[LED_BAT_2],     &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+//   65 led_driver    charge_led_3( led_2_port_list[LED_BAT_3],     &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+//   66 led_driver    charge_led_4( led_2_port_list[LED_BAT_4],     &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+//   67 led_driver    charge_led_5( led_2_port_list[LED_BAT_5],     &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+//   68 
+//   69 led_driver* led_list[LEDS_NUM] =
+//   70 { 
+//   71     &green_led,
+//   72     &bl_btn_led,
+//   73     &btn_pr_led,
+//   74     &kb_led,
+//   75     &charge_led_1,
+//   76     &charge_led_2,    
+//   77     &charge_led_3,
+//   78     &charge_led_4,   
+//   79     &charge_led_5
+//   80 };
+//   81 #endif
+//   82 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock0 Using cfiCommon0
@@ -322,9 +362,9 @@ __sti__routine:
           CFI Block cfiBlock3 Using cfiCommon0
           CFI Function _ZN10led_driverC1EjP5Timertj
         THUMB
-//   44 led_driver::led_driver(uint32_t pin, Timer *pTmr, uint16_t max_val,  uint32_t f_time)
-//   45 : pTimer(pTmr)
-//   46 {
+//   83 led_driver::led_driver(uint32_t pin, Timer *pTmr, uint16_t max_val,  uint32_t f_time)
+//   84 : pTimer(pTmr)
+//   85 {
 _ZN10led_driverC1EjP5Timertj:
         PUSH     {R4-R8,LR}
           CFI R14 Frame(CFA, -4)
@@ -343,31 +383,31 @@ _ZN10led_driverC1EjP5Timertj:
           CFI FunCall _ZN10nrf_hw_pwmC2Ev
         BL       _ZN10nrf_hw_pwmC2Ev
         STR      R8,[R4, #+12]
-//   47     if (max_val <= LED_BRIGHT_100)
+//   86     if (max_val <= LED_BRIGHT_100)
         MOVS     R0,R6
         UXTH     R0,R0            ;; ZeroExt  R0,R0,#+16,#+16
         CMP      R0,#+256
         BGE.N    ??led_driver_0
-//   48     _max_val  = max_val;
+//   87     _max_val  = max_val;
         STRH     R6,[R4, #+36]
         B.N      ??led_driver_1
-//   49     else
-//   50     _max_val = LED_BRIGHT_100;
+//   88     else
+//   89     _max_val = LED_BRIGHT_100;
 ??led_driver_0:
         MOVS     R0,#+255
         STRH     R0,[R4, #+36]
-//   51     
-//   52     _fade_time = f_time;
+//   90     
+//   91     _fade_time = f_time;
 ??led_driver_1:
         STR      R7,[R4, #+40]
-//   53     
-//   54     set_fadetime(f_time);
+//   92     
+//   93     set_fadetime(f_time);
         MOVS     R1,R7
         MOVS     R0,R4
           CFI FunCall _ZN10led_driver12set_fadetimeEj
         BL       _ZN10led_driver12set_fadetimeEj
-//   55     
-//   56     _timer    = pTimer->get_ms() - _tout;
+//   94     
+//   95     _timer    = pTimer->get_ms() - _tout;
         LDR      R0,[R4, #+12]
           CFI FunCall _ZNK5Timer6get_msEv
         BL       _ZNK5Timer6get_msEv
@@ -376,59 +416,59 @@ _ZN10led_driverC1EjP5Timertj:
         SUBS     R0,R0,R2
         SBCS     R1,R1,R3
         STRD     R0,R1,[R4, #+24]
-//   57     
-//   58     // добавляем пин, если еще не добавлен.
-//   59     add_pin(pin);
+//   96     
+//   97     // добавляем пин, если еще не добавлен.
+//   98     add_pin(pin);
         MOVS     R1,R5
         MOVS     R0,R4
           CFI FunCall _ZN10nrf_hw_pwm7add_pinEj
         BL       _ZN10nrf_hw_pwm7add_pinEj
-//   60 
-//   61     _led = get_led_num(pin);
+//   99 
+//  100     _led = get_led_num(pin);
         MOVS     R1,R5
         MOVS     R0,R4
           CFI FunCall _ZN10nrf_hw_pwm11get_led_numEj
         BL       _ZN10nrf_hw_pwm11get_led_numEj
         STRB     R0,[R4, #+44]
-//   62 
-//   63     _bright_val      = 0;
+//  101 
+//  102     _bright_val      = 0;
         MOVS     R0,#+0
         STR      R0,[R4, #+48]
-//   64     _fade_dir = true;
+//  103     _fade_dir = true;
         MOVS     R0,#+1
         STRB     R0,[R4, #+45]
-//   65     _run      = false;
+//  104     _run      = false;
         MOVS     R0,#+0
         STRB     R0,[R4, #+16]
-//   66     _run_up   = false;
+//  105     _run_up   = false;
         MOVS     R0,#+0
         STRB     R0,[R4, #+17]
-//   67     _run_down = false;
+//  106     _run_down = false;
         MOVS     R0,#+0
         STRB     R0,[R4, #+18]
-//   68     
-//   69     _num_of_rptions = -1;
+//  107     
+//  108     _num_of_rptions = -1;
         MOVS     R0,#-1
         STR      R0,[R4, #+20]
-//   70 }
+//  109 }
         MOVS     R0,R4
         POP      {R4-R8,PC}       ;; return
           CFI EndBlock cfiBlock3
-//   71 
+//  110 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock4 Using cfiCommon0
           CFI Function _ZN10led_driverC1EjjjtP5Timertj
         THUMB
-//   72 led_driver::led_driver(uint32_t pin_1, 
-//   73                        uint32_t pin_2, 
-//   74                        uint32_t pin_3, 
-//   75                        uint16_t clock_div, 
-//   76                        Timer *pTmr,  
-//   77                        uint16_t max_val,  
-//   78                        uint32_t f_time) 
-//   79 : nrf_hw_pwm(clock_div, pin_1, pin_2, pin_3),pTimer(pTmr) 
-//   80 {
+//  111 led_driver::led_driver(uint32_t pin_1, 
+//  112                        uint32_t pin_2, 
+//  113                        uint32_t pin_3, 
+//  114                        uint16_t clock_div, 
+//  115                        Timer *pTmr,  
+//  116                        uint16_t max_val,  
+//  117                        uint32_t f_time) 
+//  118 : nrf_hw_pwm(clock_div, pin_1, pin_2, pin_3),pTimer(pTmr) 
+//  119 {
 _ZN10led_driverC1EjjjtP5Timertj:
         PUSH     {R3-R11,LR}
           CFI R14 Frame(CFA, -4)
@@ -458,31 +498,31 @@ _ZN10led_driverC1EjjjtP5Timertj:
           CFI FunCall _ZN10nrf_hw_pwmC2Etjjj
         BL       _ZN10nrf_hw_pwmC2Etjjj
         STR      R8,[R5, #+12]
-//   81     if (max_val <= LED_BRIGHT_100)
+//  120     if (max_val <= LED_BRIGHT_100)
         MOVS     R0,R4
         UXTH     R0,R0            ;; ZeroExt  R0,R0,#+16,#+16
         CMP      R0,#+256
         BGE.N    ??led_driver_2
-//   82     _max_val  = max_val;
+//  121     _max_val  = max_val;
         STRH     R4,[R5, #+36]
         B.N      ??led_driver_3
-//   83     else
-//   84     _max_val = LED_BRIGHT_100;
+//  122     else
+//  123     _max_val = LED_BRIGHT_100;
 ??led_driver_2:
         MOVS     R0,#+255
         STRH     R0,[R5, #+36]
-//   85     
-//   86     _fade_time = f_time;
+//  124     
+//  125     _fade_time = f_time;
 ??led_driver_3:
         STR      R7,[R5, #+40]
-//   87     
-//   88     set_fadetime(f_time);
+//  126     
+//  127     set_fadetime(f_time);
         MOVS     R1,R7
         MOVS     R0,R5
           CFI FunCall _ZN10led_driver12set_fadetimeEj
         BL       _ZN10led_driver12set_fadetimeEj
-//   89     
-//   90     _timer    = pTimer->get_ms() - _tout;
+//  128     
+//  129     _timer    = pTimer->get_ms() - _tout;
         LDR      R0,[R5, #+12]
           CFI FunCall _ZNK5Timer6get_msEv
         BL       _ZNK5Timer6get_msEv
@@ -491,51 +531,51 @@ _ZN10led_driverC1EjjjtP5Timertj:
         SUBS     R0,R0,R2
         SBCS     R1,R1,R3
         STRD     R0,R1,[R5, #+24]
-//   91     
-//   92     _led = get_led_num(pin_2);       // пин 2 является управляющим сам по себе одним светодиодом - первым
+//  130     
+//  131     _led = get_led_num(pin_2);       // пин 2 является управляющим сам по себе одним светодиодом - первым
         MOVS     R1,R6
         MOVS     R0,R5
           CFI FunCall _ZN10nrf_hw_pwm11get_led_numEj
         BL       _ZN10nrf_hw_pwm11get_led_numEj
         STRB     R0,[R5, #+44]
-//   93 
-//   94     _bright_val      = 0;
+//  132 
+//  133     _bright_val      = 0;
         MOVS     R0,#+0
         STR      R0,[R5, #+48]
-//   95     _fade_dir = true;
+//  134     _fade_dir = true;
         MOVS     R0,#+1
         STRB     R0,[R5, #+45]
-//   96     _run      = false;
+//  135     _run      = false;
         MOVS     R0,#+0
         STRB     R0,[R5, #+16]
-//   97     _run_up   = false;
+//  136     _run_up   = false;
         MOVS     R0,#+0
         STRB     R0,[R5, #+17]
-//   98     _run_down = false;
+//  137     _run_down = false;
         MOVS     R0,#+0
         STRB     R0,[R5, #+18]
-//   99     
-//  100     _num_of_rptions = -1; 
+//  138     
+//  139     _num_of_rptions = -1; 
         MOVS     R0,#-1
         STR      R0,[R5, #+20]
-//  101 
-//  102     set_chrg_bar(SHTDWN);
+//  140 
+//  141     set_chrg_bar(SHTDWN);
         MOVS     R1,#-1
         MOVS     R0,R5
           CFI FunCall _ZN10nrf_hw_pwm12set_chrg_barEs
         BL       _ZN10nrf_hw_pwm12set_chrg_barEs
-//  103 }
+//  142 }
         MOVS     R0,R5
         POP      {R1,R4-R11,PC}   ;; return
           CFI EndBlock cfiBlock4
-//  104 
+//  143 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock5 Using cfiCommon0
           CFI Function _ZN10led_driver13go_power_downEv
         THUMB
-//  105 void led_driver::go_power_down(void)
-//  106 {  
+//  144 void led_driver::go_power_down(void)
+//  145 {  
 _ZN10led_driver13go_power_downEv:
         PUSH     {R3-R5,LR}
           CFI R14 Frame(CFA, -4)
@@ -543,14 +583,14 @@ _ZN10led_driver13go_power_downEv:
           CFI R4 Frame(CFA, -12)
           CFI CFA R13+16
         MOVS     R4,R0
-//  107     for(uint8_t pwm = 0; pwm < HWPWM_MODULE_NUM; pwm++)
+//  146     for(uint8_t pwm = 0; pwm < HWPWM_MODULE_NUM; pwm++)
         MOVS     R5,#+0
 ??go_power_down_0:
         MOVS     R0,R5
         UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
         CMP      R0,#+4
         BGE.N    ??go_power_down_1
-//  108     { nrf_hw_pwm::stop(pwm); }
+//  147     { nrf_hw_pwm::stop(pwm); }
         MOVS     R1,R5
         UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
         MOVS     R0,R4
@@ -558,21 +598,21 @@ _ZN10led_driver13go_power_downEv:
         BL       _ZN10nrf_hw_pwm4stopEh
         ADDS     R5,R5,#+1
         B.N      ??go_power_down_0
-//  109 }
+//  148 }
 ??go_power_down_1:
         POP      {R0,R4,R5,PC}    ;; return
           CFI EndBlock cfiBlock5
-//  110 
-//  111 // функция рассичтывает период между инкрементацией свечения светодиода и  
-//  112 // шаг инкрементации, так чтобы уложиться во период времени за который 
-//  113 // свечение светодиода поднимется(или опустится) на заданную величину.
+//  149 
+//  150 // функция рассичтывает период между инкрементацией свечения светодиода и  
+//  151 // шаг инкрементации, так чтобы уложиться во период времени за который 
+//  152 // свечение светодиода поднимется(или опустится) на заданную величину.
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock6 Using cfiCommon0
           CFI Function _ZN10led_driver12set_fadetimeEj
         THUMB
-//  114 void led_driver::set_fadetime(uint32_t f_time)
-//  115 {       
+//  153 void led_driver::set_fadetime(uint32_t f_time)
+//  154 {       
 _ZN10led_driver12set_fadetimeEj:
         PUSH     {R3-R5,LR}
           CFI R14 Frame(CFA, -4)
@@ -581,24 +621,24 @@ _ZN10led_driver12set_fadetimeEj:
           CFI CFA R13+16
         MOVS     R4,R0
         MOVS     R5,R1
-//  116    volatile int nod;
-//  117   
-//  118     // рассчитываем наибольший общий делитель
-//  119     if( _max_val >= f_time)
+//  155    volatile int nod;
+//  156   
+//  157     // рассчитываем наибольший общий делитель
+//  158     if( _max_val >= f_time)
         LDRH     R0,[R4, #+36]
         CMP      R0,R5
         BCC.N    ??set_fadetime_0
-//  120     {
-//  121           nod = ::nod<int>((int)f_time,(int)_max_val);
+//  159     {
+//  160           nod = ::nod<int>((int)f_time,(int)_max_val);
         LDRH     R1,[R4, #+36]
         MOVS     R0,R5
           CFI FunCall _Z3nodIiET_S0_S0_
         BL       _Z3nodIiET_S0_S0_
         STR      R0,[SP, #+0]
-//  122         _tout = (uint32_t)nod;
+//  161         _tout = (uint32_t)nod;
         LDR      R0,[SP, #+0]
         STR      R0,[R4, #+32]
-//  123         _step = (uint8_t)round((double)(_max_val/(f_time/nod)));
+//  162         _step = (uint8_t)round((double)(_max_val/(f_time/nod)));
         LDR      R0,[SP, #+0]
         UDIV     R0,R5,R0
         LDRH     R1,[R4, #+36]
@@ -611,17 +651,17 @@ _ZN10led_driver12set_fadetimeEj:
         BL       __aeabi_d2iz
         STRB     R0,[R4, #+38]
         B.N      ??set_fadetime_1
-//  124     }
-//  125     else
-//  126     {
-//  127           nod = ::nod<int>((int)f_time,(int)_max_val);
+//  163     }
+//  164     else
+//  165     {
+//  166           nod = ::nod<int>((int)f_time,(int)_max_val);
 ??set_fadetime_0:
         LDRH     R1,[R4, #+36]
         MOVS     R0,R5
           CFI FunCall _Z3nodIiET_S0_S0_
         BL       _Z3nodIiET_S0_S0_
         STR      R0,[SP, #+0]
-//  128         _tout = (uint32_t)round((double)(f_time/(_max_val/nod)));
+//  167         _tout = (uint32_t)round((double)(f_time/(_max_val/nod)));
         LDRH     R0,[R4, #+36]
         LDR      R1,[SP, #+0]
         SDIV     R0,R0,R1
@@ -633,92 +673,92 @@ _ZN10led_driver12set_fadetimeEj:
           CFI FunCall __aeabi_d2uiz
         BL       __aeabi_d2uiz
         STR      R0,[R4, #+32]
-//  129         _step = nod;
+//  168         _step = nod;
         LDR      R0,[SP, #+0]
         STRB     R0,[R4, #+38]
-//  130     }
-//  131 }
+//  169     }
+//  170 }
 ??set_fadetime_1:
         POP      {R0,R4,R5,PC}    ;; return
           CFI EndBlock cfiBlock6
-//  132 
+//  171 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock7 Using cfiCommon0
           CFI Function _ZN10led_driver8light_upEv
         THUMB
-//  133 void led_driver::light_up() 
-//  134 {
+//  172 void led_driver::light_up() 
+//  173 {
 _ZN10led_driver8light_upEv:
         PUSH     {R4,LR}
           CFI R14 Frame(CFA, -4)
           CFI R4 Frame(CFA, -8)
           CFI CFA R13+8
         MOVS     R4,R0
-//  135     __disable_interrupt();
+//  174     __disable_interrupt();
         CPSID    I
-//  136   
-//  137     _stop();    
+//  175   
+//  176     _stop();    
         MOVS     R0,R4
           CFI FunCall _ZN10led_driver5_stopEv
         BL       _ZN10led_driver5_stopEv
-//  138     write_chnl(_led, LIGHT_UP);
+//  177     write_chnl(_led, LIGHT_UP);
         MOVS     R3,#+0
         MOVS     R2,#+255
         LDRB     R1,[R4, #+44]
         MOVS     R0,R4
           CFI FunCall _ZN10nrf_hw_pwm10write_chnlEhjb
         BL       _ZN10nrf_hw_pwm10write_chnlEhjb
-//  139     
-//  140     __enable_interrupt();
+//  178     
+//  179     __enable_interrupt();
         CPSIE    I
-//  141 } 
+//  180 } 
         POP      {R4,PC}          ;; return
           CFI EndBlock cfiBlock7
-//  142 
-//  143 // погасить светодиод полностью
+//  181 
+//  182 // погасить светодиод полностью
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock8 Using cfiCommon0
           CFI Function _ZN10led_driver8turn_offEv
         THUMB
-//  144 void led_driver::turn_off() 
-//  145 {
+//  183 void led_driver::turn_off() 
+//  184 {
 _ZN10led_driver8turn_offEv:
         PUSH     {R4,LR}
           CFI R14 Frame(CFA, -4)
           CFI R4 Frame(CFA, -8)
           CFI CFA R13+8
         MOVS     R4,R0
-//  146     __disable_interrupt();
+//  185     __disable_interrupt();
         CPSID    I
-//  147   
-//  148     _stop();
+//  186   
+//  187     _stop();
         MOVS     R0,R4
           CFI FunCall _ZN10led_driver5_stopEv
         BL       _ZN10led_driver5_stopEv
-//  149     write_chnl(_led, TURN_OFF); 
+//  188     write_chnl(_led, TURN_OFF); 
         MOVS     R3,#+0
         MOVS     R2,#+0
         LDRB     R1,[R4, #+44]
         MOVS     R0,R4
           CFI FunCall _ZN10nrf_hw_pwm10write_chnlEhjb
         BL       _ZN10nrf_hw_pwm10write_chnlEhjb
-//  150     
-//  151     __enable_interrupt();
+//  189     
+//  190     __enable_interrupt();
         CPSIE    I
-//  152 }
+//  191 }
         POP      {R4,PC}          ;; return
           CFI EndBlock cfiBlock8
-//  153 
-//  154 // установить нужную яркость светодиода
+//  192 
+//  193 // установить нужную яркость светодиода
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock9 Using cfiCommon0
           CFI Function _ZN10led_driver10bright_setEj
         THUMB
-//  155 void led_driver::bright_set(uint32_t value) 
-//  156 {   
+//  194 void led_driver::bright_set(uint32_t value) 
+//  195 {   
 _ZN10led_driver10bright_setEj:
         PUSH     {R3-R5,LR}
           CFI R14 Frame(CFA, -4)
@@ -727,213 +767,213 @@ _ZN10led_driver10bright_setEj:
           CFI CFA R13+16
         MOVS     R4,R0
         MOVS     R5,R1
-//  157     __disable_interrupt();
+//  196     __disable_interrupt();
         CPSID    I
-//  158 
-//  159     _stop(); 
+//  197 
+//  198     _stop(); 
         MOVS     R0,R4
           CFI FunCall _ZN10led_driver5_stopEv
         BL       _ZN10led_driver5_stopEv
-//  160     _bright_val = value;
+//  199     _bright_val = value;
         STR      R5,[R4, #+48]
-//  161     write_chnl(_led, value);
+//  200     write_chnl(_led, value);
         MOVS     R3,#+0
         MOVS     R2,R5
         LDRB     R1,[R4, #+44]
         MOVS     R0,R4
           CFI FunCall _ZN10nrf_hw_pwm10write_chnlEhjb
         BL       _ZN10nrf_hw_pwm10write_chnlEhjb
-//  162     
-//  163     __enable_interrupt();
+//  201     
+//  202     __enable_interrupt();
         CPSIE    I
-//  164 }
+//  203 }
         POP      {R0,R4,R5,PC}    ;; return
           CFI EndBlock cfiBlock9
-//  165 
+//  204 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock10 Using cfiCommon0
           CFI Function _ZN10led_driver3runEv
         THUMB
-//  166 void led_driver::run(void)
-//  167 { 
+//  205 void led_driver::run(void)
+//  206 { 
 _ZN10led_driver3runEv:
         PUSH     {R4,LR}
           CFI R14 Frame(CFA, -4)
           CFI R4 Frame(CFA, -8)
           CFI CFA R13+8
         MOVS     R4,R0
-//  168     __disable_interrupt();
+//  207     __disable_interrupt();
         CPSID    I
-//  169   
-//  170     if (!_need_finish())
+//  208   
+//  209     if (!_need_finish())
         MOVS     R0,R4
           CFI FunCall _ZN10led_driver12_need_finishEv
         BL       _ZN10led_driver12_need_finishEv
         CMP      R0,#+0
         BNE.N    ??run_0
-//  171     {      
-//  172       _run = true;
+//  210     {      
+//  211       _run = true;
         MOVS     R0,#+1
         STRB     R0,[R4, #+16]
-//  173       // запускаем на бесконечное количество вспышек
-//  174       _num_of_rptions = -1;
+//  212       // запускаем на бесконечное количество вспышек
+//  213       _num_of_rptions = -1;
         MOVS     R0,#-1
         STR      R0,[R4, #+20]
-//  175     }
-//  176     
-//  177     __enable_interrupt();
+//  214     }
+//  215     
+//  216     __enable_interrupt();
 ??run_0:
         CPSIE    I
-//  178 } 
+//  217 } 
         POP      {R4,PC}          ;; return
           CFI EndBlock cfiBlock10
-//  179 
+//  218 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock11 Using cfiCommon0
           CFI Function _ZN10led_driver3runEi
           CFI NoCalls
         THUMB
-//  180 void led_driver::run(int repetitions)
-//  181 { 
-//  182     __disable_interrupt();
+//  219 void led_driver::run(int repetitions)
+//  220 { 
+//  221     __disable_interrupt();
 _ZN10led_driver3runEi:
         CPSID    I
-//  183     
-//  184     // не запускаем драйвер если не 
-//  185     // отработаны повторы с предыдущей команды запуска.
-//  186     if (_num_of_rptions < 0)
+//  222     
+//  223     // не запускаем драйвер если не 
+//  224     // отработаны повторы с предыдущей команды запуска.
+//  225     if (_num_of_rptions < 0)
         LDR      R2,[R0, #+20]
         CMP      R2,#+0
         BPL.N    ??run_1
-//  187     {
-//  188         _num_of_rptions = repetitions;
+//  226     {
+//  227         _num_of_rptions = repetitions;
         STR      R1,[R0, #+20]
-//  189     
-//  190         _run = true;
+//  228     
+//  229         _run = true;
         MOVS     R2,#+1
         STRB     R2,[R0, #+16]
-//  191     }
-//  192     
-//  193     __enable_interrupt();
+//  230     }
+//  231     
+//  232     __enable_interrupt();
 ??run_1:
         CPSIE    I
-//  194 }
+//  233 }
         BX       LR               ;; return
           CFI EndBlock cfiBlock11
-//  195 
+//  234 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock12 Using cfiCommon0
           CFI Function _ZN10led_driver6run_upEv
         THUMB
-//  196 void led_driver::run_up(void)
-//  197 { 
+//  235 void led_driver::run_up(void)
+//  236 { 
 _ZN10led_driver6run_upEv:
         PUSH     {R4,LR}
           CFI R14 Frame(CFA, -4)
           CFI R4 Frame(CFA, -8)
           CFI CFA R13+8
         MOVS     R4,R0
-//  198     __disable_interrupt();
+//  237     __disable_interrupt();
         CPSID    I
-//  199   
-//  200     // если не требуется завершения предыдущей команды
-//  201     if (!_need_finish())
+//  238   
+//  239     // если не требуется завершения предыдущей команды
+//  240     if (!_need_finish())
         MOVS     R0,R4
           CFI FunCall _ZN10led_driver12_need_finishEv
         BL       _ZN10led_driver12_need_finishEv
         CMP      R0,#+0
         BNE.N    ??run_up_0
-//  202     { 
-//  203         if(_bright_val < _max_val)    
+//  241     { 
+//  242         if(_bright_val < _max_val)    
         LDR      R0,[R4, #+48]
         LDRH     R1,[R4, #+36]
         CMP      R0,R1
         BGE.N    ??run_up_0
-//  204         _run_up = true;
+//  243         _run_up = true;
         MOVS     R0,#+1
         STRB     R0,[R4, #+17]
-//  205     }
-//  206     
-//  207     __enable_interrupt();
+//  244     }
+//  245     
+//  246     __enable_interrupt();
 ??run_up_0:
         CPSIE    I
-//  208 } 
+//  247 } 
         POP      {R4,PC}          ;; return
           CFI EndBlock cfiBlock12
-//  209 
+//  248 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock13 Using cfiCommon0
           CFI Function _ZN10led_driver8run_downEv
         THUMB
-//  210 void led_driver::run_down(void)
-//  211 { 
+//  249 void led_driver::run_down(void)
+//  250 { 
 _ZN10led_driver8run_downEv:
         PUSH     {R4,LR}
           CFI R14 Frame(CFA, -4)
           CFI R4 Frame(CFA, -8)
           CFI CFA R13+8
         MOVS     R4,R0
-//  212     __disable_interrupt();
+//  251     __disable_interrupt();
         CPSID    I
-//  213     
-//  214     // если не требуется завершения предыдущей команды
-//  215     if (!_need_finish())
+//  252     
+//  253     // если не требуется завершения предыдущей команды
+//  254     if (!_need_finish())
         MOVS     R0,R4
           CFI FunCall _ZN10led_driver12_need_finishEv
         BL       _ZN10led_driver12_need_finishEv
         CMP      R0,#+0
         BNE.N    ??run_down_0
-//  216     { 
-//  217         // Закомментил: уменьшаем с текущего значения яркости
-//  218         //_bright_val = _max_val;
-//  219       if(_bright_val > 0)
+//  255     { 
+//  256         // Закомментил: уменьшаем с текущего значения яркости
+//  257         //_bright_val = _max_val;
+//  258       if(_bright_val > 0)
         LDR      R0,[R4, #+48]
         CMP      R0,#+1
         BLT.N    ??run_down_0
-//  220         _run_down = true;
+//  259         _run_down = true;
         MOVS     R0,#+1
         STRB     R0,[R4, #+18]
-//  221     }
-//  222     
-//  223     __enable_interrupt();
+//  260     }
+//  261     
+//  262     __enable_interrupt();
 ??run_down_0:
         CPSIE    I
-//  224 } 
+//  263 } 
         POP      {R4,PC}          ;; return
           CFI EndBlock cfiBlock13
-//  225 
+//  264 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock14 Using cfiCommon0
           CFI Function _ZN10led_driver5_stopEv
         THUMB
-//  226 void led_driver::_stop(void)   
-//  227 {  
+//  265 void led_driver::_stop(void)   
+//  266 {  
 _ZN10led_driver5_stopEv:
         PUSH     {R4,LR}
           CFI R14 Frame(CFA, -4)
           CFI R4 Frame(CFA, -8)
           CFI CFA R13+8
         MOVS     R4,R0
-//  228     _num_of_rptions = -1;
+//  267     _num_of_rptions = -1;
         MOVS     R0,#-1
         STR      R0,[R4, #+20]
-//  229 
-//  230     _run        = false;
+//  268 
+//  269     _run        = false;
         MOVS     R0,#+0
         STRB     R0,[R4, #+16]
-//  231     _run_up     = false;
+//  270     _run_up     = false;
         MOVS     R0,#+0
         STRB     R0,[R4, #+17]
-//  232     _run_down   = false;
+//  271     _run_down   = false;
         MOVS     R0,#+0
         STRB     R0,[R4, #+18]
-//  233 
-//  234     _timer   = pTimer->get_ms() - _tout;
+//  272 
+//  273     _timer   = pTimer->get_ms() - _tout;
         LDR      R0,[R4, #+12]
           CFI FunCall _ZNK5Timer6get_msEv
         BL       _ZNK5Timer6get_msEv
@@ -942,25 +982,25 @@ _ZN10led_driver5_stopEv:
         SUBS     R0,R0,R2
         SBCS     R1,R1,R3
         STRD     R0,R1,[R4, #+24]
-//  235 
-//  236     _bright_val     = 0;
+//  274 
+//  275     _bright_val     = 0;
         MOVS     R0,#+0
         STR      R0,[R4, #+48]
-//  237     _fade_dir = true;
+//  276     _fade_dir = true;
         MOVS     R0,#+1
         STRB     R0,[R4, #+45]
-//  238     
-//  239 }
+//  277     
+//  278 }
         POP      {R4,PC}          ;; return
           CFI EndBlock cfiBlock14
-//  240 
+//  279 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock15 Using cfiCommon0
           CFI Function _ZN10led_driver6handleEv
         THUMB
-//  241 bool led_driver::handle(void) 
-//  242 {  
+//  280 bool led_driver::handle(void) 
+//  281 {  
 _ZN10led_driver6handleEv:
         PUSH     {R3-R5,LR}
           CFI R14 Frame(CFA, -4)
@@ -968,55 +1008,55 @@ _ZN10led_driver6handleEv:
           CFI R4 Frame(CFA, -12)
           CFI CFA R13+16
         MOVS     R4,R0
-//  243      bool result = false;
+//  282      bool result = false;
         MOVS     R5,#+0
-//  244 
-//  245     if(_fade())
+//  283 
+//  284     if(_fade())
         MOVS     R0,R4
           CFI FunCall _ZN10led_driver5_fadeEv
         BL       _ZN10led_driver5_fadeEv
         CMP      R0,#+0
         BEQ.N    ??handle_0
-//  246         result = true;
+//  285         result = true;
         MOVS     R0,#+1
         MOVS     R5,R0
-//  247     if(_fade_up())
+//  286     if(_fade_up())
 ??handle_0:
         MOVS     R0,R4
           CFI FunCall _ZN10led_driver8_fade_upEv
         BL       _ZN10led_driver8_fade_upEv
         CMP      R0,#+0
         BEQ.N    ??handle_1
-//  248         result = true;
+//  287         result = true;
         MOVS     R0,#+1
         MOVS     R5,R0
-//  249     if(_fade_down())
+//  288     if(_fade_down())
 ??handle_1:
         MOVS     R0,R4
           CFI FunCall _ZN10led_driver10_fade_downEv
         BL       _ZN10led_driver10_fade_downEv
         CMP      R0,#+0
         BEQ.N    ??handle_2
-//  250         result = true;
+//  289         result = true;
         MOVS     R0,#+1
         MOVS     R5,R0
-//  251 
-//  252     return result;
+//  290 
+//  291     return result;
 ??handle_2:
         MOVS     R0,R5
         UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
         POP      {R1,R4,R5,PC}    ;; return
-//  253 }
+//  292 }
           CFI EndBlock cfiBlock15
-//  254 
-//  255 // размещается в прерывании.
+//  293 
+//  294 // размещается в прерывании.
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock16 Using cfiCommon0
           CFI Function _ZN10led_driver5_fadeEv
         THUMB
-//  256 bool led_driver::_fade(void)   
-//  257 {   
+//  295 bool led_driver::_fade(void)   
+//  296 {   
 _ZN10led_driver5_fadeEv:
         PUSH     {R3-R7,LR}
           CFI R14 Frame(CFA, -4)
@@ -1026,19 +1066,19 @@ _ZN10led_driver5_fadeEv:
           CFI R4 Frame(CFA, -20)
           CFI CFA R13+24
         MOVS     R4,R0
-//  258     bool result = false;
+//  297     bool result = false;
         MOVS     R5,#+0
-//  259 
-//  260     if(_run)
+//  298 
+//  299     if(_run)
         LDRB     R0,[R4, #+16]
         CMP      R0,#+0
         BEQ.N    ??_fade_0
-//  261     {
-//  262         result = true;
+//  300     {
+//  301         result = true;
         MOVS     R0,#+1
         MOVS     R5,R0
-//  263 
-//  264         if (pTimer->get_ms() - _timer > (uint64_t)_tout)
+//  302 
+//  303         if (pTimer->get_ms() - _timer > (uint64_t)_tout)
         LDR      R0,[R4, #+12]
           CFI FunCall _ZNK5Timer6get_msEv
         BL       _ZNK5Timer6get_msEv
@@ -1052,24 +1092,24 @@ _ZN10led_driver5_fadeEv:
         BCC.N    ??_fade_1
         CMP      R2,R0
         BCS.N    ??_fade_0
-//  265         {
-//  266              if(_fade_dir)
+//  304         {
+//  305              if(_fade_dir)
 ??_fade_1:
         LDRB     R0,[R4, #+45]
         CMP      R0,#+0
         BEQ.N    ??_fade_2
-//  267              {
-//  268                  _bright_val += (int)_step;
+//  306              {
+//  307                  _bright_val += (int)_step;
         LDR      R0,[R4, #+48]
         LDRB     R1,[R4, #+38]
         ADDS     R0,R0,R1
         STR      R0,[R4, #+48]
-//  269                  if(_bright_val < (int)_max_val )
+//  308                  if(_bright_val < (int)_max_val )
         LDR      R0,[R4, #+48]
         LDRH     R1,[R4, #+36]
         CMP      R0,R1
         BGE.N    ??_fade_3
-//  270                  { write_chnl(_led,_bright_val); }
+//  309                  { write_chnl(_led,_bright_val); }
         MOVS     R3,#+0
         LDR      R2,[R4, #+48]
         LDRB     R1,[R4, #+44]
@@ -1077,20 +1117,20 @@ _ZN10led_driver5_fadeEv:
           CFI FunCall _ZN10nrf_hw_pwm10write_chnlEhjb
         BL       _ZN10nrf_hw_pwm10write_chnlEhjb
         B.N      ??_fade_4
-//  271                  else
-//  272                  { 
-//  273                      _bright_val = (int)_max_val;
+//  310                  else
+//  311                  { 
+//  312                      _bright_val = (int)_max_val;
 ??_fade_3:
         LDRH     R0,[R4, #+36]
         STR      R0,[R4, #+48]
-//  274                      write_chnl(_led,_bright_val);
+//  313                      write_chnl(_led,_bright_val);
         MOVS     R3,#+0
         LDR      R2,[R4, #+48]
         LDRB     R1,[R4, #+44]
         MOVS     R0,R4
           CFI FunCall _ZN10nrf_hw_pwm10write_chnlEhjb
         BL       _ZN10nrf_hw_pwm10write_chnlEhjb
-//  275                      _fade_dir = !_fade_dir;
+//  314                      _fade_dir = !_fade_dir;
         LDRB     R0,[R4, #+45]
         CMP      R0,#+0
         BNE.N    ??_fade_5
@@ -1101,21 +1141,21 @@ _ZN10led_driver5_fadeEv:
 ??_fade_6:
         STRB     R0,[R4, #+45]
         B.N      ??_fade_4
-//  276                  }
-//  277              }
-//  278              else
-//  279              { 
-//  280                  _bright_val -= (int)_step;
+//  315                  }
+//  316              }
+//  317              else
+//  318              { 
+//  319                  _bright_val -= (int)_step;
 ??_fade_2:
         LDR      R1,[R4, #+48]
         LDRB     R0,[R4, #+38]
         SUBS     R1,R1,R0
         STR      R1,[R4, #+48]
-//  281                  if(_bright_val > 0 )
+//  320                  if(_bright_val > 0 )
         LDR      R0,[R4, #+48]
         CMP      R0,#+1
         BLT.N    ??_fade_7
-//  282                  { write_chnl(_led,_bright_val); }
+//  321                  { write_chnl(_led,_bright_val); }
         MOVS     R3,#+0
         LDR      R2,[R4, #+48]
         LDRB     R1,[R4, #+44]
@@ -1123,20 +1163,20 @@ _ZN10led_driver5_fadeEv:
           CFI FunCall _ZN10nrf_hw_pwm10write_chnlEhjb
         BL       _ZN10nrf_hw_pwm10write_chnlEhjb
         B.N      ??_fade_4
-//  283                  else
-//  284                  { 
-//  285                      _bright_val = 0;
+//  322                  else
+//  323                  { 
+//  324                      _bright_val = 0;
 ??_fade_7:
         MOVS     R0,#+0
         STR      R0,[R4, #+48]
-//  286                      write_chnl(_led,_bright_val);
+//  325                      write_chnl(_led,_bright_val);
         MOVS     R3,#+0
         LDR      R2,[R4, #+48]
         LDRB     R1,[R4, #+44]
         MOVS     R0,R4
           CFI FunCall _ZN10nrf_hw_pwm10write_chnlEhjb
         BL       _ZN10nrf_hw_pwm10write_chnlEhjb
-//  287                      _fade_dir = !_fade_dir;
+//  326                      _fade_dir = !_fade_dir;
         LDRB     R0,[R4, #+45]
         CMP      R0,#+0
         BNE.N    ??_fade_8
@@ -1146,54 +1186,54 @@ _ZN10led_driver5_fadeEv:
         MOVS     R0,#+0
 ??_fade_9:
         STRB     R0,[R4, #+45]
-//  288   
-//  289                      if(--_num_of_rptions == 0)
+//  327   
+//  328                      if(--_num_of_rptions == 0)
         LDR      R0,[R4, #+20]
         SUBS     R0,R0,#+1
         STR      R0,[R4, #+20]
         LDR      R0,[R4, #+20]
         CMP      R0,#+0
         BNE.N    ??_fade_4
-//  290                      {   
-//  291                         _stop();
+//  329                      {   
+//  330                         _stop();
         MOVS     R0,R4
           CFI FunCall _ZN10led_driver5_stopEv
         BL       _ZN10led_driver5_stopEv
-//  292   
-//  293                         return result;
+//  331   
+//  332                         return result;
         MOVS     R0,R5
         UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
         B.N      ??_fade_10
-//  294                      }
-//  295                  }
-//  296              }
-//  297              
-//  298              _timer = pTimer->get_ms();
+//  333                      }
+//  334                  }
+//  335              }
+//  336              
+//  337              _timer = pTimer->get_ms();
 ??_fade_4:
         LDR      R0,[R4, #+12]
           CFI FunCall _ZNK5Timer6get_msEv
         BL       _ZNK5Timer6get_msEv
         STRD     R0,R1,[R4, #+24]
-//  299         }
-//  300     }
-//  301 
-//  302     return result;
+//  338         }
+//  339     }
+//  340 
+//  341     return result;
 ??_fade_0:
         MOVS     R0,R5
         UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
 ??_fade_10:
         POP      {R1,R4-R7,PC}    ;; return
-//  303 }  
+//  342 }  
           CFI EndBlock cfiBlock16
-//  304 
-//  305 // размещается в прерывании.
+//  343 
+//  344 // размещается в прерывании.
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock17 Using cfiCommon0
           CFI Function _ZN10led_driver8_fade_upEv
         THUMB
-//  306 bool led_driver::_fade_up(void)   
-//  307 {   
+//  345 bool led_driver::_fade_up(void)   
+//  346 {   
 _ZN10led_driver8_fade_upEv:
         PUSH     {R3-R7,LR}
           CFI R14 Frame(CFA, -4)
@@ -1203,19 +1243,19 @@ _ZN10led_driver8_fade_upEv:
           CFI R4 Frame(CFA, -20)
           CFI CFA R13+24
         MOVS     R4,R0
-//  308     bool result = false;
+//  347     bool result = false;
         MOVS     R5,#+0
-//  309 
-//  310     if(_run_up)
+//  348 
+//  349     if(_run_up)
         LDRB     R0,[R4, #+17]
         CMP      R0,#+0
         BEQ.N    ??_fade_up_0
-//  311     {
-//  312         result = true;
+//  350     {
+//  351         result = true;
         MOVS     R0,#+1
         MOVS     R5,R0
-//  313 
-//  314         if (pTimer->get_ms() - _timer > (uint64_t)_tout)
+//  352 
+//  353         if (pTimer->get_ms() - _timer > (uint64_t)_tout)
         LDR      R0,[R4, #+12]
           CFI FunCall _ZNK5Timer6get_msEv
         BL       _ZNK5Timer6get_msEv
@@ -1229,20 +1269,20 @@ _ZN10led_driver8_fade_upEv:
         BCC.N    ??_fade_up_1
         CMP      R2,R0
         BCS.N    ??_fade_up_0
-//  315         {
-//  316             _bright_val += (int)_step;
+//  354         {
+//  355             _bright_val += (int)_step;
 ??_fade_up_1:
         LDR      R0,[R4, #+48]
         LDRB     R1,[R4, #+38]
         ADDS     R0,R0,R1
         STR      R0,[R4, #+48]
-//  317 
-//  318             if(_bright_val < (int)_max_val )
+//  356 
+//  357             if(_bright_val < (int)_max_val )
         LDR      R0,[R4, #+48]
         LDRH     R1,[R4, #+36]
         CMP      R0,R1
         BGE.N    ??_fade_up_2
-//  319             { write_chnl(_led,_bright_val); }
+//  358             { write_chnl(_led,_bright_val); }
         MOVS     R3,#+0
         LDR      R2,[R4, #+48]
         LDRB     R1,[R4, #+44]
@@ -1250,31 +1290,31 @@ _ZN10led_driver8_fade_upEv:
           CFI FunCall _ZN10nrf_hw_pwm10write_chnlEhjb
         BL       _ZN10nrf_hw_pwm10write_chnlEhjb
         B.N      ??_fade_up_3
-//  320             else
-//  321             { 
-//  322                 _bright_val = (int)_max_val;
+//  359             else
+//  360             { 
+//  361                 _bright_val = (int)_max_val;
 ??_fade_up_2:
         LDRH     R0,[R4, #+36]
         STR      R0,[R4, #+48]
-//  323                 write_chnl(_led,_bright_val);
+//  362                 write_chnl(_led,_bright_val);
         MOVS     R3,#+0
         LDR      R2,[R4, #+48]
         LDRB     R1,[R4, #+44]
         MOVS     R0,R4
           CFI FunCall _ZN10nrf_hw_pwm10write_chnlEhjb
         BL       _ZN10nrf_hw_pwm10write_chnlEhjb
-//  324 
-//  325                 _run_up = false;
+//  363 
+//  364                 _run_up = false;
         MOVS     R0,#+0
         STRB     R0,[R4, #+17]
-//  326             }
-//  327 
-//  328             if(_run_up == false)
+//  365             }
+//  366 
+//  367             if(_run_up == false)
 ??_fade_up_3:
         LDRB     R0,[R4, #+17]
         CMP      R0,#+0
         BNE.N    ??_fade_up_4
-//  329             { _timer   = pTimer->get_ms() - (uint64_t)_tout; }
+//  368             { _timer   = pTimer->get_ms() - (uint64_t)_tout; }
         LDR      R0,[R4, #+12]
           CFI FunCall _ZNK5Timer6get_msEv
         BL       _ZNK5Timer6get_msEv
@@ -1284,32 +1324,32 @@ _ZN10led_driver8_fade_upEv:
         SBCS     R1,R1,R3
         STRD     R0,R1,[R4, #+24]
         B.N      ??_fade_up_0
-//  330             else
-//  331             { _timer   = pTimer->get_ms(); }            
+//  369             else
+//  370             { _timer   = pTimer->get_ms(); }            
 ??_fade_up_4:
         LDR      R0,[R4, #+12]
           CFI FunCall _ZNK5Timer6get_msEv
         BL       _ZNK5Timer6get_msEv
         STRD     R0,R1,[R4, #+24]
-//  332         }
-//  333     }
-//  334 
-//  335     return result;
+//  371         }
+//  372     }
+//  373 
+//  374     return result;
 ??_fade_up_0:
         MOVS     R0,R5
         UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
         POP      {R1,R4-R7,PC}    ;; return
-//  336 } 
+//  375 } 
           CFI EndBlock cfiBlock17
-//  337 
-//  338 // размещается в прерывании.
+//  376 
+//  377 // размещается в прерывании.
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock18 Using cfiCommon0
           CFI Function _ZN10led_driver10_fade_downEv
         THUMB
-//  339 bool led_driver::_fade_down(void)   
-//  340 {   
+//  378 bool led_driver::_fade_down(void)   
+//  379 {   
 _ZN10led_driver10_fade_downEv:
         PUSH     {R3-R7,LR}
           CFI R14 Frame(CFA, -4)
@@ -1319,19 +1359,19 @@ _ZN10led_driver10_fade_downEv:
           CFI R4 Frame(CFA, -20)
           CFI CFA R13+24
         MOVS     R4,R0
-//  341     bool result = false;
+//  380     bool result = false;
         MOVS     R5,#+0
-//  342 
-//  343     if(_run_down)
+//  381 
+//  382     if(_run_down)
         LDRB     R0,[R4, #+18]
         CMP      R0,#+0
         BEQ.N    ??_fade_down_0
-//  344     {
-//  345         result = true;
+//  383     {
+//  384         result = true;
         MOVS     R0,#+1
         MOVS     R5,R0
-//  346 
-//  347         if (pTimer->get_ms() - _timer > (uint64_t)_tout)
+//  385 
+//  386         if (pTimer->get_ms() - _timer > (uint64_t)_tout)
         LDR      R0,[R4, #+12]
           CFI FunCall _ZNK5Timer6get_msEv
         BL       _ZNK5Timer6get_msEv
@@ -1345,19 +1385,19 @@ _ZN10led_driver10_fade_downEv:
         BCC.N    ??_fade_down_1
         CMP      R2,R0
         BCS.N    ??_fade_down_0
-//  348         {
-//  349             _bright_val -= (int)_step;
+//  387         {
+//  388             _bright_val -= (int)_step;
 ??_fade_down_1:
         LDR      R1,[R4, #+48]
         LDRB     R0,[R4, #+38]
         SUBS     R1,R1,R0
         STR      R1,[R4, #+48]
-//  350 
-//  351             if(_bright_val > 0 )
+//  389 
+//  390             if(_bright_val > 0 )
         LDR      R0,[R4, #+48]
         CMP      R0,#+1
         BLT.N    ??_fade_down_2
-//  352             { write_chnl(_led,_bright_val); }
+//  391             { write_chnl(_led,_bright_val); }
         MOVS     R3,#+0
         LDR      R2,[R4, #+48]
         LDRB     R1,[R4, #+44]
@@ -1365,32 +1405,32 @@ _ZN10led_driver10_fade_downEv:
           CFI FunCall _ZN10nrf_hw_pwm10write_chnlEhjb
         BL       _ZN10nrf_hw_pwm10write_chnlEhjb
         B.N      ??_fade_down_3
-//  353             else
-//  354             { 
-//  355                 _bright_val = 0;
+//  392             else
+//  393             { 
+//  394                 _bright_val = 0;
 ??_fade_down_2:
         MOVS     R0,#+0
         STR      R0,[R4, #+48]
-//  356 
-//  357                 write_chnl(_led,_bright_val); 
+//  395 
+//  396                 write_chnl(_led,_bright_val); 
         MOVS     R3,#+0
         LDR      R2,[R4, #+48]
         LDRB     R1,[R4, #+44]
         MOVS     R0,R4
           CFI FunCall _ZN10nrf_hw_pwm10write_chnlEhjb
         BL       _ZN10nrf_hw_pwm10write_chnlEhjb
-//  358 
-//  359                 _run_down = false;
+//  397 
+//  398                 _run_down = false;
         MOVS     R0,#+0
         STRB     R0,[R4, #+18]
-//  360             }
-//  361              
-//  362             if(_run_down == false)
+//  399             }
+//  400              
+//  401             if(_run_down == false)
 ??_fade_down_3:
         LDRB     R0,[R4, #+18]
         CMP      R0,#+0
         BNE.N    ??_fade_down_4
-//  363             { _timer   = pTimer->get_ms() - (uint64_t)_tout; }
+//  402             { _timer   = pTimer->get_ms() - (uint64_t)_tout; }
         LDR      R0,[R4, #+12]
           CFI FunCall _ZNK5Timer6get_msEv
         BL       _ZNK5Timer6get_msEv
@@ -1400,50 +1440,50 @@ _ZN10led_driver10_fade_downEv:
         SBCS     R1,R1,R3
         STRD     R0,R1,[R4, #+24]
         B.N      ??_fade_down_0
-//  364             else
-//  365             { _timer   = pTimer->get_ms(); } 
+//  403             else
+//  404             { _timer   = pTimer->get_ms(); } 
 ??_fade_down_4:
         LDR      R0,[R4, #+12]
           CFI FunCall _ZNK5Timer6get_msEv
         BL       _ZNK5Timer6get_msEv
         STRD     R0,R1,[R4, #+24]
-//  366         }
-//  367     }
-//  368 
-//  369     return result;
+//  405         }
+//  406     }
+//  407 
+//  408     return result;
 ??_fade_down_0:
         MOVS     R0,R5
         UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
         POP      {R1,R4-R7,PC}    ;; return
-//  370 } 
+//  409 } 
           CFI EndBlock cfiBlock18
-//  371 
+//  410 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock19 Using cfiCommon0
           CFI Function _ZN10led_driver12_need_finishEv
           CFI NoCalls
         THUMB
-//  372 bool led_driver::_need_finish(void)
-//  373 {
+//  411 bool led_driver::_need_finish(void)
+//  412 {
 _ZN10led_driver12_need_finishEv:
         MOVS     R1,R0
-//  374     if ( _num_of_rptions > 1)
+//  413     if ( _num_of_rptions > 1)
         LDR      R0,[R1, #+20]
         CMP      R0,#+2
         BLT.N    ??_need_finish_0
-//  375     { 
-//  376         // драйвер запущен на несколько повторений или
-//  377         // на бесконечное количество делаем это последним
-//  378         _num_of_rptions = 1;
+//  414     { 
+//  415         // драйвер запущен на несколько повторений или
+//  416         // на бесконечное количество делаем это последним
+//  417         _num_of_rptions = 1;
         MOVS     R0,#+1
         STR      R0,[R1, #+20]
-//  379         return true;
+//  418         return true;
         MOVS     R0,#+1
         B.N      ??_need_finish_1
-//  380     } 
-//  381     else
-//  382     if ( _run_up || _run_down )
+//  419     } 
+//  420     else
+//  421     if ( _run_up || _run_down )
 ??_need_finish_0:
         LDRB     R0,[R1, #+17]
         CMP      R0,#+0
@@ -1451,15 +1491,15 @@ _ZN10led_driver12_need_finishEv:
         LDRB     R0,[R1, #+18]
         CMP      R0,#+0
         BEQ.N    ??_need_finish_3
-//  383     {   
-//  384         // даем завершиться восходящему или нисходящему градиенту
-//  385         return true; 
+//  422     {   
+//  423         // даем завершиться восходящему или нисходящему градиенту
+//  424         return true; 
 ??_need_finish_2:
         MOVS     R0,#+1
         B.N      ??_need_finish_1
-//  386     }
-//  387     else
-//  388     if (_run &&( _num_of_rptions < 0))
+//  425     }
+//  426     else
+//  427     if (_run &&( _num_of_rptions < 0))
 ??_need_finish_3:
         LDRB     R0,[R1, #+16]
         CMP      R0,#+0
@@ -1467,32 +1507,32 @@ _ZN10led_driver12_need_finishEv:
         LDR      R0,[R1, #+20]
         CMP      R0,#+0
         BPL.N    ??_need_finish_4
-//  389     {
-//  390         // выключаем только по отдельному запуску turn_off() в цикле если запущен
-//  391         // на бесконечный повтор
-//  392         //turn_off();
-//  393         return true;
+//  428     {
+//  429         // выключаем только по отдельному запуску turn_off() в цикле если запущен
+//  430         // на бесконечный повтор
+//  431         //turn_off();
+//  432         return true;
         MOVS     R0,#+1
         B.N      ??_need_finish_1
-//  394     }
-//  395     else
-//  396     { 
-//  397         return false;
+//  433     }
+//  434     else
+//  435     { 
+//  436         return false;
 ??_need_finish_4:
         MOVS     R0,#+0
 ??_need_finish_1:
         BX       LR               ;; return
-//  398     }  
-//  399 }
+//  437     }  
+//  438 }
           CFI EndBlock cfiBlock19
-//  400 
+//  439 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock20 Using cfiCommon0
           CFI Function _Z18led_drivers_handlev
         THUMB
-//  401 uint8_t led_drivers_handle(void)
-//  402 {
+//  440 uint8_t led_drivers_handle(void)
+//  441 {
 _Z18led_drivers_handlev:
         PUSH     {R4-R6,LR}
           CFI R14 Frame(CFA, -4)
@@ -1500,56 +1540,56 @@ _Z18led_drivers_handlev:
           CFI R5 Frame(CFA, -12)
           CFI R4 Frame(CFA, -16)
           CFI CFA R13+16
-//  403     bool busy = false;
+//  442     bool busy = false;
         MOVS     R4,#+0
-//  404     uint8_t  result = 0;
+//  443     uint8_t  result = 0;
         MOVS     R5,#+0
-//  405     
-//  406    //обработка драйверов светодиодов
-//  407    for ( uint32_t i = 0; i < LEDS_NUM; i++)
+//  444     
+//  445    //обработка драйверов светодиодов
+//  446    for ( uint32_t i = 0; i < LEDS_NUM; i++)
         MOVS     R6,#+0
 ??led_drivers_handle_0:
         CMP      R6,#+8
         BCS.N    ??led_drivers_handle_1
-//  408    { 
-//  409       if(led_list[i] != NULL)
+//  447    { 
+//  448       if(led_list[i] != NULL)
         LDR.N    R1,??DataTable2_8
         LDR      R0,[R1, R6, LSL #+2]
         CMP      R0,#+0
         BEQ.N    ??led_drivers_handle_2
-//  410       { busy = led_list[i]->handle(); } 
+//  449       { busy = led_list[i]->handle(); } 
         LDR      R0,[R1, R6, LSL #+2]
           CFI FunCall _ZN10led_driver6handleEv
         BL       _ZN10led_driver6handleEv
         MOVS     R4,R0
-//  411        
-//  412       // защелкиваем защелку       
-//  413       if(busy)
+//  450        
+//  451       // защелкиваем защелку       
+//  452       if(busy)
 ??led_drivers_handle_2:
         MOVS     R0,R4
         UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
         CMP      R0,#+0
         BEQ.N    ??led_drivers_handle_3
-//  414       { 
-//  415           busy = false;
+//  453       { 
+//  454           busy = false;
         MOVS     R0,#+0
         MOVS     R4,R0
-//  416           result++;
+//  455           result++;
         ADDS     R5,R5,#+1
-//  417       }
-//  418    }
+//  456       }
+//  457    }
 ??led_drivers_handle_3:
         ADDS     R6,R6,#+1
         B.N      ??led_drivers_handle_0
-//  419 
-//  420    // флажок нужен для того чтобы показать 
-//  421    // сколько светодиодов сейчас обрабатываеться
-//  422    return result;
+//  458 
+//  459    // флажок нужен для того чтобы показать 
+//  460    // сколько светодиодов сейчас обрабатываеться
+//  461    return result;
 ??led_drivers_handle_1:
         MOVS     R0,R5
         UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
         POP      {R4-R6,PC}       ;; return
-//  423 }
+//  462 }
           CFI EndBlock cfiBlock20
 
         SECTION `.text`:CODE:NOROOT(2)
@@ -1648,7 +1688,7 @@ _Z3nodIiET_S0_S0_:
         DC32 0
 
         END
-//  424 
+//  463 
 // 
 //   336 bytes in section .bss
 //    64 bytes in section .data

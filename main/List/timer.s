@@ -1,13 +1,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR ANSI C/C++ Compiler V8.40.1.212/W32 for ARM        03/Feb/2021  19:58:18
+// IAR ANSI C/C++ Compiler V8.40.1.212/W32 for ARM        05/Feb/2021  13:10:42
 // Copyright 1999-2019 IAR Systems AB.
 //
 //    Cpu mode     =  
 //    Endian       =  little
 //    Source file  =  E:\cpp\nrf52_libraries\timer\timer.cpp
 //    Command line =
-//        -f C:\Users\IF385~1.SHO\AppData\Local\Temp\EW7156.tmp
+//        -f C:\Users\IF385~1.SHO\AppData\Local\Temp\EWEF50.tmp
 //        (E:\cpp\nrf52_libraries\timer\timer.cpp -D NRF52840_XXAA -D
 //        CONFIG_NFCT_PINS_AS_GPIOS -D _AUDIOGUDE_V2_BOARD -D DEBUG -lCN
 //        E:\cpp\nrf52_libraries\main\List -lA E:\cpp\nrf52_libraries\main\List
@@ -51,9 +51,7 @@
         PUBLIC _Z18sys_timer_callbackj
         PUBLIC _ZN3ADCILi6EE20setConvertionEND_IRQEh
         PUBLIC _ZN3ADCILi6EE4initEv
-        PUBLIC _ZN3ADCILi6EE6deinitEv
         PUBLIC _ZN3ADCILi6EE6enableEv
-        PUBLIC _ZN3ADCILi6EE7disableEv
         PUBLIC _ZN3ADCILi6EE7measureEv
         PUBLIC _ZN5Timer17setCaptureCompareEhhb
         PUBLIC _ZN5Timer4initEjjb
@@ -100,10 +98,9 @@
 // E:\cpp\nrf52_libraries\timer\timer.cpp
 //    1 #include "Timer.h"
 //    2 #include "led_driver.h"
-//    3 
+//    3 #include "PowerControl.h"
 //    4 #include "ADC.h"
-//    5 #include "ADC.cpp" // because this is template of class
-//    6 
+//    5 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock0 Using cfiCommon0
@@ -225,8 +222,8 @@ _ZN30_INTERNAL_9_timer_cpp_4e19ece916NVIC_SetPriorityE9IRQn_Typej:
           CFI Function _ZN5TimerC1Eh
           CFI NoCalls
         THUMB
-//    7 Timer::Timer(uint8_t tmr_num)
-//    8 {
+//    6 Timer::Timer(uint8_t tmr_num)
+//    7 {
 _ZN5TimerC1Eh:
         MOVS     R2,#+0
         STR      R2,[R0, #+8]
@@ -235,7 +232,7 @@ _ZN5TimerC1Eh:
         STRD     R2,R3,[R0, #+16]
         MOVS     R2,#+1
         STRB     R2,[R0, #+24]
-//    9     switch(tmr_num)
+//    8     switch(tmr_num)
         MOVS     R2,R1
         UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
         CMP      R2,#+0
@@ -247,76 +244,76 @@ _ZN5TimerC1Eh:
         BEQ.N    ??Timer_3
         BCC.N    ??Timer_4
         B.N      ??Timer_5
-//   10     {        
-//   11         case 0:
-//   12             _TIMER = NRF_TIMER0;
+//    9     {        
+//   10         case 0:
+//   11             _TIMER = NRF_TIMER0;
 ??Timer_0:
         LDR.W    R2,??DataTable8_5  ;; 0x40008000
         STR      R2,[R0, #+0]
-//   13             _IRQn = TIMER0_IRQn;
+//   12             _IRQn = TIMER0_IRQn;
         MOVS     R2,#+8
         STRB     R2,[R0, #+4]
-//   14             break;
+//   13             break;
         B.N      ??Timer_6
-//   15         case 1:
-//   16             _TIMER = NRF_TIMER1;
+//   14         case 1:
+//   15             _TIMER = NRF_TIMER1;
 ??Timer_2:
         LDR.W    R2,??DataTable8_6  ;; 0x40009000
         STR      R2,[R0, #+0]
-//   17             _IRQn = TIMER1_IRQn;
+//   16             _IRQn = TIMER1_IRQn;
         MOVS     R2,#+9
         STRB     R2,[R0, #+4]
-//   18             break;
+//   17             break;
         B.N      ??Timer_6
-//   19         case 2:
-//   20             _TIMER = NRF_TIMER2;
+//   18         case 2:
+//   19             _TIMER = NRF_TIMER2;
 ??Timer_1:
         LDR.W    R2,??DataTable8_7  ;; 0x4000a000
         STR      R2,[R0, #+0]
-//   21             _IRQn = TIMER2_IRQn;
+//   20             _IRQn = TIMER2_IRQn;
         MOVS     R2,#+10
         STRB     R2,[R0, #+4]
-//   22             break;
+//   21             break;
         B.N      ??Timer_6
-//   23         case 3:
-//   24             _TIMER = NRF_TIMER3;
+//   22         case 3:
+//   23             _TIMER = NRF_TIMER3;
 ??Timer_4:
         LDR.W    R2,??DataTable8_8  ;; 0x4001a000
         STR      R2,[R0, #+0]
-//   25             _IRQn = TIMER3_IRQn;
+//   24             _IRQn = TIMER3_IRQn;
         MOVS     R2,#+26
         STRB     R2,[R0, #+4]
-//   26             break;
+//   25             break;
         B.N      ??Timer_6
-//   27         case 4:
-//   28             _TIMER = NRF_TIMER4;
+//   26         case 4:
+//   27             _TIMER = NRF_TIMER4;
 ??Timer_3:
         LDR.W    R2,??DataTable8_9  ;; 0x4001b000
         STR      R2,[R0, #+0]
-//   29             _IRQn = TIMER4_IRQn;
+//   28             _IRQn = TIMER4_IRQn;
         MOVS     R2,#+27
         STRB     R2,[R0, #+4]
-//   30             break;
+//   29             break;
         B.N      ??Timer_6
-//   31         default:
-//   32              _TIMER = nullptr;
+//   30         default:
+//   31              _TIMER = nullptr;
 ??Timer_5:
         MOVS     R2,#+0
         STR      R2,[R0, #+0]
-//   33             break;
-//   34     }
-//   35 }
+//   32             break;
+//   33     }
+//   34 }
 ??Timer_6:
         BX       LR               ;; return
           CFI EndBlock cfiBlock5
-//   36 
+//   35 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock6 Using cfiCommon0
           CFI Function _ZN5Timer4initEjjb
         THUMB
-//   37 void    Timer::init(uint32_t presc, uint32_t compare_val, bool circulary)
-//   38 {
+//   36 void    Timer::init(uint32_t presc, uint32_t compare_val, bool circulary)
+//   37 {
 _ZN5Timer4initEjjb:
         PUSH     {R3-R7,LR}
           CFI R14 Frame(CFA, -4)
@@ -329,19 +326,19 @@ _ZN5Timer4initEjjb:
         MOVS     R5,R1
         MOVS     R6,R2
         MOVS     R7,R3
-//   39     _TIMER->MODE = TIMER_MODE_MODE_Timer << TIMER_MODE_MODE_Pos;
+//   38     _TIMER->MODE = TIMER_MODE_MODE_Timer << TIMER_MODE_MODE_Pos;
         MOVS     R0,#+0
         LDR      R1,[R4, #+0]
         STR      R0,[R1, #+1284]
-//   40     _TIMER->BITMODE = TIMER_BITMODE_BITMODE_24Bit << TIMER_BITMODE_BITMODE_Pos;
+//   39     _TIMER->BITMODE = TIMER_BITMODE_BITMODE_24Bit << TIMER_BITMODE_BITMODE_Pos;
         MOVS     R0,#+2
         LDR      R1,[R4, #+0]
         STR      R0,[R1, #+1288]
-//   41 
-//   42     _TIMER->PRESCALER = presc << TIMER_PRESCALER_PRESCALER_Pos;
+//   40 
+//   41     _TIMER->PRESCALER = presc << TIMER_PRESCALER_PRESCALER_Pos;
         LDR      R0,[R4, #+0]
         STR      R5,[R0, #+1296]
-//   43     setCaptureCompare(0, compare_val, circulary);
+//   42     setCaptureCompare(0, compare_val, circulary);
         MOVS     R3,R7
         UXTB     R3,R3            ;; ZeroExt  R3,R3,#+24,#+24
         MOVS     R2,R6
@@ -350,23 +347,23 @@ _ZN5Timer4initEjjb:
         MOVS     R0,R4
           CFI FunCall _ZN5Timer17setCaptureCompareEhhb
         BL       _ZN5Timer17setCaptureCompareEhhb
-//   44 
-//   45     resume();
+//   43 
+//   44     resume();
         MOVS     R0,R4
           CFI FunCall _ZN5Timer6resumeEv
         BL       _ZN5Timer6resumeEv
-//   46 }
+//   45 }
         POP      {R0,R4-R7,PC}    ;; return
           CFI EndBlock cfiBlock6
-//   47 
-//   48  // cc_num:0..5, priority 0..7
+//   46 
+//   47  // cc_num:0..5, priority 0..7
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock7 Using cfiCommon0
           CFI Function _ZN5Timer6setIRQEhh
         THUMB
-//   49 void Timer::setIRQ(uint8_t cc_num, uint8_t priority)  
-//   50 { 
+//   48 void Timer::setIRQ(uint8_t cc_num, uint8_t priority)  
+//   49 { 
 _ZN5Timer6setIRQEhh:
         PUSH     {R4-R6,LR}
           CFI R14 Frame(CFA, -4)
@@ -377,7 +374,7 @@ _ZN5Timer6setIRQEhh:
         MOVS     R4,R0
         MOVS     R5,R1
         MOVS     R6,R2
-//   51     switch(cc_num)
+//   50     switch(cc_num)
         MOVS     R0,R5
         UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
         CMP      R0,#+0
@@ -391,72 +388,72 @@ _ZN5Timer6setIRQEhh:
         CMP      R0,#+5
         BEQ.N    ??setIRQ_5
         B.N      ??setIRQ_6
-//   52     {
-//   53         case 0:
-//   54             _TIMER->INTENSET |= TIMER_INTENSET_COMPARE0_Enabled << TIMER_INTENSET_COMPARE0_Pos;
+//   51     {
+//   52         case 0:
+//   53             _TIMER->INTENSET |= TIMER_INTENSET_COMPARE0_Enabled << TIMER_INTENSET_COMPARE0_Pos;
 ??setIRQ_0:
         LDR      R0,[R4, #+0]
         LDR      R0,[R0, #+772]
         ORRS     R0,R0,#0x10000
         LDR      R1,[R4, #+0]
         STR      R0,[R1, #+772]
-//   55             break;
+//   54             break;
         B.N      ??setIRQ_7
-//   56         case 1:
-//   57             _TIMER->INTENSET |= TIMER_INTENSET_COMPARE1_Enabled << TIMER_INTENSET_COMPARE1_Pos;
+//   55         case 1:
+//   56             _TIMER->INTENSET |= TIMER_INTENSET_COMPARE1_Enabled << TIMER_INTENSET_COMPARE1_Pos;
 ??setIRQ_2:
         LDR      R0,[R4, #+0]
         LDR      R0,[R0, #+772]
         ORRS     R0,R0,#0x20000
         LDR      R1,[R4, #+0]
         STR      R0,[R1, #+772]
-//   58             break;
+//   57             break;
         B.N      ??setIRQ_7
-//   59         case 2:
-//   60             _TIMER->INTENSET |= TIMER_INTENSET_COMPARE2_Enabled << TIMER_INTENSET_COMPARE2_Pos;
+//   58         case 2:
+//   59             _TIMER->INTENSET |= TIMER_INTENSET_COMPARE2_Enabled << TIMER_INTENSET_COMPARE2_Pos;
 ??setIRQ_1:
         LDR      R0,[R4, #+0]
         LDR      R0,[R0, #+772]
         ORRS     R0,R0,#0x40000
         LDR      R1,[R4, #+0]
         STR      R0,[R1, #+772]
-//   61             break;
+//   60             break;
         B.N      ??setIRQ_7
-//   62         case 3:
-//   63             _TIMER->INTENSET |= TIMER_INTENSET_COMPARE3_Enabled << TIMER_INTENSET_COMPARE3_Pos;
+//   61         case 3:
+//   62             _TIMER->INTENSET |= TIMER_INTENSET_COMPARE3_Enabled << TIMER_INTENSET_COMPARE3_Pos;
 ??setIRQ_4:
         LDR      R0,[R4, #+0]
         LDR      R0,[R0, #+772]
         ORRS     R0,R0,#0x80000
         LDR      R1,[R4, #+0]
         STR      R0,[R1, #+772]
-//   64             break;
+//   63             break;
         B.N      ??setIRQ_7
-//   65         case 4:
-//   66             _TIMER->INTENSET |= TIMER_INTENSET_COMPARE4_Enabled << TIMER_INTENSET_COMPARE4_Pos;
+//   64         case 4:
+//   65             _TIMER->INTENSET |= TIMER_INTENSET_COMPARE4_Enabled << TIMER_INTENSET_COMPARE4_Pos;
 ??setIRQ_3:
         LDR      R0,[R4, #+0]
         LDR      R0,[R0, #+772]
         ORRS     R0,R0,#0x100000
         LDR      R1,[R4, #+0]
         STR      R0,[R1, #+772]
-//   67             break;
+//   66             break;
         B.N      ??setIRQ_7
-//   68         case 5:
-//   69             _TIMER->INTENSET |= TIMER_INTENSET_COMPARE5_Enabled << TIMER_INTENSET_COMPARE5_Pos;
+//   67         case 5:
+//   68             _TIMER->INTENSET |= TIMER_INTENSET_COMPARE5_Enabled << TIMER_INTENSET_COMPARE5_Pos;
 ??setIRQ_5:
         LDR      R0,[R4, #+0]
         LDR      R0,[R0, #+772]
         ORRS     R0,R0,#0x200000
         LDR      R1,[R4, #+0]
         STR      R0,[R1, #+772]
-//   70             break;
+//   69             break;
         B.N      ??setIRQ_7
-//   71         default:
-//   72             break;
-//   73     }
-//   74 
-//   75     NVIC_SetPriority(_IRQn, priority);
+//   70         default:
+//   71             break;
+//   72     }
+//   73 
+//   74     NVIC_SetPriority(_IRQn, priority);
 ??setIRQ_6:
 ??setIRQ_7:
         MOVS     R1,R6
@@ -464,32 +461,32 @@ _ZN5Timer6setIRQEhh:
         LDRSB    R0,[R4, #+4]
           CFI FunCall _ZN30_INTERNAL_9_timer_cpp_4e19ece916NVIC_SetPriorityE9IRQn_Typej
         BL       _ZN30_INTERNAL_9_timer_cpp_4e19ece916NVIC_SetPriorityE9IRQn_Typej
-//   76     NVIC_ClearPendingIRQ(_IRQn);
+//   75     NVIC_ClearPendingIRQ(_IRQn);
         LDRSB    R0,[R4, #+4]
           CFI FunCall _ZN30_INTERNAL_9_timer_cpp_4e19ece920NVIC_ClearPendingIRQE9IRQn_Type
         BL       _ZN30_INTERNAL_9_timer_cpp_4e19ece920NVIC_ClearPendingIRQE9IRQn_Type
-//   77     NVIC_EnableIRQ(_IRQn);
+//   76     NVIC_EnableIRQ(_IRQn);
         LDRSB    R0,[R4, #+4]
           CFI FunCall _ZN30_INTERNAL_9_timer_cpp_4e19ece914NVIC_EnableIRQE9IRQn_Type
         BL       _ZN30_INTERNAL_9_timer_cpp_4e19ece914NVIC_EnableIRQE9IRQn_Type
-//   78 }
+//   77 }
         POP      {R4-R6,PC}       ;; return
           CFI EndBlock cfiBlock7
-//   79 
+//   78 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock8 Using cfiCommon0
           CFI Function _ZN5Timer17setCaptureCompareEhhb
           CFI NoCalls
         THUMB
-//   80 void Timer::setCaptureCompare(uint8_t cc_num, uint8_t value, bool circulary)  
-//   81 { 
+//   79 void Timer::setCaptureCompare(uint8_t cc_num, uint8_t value, bool circulary)  
+//   80 { 
 _ZN5Timer17setCaptureCompareEhhb:
         PUSH     {R4,R5}
           CFI R5 Frame(CFA, -4)
           CFI R4 Frame(CFA, -8)
           CFI CFA R13+8
-//   82     switch(cc_num)
+//   81     switch(cc_num)
         MOVS     R4,R1
         UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
         CMP      R4,#+0
@@ -503,74 +500,74 @@ _ZN5Timer17setCaptureCompareEhhb:
         CMP      R4,#+5
         BEQ.N    ??setCaptureCompare_5
         B.N      ??setCaptureCompare_6
-//   83     {
-//   84         case 0:
-//   85             _TIMER->CC[0] = value;
+//   82     {
+//   83         case 0:
+//   84             _TIMER->CC[0] = value;
 ??setCaptureCompare_0:
         MOVS     R4,R2
         UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
         LDR      R5,[R0, #+0]
         STR      R4,[R5, #+1344]
-//   86             break;
+//   85             break;
         B.N      ??setCaptureCompare_7
-//   87         case 1:
-//   88             _TIMER->CC[1] = value;
+//   86         case 1:
+//   87             _TIMER->CC[1] = value;
 ??setCaptureCompare_2:
         MOVS     R4,R2
         UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
         LDR      R5,[R0, #+0]
         STR      R4,[R5, #+1348]
-//   89             break;
+//   88             break;
         B.N      ??setCaptureCompare_7
-//   90         case 2:
-//   91             _TIMER->CC[2] = value;
+//   89         case 2:
+//   90             _TIMER->CC[2] = value;
 ??setCaptureCompare_1:
         MOVS     R4,R2
         UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
         LDR      R5,[R0, #+0]
         STR      R4,[R5, #+1352]
-//   92             break;
+//   91             break;
         B.N      ??setCaptureCompare_7
-//   93         case 3:
-//   94             _TIMER->CC[3] = value;
+//   92         case 3:
+//   93             _TIMER->CC[3] = value;
 ??setCaptureCompare_4:
         MOVS     R4,R2
         UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
         LDR      R5,[R0, #+0]
         STR      R4,[R5, #+1356]
-//   95             break;
+//   94             break;
         B.N      ??setCaptureCompare_7
-//   96         case 4:
-//   97             _TIMER->CC[4] = value;
+//   95         case 4:
+//   96             _TIMER->CC[4] = value;
 ??setCaptureCompare_3:
         MOVS     R4,R2
         UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
         LDR      R5,[R0, #+0]
         STR      R4,[R5, #+1360]
-//   98             break;
+//   97             break;
         B.N      ??setCaptureCompare_7
-//   99         case 5:
-//  100             _TIMER->CC[5] = value;
+//   98         case 5:
+//   99             _TIMER->CC[5] = value;
 ??setCaptureCompare_5:
         MOVS     R4,R2
         UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
         LDR      R5,[R0, #+0]
         STR      R4,[R5, #+1364]
-//  101             break;
+//  100             break;
         B.N      ??setCaptureCompare_7
-//  102         default:
-//  103             break;
-//  104     }
-//  105 
-//  106     if(circulary)
+//  101         default:
+//  102             break;
+//  103     }
+//  104 
+//  105     if(circulary)
 ??setCaptureCompare_6:
 ??setCaptureCompare_7:
         MOVS     R4,R3
         UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
         CMP      R4,#+0
         BEQ.N    ??setCaptureCompare_8
-//  107     {
-//  108         switch(cc_num)
+//  106     {
+//  107         switch(cc_num)
         MOVS     R4,R1
         UXTB     R4,R4            ;; ZeroExt  R4,R4,#+24,#+24
         CMP      R4,#+0
@@ -584,61 +581,61 @@ _ZN5Timer17setCaptureCompareEhhb:
         CMP      R4,#+5
         BEQ.N    ??setCaptureCompare_14
         B.N      ??setCaptureCompare_15
-//  109         {
-//  110             case 0:
-//  111                  _TIMER->SHORTS = TIMER_SHORTS_COMPARE0_CLEAR_Enabled << TIMER_SHORTS_COMPARE0_CLEAR_Pos;
+//  108         {
+//  109             case 0:
+//  110                  _TIMER->SHORTS = TIMER_SHORTS_COMPARE0_CLEAR_Enabled << TIMER_SHORTS_COMPARE0_CLEAR_Pos;
 ??setCaptureCompare_9:
         MOVS     R4,#+1
         LDR      R5,[R0, #+0]
         STR      R4,[R5, #+512]
-//  112                 break;
+//  111                 break;
         B.N      ??setCaptureCompare_8
-//  113             case 1:
-//  114                  _TIMER->SHORTS = TIMER_SHORTS_COMPARE1_CLEAR_Enabled << TIMER_SHORTS_COMPARE1_CLEAR_Pos;
+//  112             case 1:
+//  113                  _TIMER->SHORTS = TIMER_SHORTS_COMPARE1_CLEAR_Enabled << TIMER_SHORTS_COMPARE1_CLEAR_Pos;
 ??setCaptureCompare_11:
         MOVS     R4,#+2
         LDR      R5,[R0, #+0]
         STR      R4,[R5, #+512]
-//  115                 break;
+//  114                 break;
         B.N      ??setCaptureCompare_8
-//  116             case 2:
-//  117                  _TIMER->SHORTS = TIMER_SHORTS_COMPARE2_CLEAR_Enabled << TIMER_SHORTS_COMPARE2_CLEAR_Pos;
+//  115             case 2:
+//  116                  _TIMER->SHORTS = TIMER_SHORTS_COMPARE2_CLEAR_Enabled << TIMER_SHORTS_COMPARE2_CLEAR_Pos;
 ??setCaptureCompare_10:
         MOVS     R4,#+4
         LDR      R5,[R0, #+0]
         STR      R4,[R5, #+512]
-//  118                 break;
+//  117                 break;
         B.N      ??setCaptureCompare_8
-//  119             case 3:
-//  120                  _TIMER->SHORTS = TIMER_SHORTS_COMPARE3_CLEAR_Enabled << TIMER_SHORTS_COMPARE3_CLEAR_Pos;
+//  118             case 3:
+//  119                  _TIMER->SHORTS = TIMER_SHORTS_COMPARE3_CLEAR_Enabled << TIMER_SHORTS_COMPARE3_CLEAR_Pos;
 ??setCaptureCompare_13:
         MOVS     R4,#+8
         LDR      R5,[R0, #+0]
         STR      R4,[R5, #+512]
-//  121                 break;
+//  120                 break;
         B.N      ??setCaptureCompare_8
-//  122             case 4:
-//  123                  _TIMER->SHORTS = TIMER_SHORTS_COMPARE4_CLEAR_Enabled << TIMER_SHORTS_COMPARE4_CLEAR_Pos;
+//  121             case 4:
+//  122                  _TIMER->SHORTS = TIMER_SHORTS_COMPARE4_CLEAR_Enabled << TIMER_SHORTS_COMPARE4_CLEAR_Pos;
 ??setCaptureCompare_12:
         MOVS     R4,#+16
         LDR      R5,[R0, #+0]
         STR      R4,[R5, #+512]
-//  124                 break;
+//  123                 break;
         B.N      ??setCaptureCompare_8
-//  125             case 5:
-//  126                  _TIMER->SHORTS = TIMER_SHORTS_COMPARE5_CLEAR_Enabled << TIMER_SHORTS_COMPARE5_CLEAR_Pos;
+//  124             case 5:
+//  125                  _TIMER->SHORTS = TIMER_SHORTS_COMPARE5_CLEAR_Enabled << TIMER_SHORTS_COMPARE5_CLEAR_Pos;
 ??setCaptureCompare_14:
         MOVS     R4,#+32
         LDR      R5,[R0, #+0]
         STR      R4,[R5, #+512]
-//  127                 break;
+//  126                 break;
         B.N      ??setCaptureCompare_8
-//  128             default:
-//  129                 break;
-//  130         }      
-//  131     }
-//  132    
-//  133 }
+//  127             default:
+//  128                 break;
+//  129         }      
+//  130     }
+//  131    
+//  132 }
 ??setCaptureCompare_15:
 ??setCaptureCompare_8:
         POP      {R4,R5}
@@ -647,73 +644,73 @@ _ZN5Timer17setCaptureCompareEhhb:
           CFI CFA R13+0
         BX       LR               ;; return
           CFI EndBlock cfiBlock8
-//  134 
+//  133 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock9 Using cfiCommon0
           CFI Function _ZN5Timer9incrementEj
           CFI NoCalls
         THUMB
-//  135 void   Timer::increment(uint32_t dT)
-//  136 {
+//  134 void   Timer::increment(uint32_t dT)
+//  135 {
 _ZN5Timer9incrementEj:
         PUSH     {R4,R5}
           CFI R5 Frame(CFA, -4)
           CFI R4 Frame(CFA, -8)
           CFI CFA R13+8
-//  137     __disable_interrupt();
+//  136     __disable_interrupt();
         CPSID    I
-//  138 
-//  139     _time += dT;
+//  137 
+//  138     _time += dT;
         LDRD     R4,R5,[R0, #+16]
         MOVS     R2,R1
         MOVS     R3,#+0
         ADDS     R2,R4,R2
         ADCS     R3,R5,R3
         STRD     R2,R3,[R0, #+16]
-//  140 
-//  141     __enable_interrupt();  
+//  139 
+//  140     __enable_interrupt();  
         CPSIE    I
-//  142 }
+//  141 }
         POP      {R4,R5}
           CFI R4 SameValue
           CFI R5 SameValue
           CFI CFA R13+0
         BX       LR               ;; return
           CFI EndBlock cfiBlock9
-//  143 
+//  142 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock10 Using cfiCommon0
           CFI Function _ZNK5Timer6get_msEv
           CFI NoCalls
         THUMB
-//  144 uint64_t   Timer::get_ms(void) const
-//  145 {
+//  143 uint64_t   Timer::get_ms(void) const
+//  144 {
 _ZNK5Timer6get_msEv:
         MOVS     R2,R0
-//  146     uint64_t res;
-//  147     
-//  148     __disable_interrupt();
+//  145     uint64_t res;
+//  146     
+//  147     __disable_interrupt();
         CPSID    I
-//  149     res = _time;
+//  148     res = _time;
         LDRD     R0,R1,[R2, #+16]
-//  150     __enable_interrupt();
+//  149     __enable_interrupt();
         CPSIE    I
-//  151     
-//  152     return res; 
+//  150     
+//  151     return res; 
         BX       LR               ;; return
-//  153 }
+//  152 }
           CFI EndBlock cfiBlock10
+//  153 
 //  154 
-//  155 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock11 Using cfiCommon0
           CFI Function _ZN5Timer8delay_msEj
         THUMB
-//  156 void Timer::delay_ms(uint32_t ms)
-//  157 {
+//  155 void Timer::delay_ms(uint32_t ms)
+//  156 {
 _ZN5Timer8delay_msEj:
         PUSH     {R4-R8,LR}
           CFI R14 Frame(CFA, -4)
@@ -725,26 +722,26 @@ _ZN5Timer8delay_msEj:
           CFI CFA R13+24
         MOV      R8,R0
         MOVS     R6,R1
-//  158     uint64_t time = get_ms();
+//  157     uint64_t time = get_ms();
         MOV      R0,R8
           CFI FunCall _ZNK5Timer6get_msEv
         BL       _ZNK5Timer6get_msEv
-//  159     
-//  160     time += (uint64_t)ms;
+//  158     
+//  159     time += (uint64_t)ms;
         MOVS     R7,#+0
         ADDS     R4,R0,R6
         ADCS     R5,R1,R7
-//  161     
-//  162     do 
-//  163     {
-//  164         __WFI();
+//  160     
+//  161     do 
+//  162     {
+//  163         __WFI();
 ??delay_ms_0:
         WFI      
-//  165         WATCHDOGRESET;
+//  164         WATCHDOGRESET;
         LDR.N    R0,??DataTable8_10  ;; 0x6e524635
         LDR.N    R1,??DataTable8_11  ;; 0x40010600
         STR      R0,[R1, #+0]
-//  166     }while (time > get_ms());
+//  165     }while (time > get_ms());
         MOV      R0,R8
           CFI FunCall _ZNK5Timer6get_msEv
         BL       _ZNK5Timer6get_msEv
@@ -753,28 +750,28 @@ _ZN5Timer8delay_msEj:
         BHI.N    ??delay_ms_1
         CMP      R0,R4
         BCC.N    ??delay_ms_0
-//  167 }
+//  166 }
 ??delay_ms_1:
         POP      {R4-R8,PC}       ;; return
           CFI EndBlock cfiBlock11
-//  168 
-//  169 #pragma optimize=none
+//  167 
+//  168 #pragma optimize=none
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock12 Using cfiCommon0
           CFI Function _ZN5Timer8delay_usEj
           CFI NoCalls
         THUMB
-//  170 void Timer::delay_us(uint32_t us)
-//  171 {
+//  169 void Timer::delay_us(uint32_t us)
+//  170 {
 _ZN5Timer8delay_usEj:
         SUB      SP,SP,#+4
           CFI CFA R13+4
-//  172 	for(; us; us--)
+//  171 	for(; us; us--)
 ??delay_us_0:
         CMP      R1,#+0
         BEQ.N    ??delay_us_1
-//  173 		for(volatile uint32_t j = DELAY_1US; j; j--);
+//  172 		for(volatile uint32_t j = DELAY_1US; j; j--);
         MOVS     R2,#+4
         STR      R2,[SP, #+0]
 ??delay_us_2:
@@ -788,21 +785,21 @@ _ZN5Timer8delay_usEj:
 ??delay_us_3:
         SUBS     R1,R1,#+1
         B.N      ??delay_us_0
-//  174 }
+//  173 }
 ??delay_us_1:
         ADD      SP,SP,#+4
           CFI CFA R13+0
         BX       LR               ;; return
           CFI EndBlock cfiBlock12
-//  175 
+//  174 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock13 Using cfiCommon0
           CFI Function _ZN5Timer6get_usEv
           CFI NoCalls
         THUMB
-//  176 uint64_t   Timer::get_us(void)
-//  177 {
+//  175 uint64_t   Timer::get_us(void)
+//  176 {
 _ZN5Timer6get_usEv:
         PUSH     {R4-R9}
           CFI R9 Frame(CFA, -4)
@@ -813,29 +810,29 @@ _ZN5Timer6get_usEv:
           CFI R4 Frame(CFA, -24)
           CFI CFA R13+24
         MOVS     R2,R0
-//  178     uint64_t res;
-//  179 
-//  180     __disable_interrupt();
+//  177     uint64_t res;
+//  178 
+//  179     __disable_interrupt();
         CPSID    I
-//  181 
-//  182     _TIMER->TASKS_CAPTURE[0] = 0;
+//  180 
+//  181     _TIMER->TASKS_CAPTURE[0] = 0;
         MOVS     R0,#+0
         LDR      R1,[R2, #+0]
         STR      R0,[R1, #+64]
-//  183     _TIMER->TASKS_CAPTURE[0] = 1;
+//  182     _TIMER->TASKS_CAPTURE[0] = 1;
         MOVS     R0,#+1
         LDR      R1,[R2, #+0]
         STR      R0,[R1, #+64]
-//  184 
-//  185     res = (uint64_t)_TIMER->CC[0];
+//  183 
+//  184     res = (uint64_t)_TIMER->CC[0];
         LDR      R0,[R2, #+0]
         LDR      R0,[R0, #+1344]
         MOVS     R1,#+0
-//  186 
-//  187     __enable_interrupt();
+//  185 
+//  186     __enable_interrupt();
         CPSIE    I
-//  188 
-//  189     res += _time * 1000;
+//  187 
+//  188     res += _time * 1000;
         LDRD     R4,R5,[R2, #+16]
         MOV      R6,#+1000
         MOVS     R7,#+0
@@ -844,8 +841,8 @@ _ZN5Timer6get_usEv:
         MLA      R9,R7,R4,R9
         ADDS     R0,R0,R8
         ADCS     R1,R1,R9
-//  190 
-//  191     return res;  
+//  189 
+//  190     return res;  
         POP      {R4-R9}
           CFI R4 SameValue
           CFI R5 SameValue
@@ -855,103 +852,102 @@ _ZN5Timer6get_usEv:
           CFI R9 SameValue
           CFI CFA R13+0
         BX       LR               ;; return
-//  192 }
+//  191 }
           CFI EndBlock cfiBlock13
-//  193 
+//  192 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock14 Using cfiCommon0
           CFI Function _ZN5Timer5pauseEv
           CFI NoCalls
         THUMB
-//  194 void   Timer::pause()
-//  195 {
-//  196     _TIMER->TASKS_STOP = 1;
+//  193 void   Timer::pause()
+//  194 {
+//  195     _TIMER->TASKS_STOP = 1;
 _ZN5Timer5pauseEv:
         MOVS     R1,#+1
         LDR      R2,[R0, #+0]
         STR      R1,[R2, #+4]
-//  197     _TIMER->TASKS_SHUTDOWN = 1;
+//  196     _TIMER->TASKS_SHUTDOWN = 1;
         MOVS     R1,#+1
         LDR      R2,[R0, #+0]
         STR      R1,[R2, #+16]
-//  198 
-//  199     _is_paused = true;
+//  197 
+//  198     _is_paused = true;
         MOVS     R1,#+1
         STRB     R1,[R0, #+24]
-//  200 }
+//  199 }
         BX       LR               ;; return
           CFI EndBlock cfiBlock14
-//  201 
+//  200 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock15 Using cfiCommon0
           CFI Function _ZN5Timer6resumeEv
           CFI NoCalls
         THUMB
-//  202 void   Timer::resume()
-//  203 {
-//  204     if(_is_paused)
+//  201 void   Timer::resume()
+//  202 {
+//  203     if(_is_paused)
 _ZN5Timer6resumeEv:
         LDRB     R1,[R0, #+24]
         CMP      R1,#+0
         BEQ.N    ??resume_0
-//  205     {
-//  206         _TIMER->TASKS_START = 1;
+//  204     {
+//  205         _TIMER->TASKS_START = 1;
         MOVS     R1,#+1
         LDR      R2,[R0, #+0]
         STR      R1,[R2, #+0]
-//  207         _is_paused = false;
+//  206         _is_paused = false;
         MOVS     R1,#+0
         STRB     R1,[R0, #+24]
-//  208     }
-//  209 }
+//  207     }
+//  208 }
 ??resume_0:
         BX       LR               ;; return
           CFI EndBlock cfiBlock15
-//  210 
+//  209 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock16 Using cfiCommon0
           CFI Function _ZN5Timer5onIRQEv
         THUMB
-//  211 void   Timer::onIRQ()
-//  212 {
+//  210 void   Timer::onIRQ()
+//  211 {
 _ZN5Timer5onIRQEv:
         PUSH     {R4,LR}
           CFI R14 Frame(CFA, -4)
           CFI R4 Frame(CFA, -8)
           CFI CFA R13+8
         MOVS     R4,R0
-//  213     _TIMER->EVENTS_COMPARE[0] = 0;
+//  212     _TIMER->EVENTS_COMPARE[0] = 0;
         MOVS     R0,#+0
         LDR      R1,[R4, #+0]
         STR      R0,[R1, #+320]
-//  214 
-//  215     if (_on_irq_callback)
+//  213 
+//  214     if (_on_irq_callback)
         LDR      R0,[R4, #+8]
         CMP      R0,#+0
         BEQ.N    ??onIRQ_0
-//  216     {
-//  217         _on_irq_callback(1);
+//  215     {
+//  216         _on_irq_callback(1);
         MOVS     R0,#+1
         LDR      R1,[R4, #+8]
           CFI FunCall
         BLX      R1
-//  218     }
-//  219 }
+//  217     }
+//  218 }
 ??onIRQ_0:
         POP      {R4,PC}          ;; return
           CFI EndBlock cfiBlock16
-//  220 
-//  221 #define ADC_MEAS_INTERVAL  (300)    // in milliseconds
+//  219 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock17 Using cfiCommon0
           CFI Function _Z18sys_timer_callbackj
         THUMB
-//  222 void sys_timer_callback(uint32_t value)
-//  223 {
+//  220 void sys_timer_callback(uint32_t value)
+//  221 {
 _Z18sys_timer_callbackj:
         PUSH     {R3-R7,LR}
           CFI R14 Frame(CFA, -4)
@@ -961,24 +957,24 @@ _Z18sys_timer_callbackj:
           CFI R4 Frame(CFA, -20)
           CFI CFA R13+24
         MOVS     R4,R0
-//  224     static  uint8_t activeLeds = 0;    
-//  225     static uint64_t adcTmr = 0;
-//  226     
-//  227     sys_timer.increment(value);
+//  222     static  uint8_t activeLeds = 0;    
+//  223     static uint64_t adcTmr = 0;
+//  224     
+//  225     sys_timer.increment(value);
         LDR.N    R5,??DataTable8
         MOVS     R1,R4
         MOVS     R0,R5
           CFI FunCall _ZN5Timer9incrementEj
         BL       _ZN5Timer9incrementEj
-//  228     
-//  229     activeLeds = led_drivers_handle();
+//  226     
+//  227     activeLeds = led_drivers_handle();   
         LDR.N    R6,??DataTable8_12
           CFI FunCall _Z18led_drivers_handlev
         BL       _Z18led_drivers_handlev
         STRB     R0,[R6, #+0]
-//  230     
-//  231     // periodically start measure task for adc
-//  232     if((sys_timer.get_ms() - adcTmr) > ADC_MEAS_INTERVAL)
+//  228     
+//  229     // periodically start measure task for adc
+//  230     if((sys_timer.get_ms() - adcTmr) > ADC_MEAS_INTERVAL)
         MOVS     R0,R5
           CFI FunCall _ZNK5Timer6get_msEv
         BL       _ZNK5Timer6get_msEv
@@ -993,40 +989,40 @@ _Z18sys_timer_callbackj:
         BHI.N    ??sys_timer_callback_1
         CMP      R0,R2
         BCC.N    ??sys_timer_callback_0
-//  233     {
-//  234         adcTmr = sys_timer.get_ms();
+//  231     {
+//  232         adcTmr = sys_timer.get_ms();
 ??sys_timer_callback_1:
         MOVS     R0,R5
           CFI FunCall _ZNK5Timer6get_msEv
         BL       _ZNK5Timer6get_msEv
         STRD     R0,R1,[R7, #+0]
-//  235         adc_unite.measure();
+//  233         adc_unite.measure();
         LDR.N    R0,??DataTable8_14
           CFI FunCall _ZN3ADCILi6EE7measureEv
         BL       _ZN3ADCILi6EE7measureEv
-//  236     }
-//  237     
-//  238     UNUSED(activeLeds);
+//  234     }
+//  235     
+//  236     UNUSED(activeLeds);
 ??sys_timer_callback_0:
         LDRB     R0,[R6, #+0]
         STRB     R0,[R6, #+0]
-//  239 }
+//  237 }
         POP      {R0,R4-R7,PC}    ;; return
           CFI EndBlock cfiBlock17
-//  240 
+//  238 
 
         SECTION `.bss`:DATA:REORDER:NOROOT(3)
         DATA
-//  241 Timer sys_timer(0);
+//  239 Timer sys_timer(0);
 sys_timer:
         DS8 32
-//  242 
+//  240 
 
         SECTION `.text`:CODE:NOROOT(1)
           CFI Block cfiBlock18 Using cfiCommon0
           CFI Function TIMER0_IRQHandler
         THUMB
-//  243 extern "C" void TIMER0_IRQHandler(){ sys_timer.onIRQ(); }
+//  241 extern "C" void TIMER0_IRQHandler(){ sys_timer.onIRQ(); }
 TIMER0_IRQHandler:
         PUSH     {R7,LR}
           CFI R14 Frame(CFA, -4)
@@ -1147,7 +1143,7 @@ TIMER0_IRQHandler:
           CFI Function TIMER1_IRQHandler
           CFI NoCalls
         THUMB
-//  244 extern "C" void TIMER1_IRQHandler(){ return; }
+//  242 extern "C" void TIMER1_IRQHandler(){ return; }
 TIMER1_IRQHandler:
         BX       LR               ;; return
           CFI EndBlock cfiBlock19
@@ -1157,7 +1153,7 @@ TIMER1_IRQHandler:
           CFI Function TIMER2_IRQHandler
           CFI NoCalls
         THUMB
-//  245 extern "C" void TIMER2_IRQHandler(){ return; }
+//  243 extern "C" void TIMER2_IRQHandler(){ return; }
 TIMER2_IRQHandler:
         BX       LR               ;; return
           CFI EndBlock cfiBlock20
@@ -1167,7 +1163,7 @@ TIMER2_IRQHandler:
           CFI Function TIMER3_IRQHandler
           CFI NoCalls
         THUMB
-//  246 extern "C" void TIMER3_IRQHandler(){ return; }
+//  244 extern "C" void TIMER3_IRQHandler(){ return; }
 TIMER3_IRQHandler:
         BX       LR               ;; return
           CFI EndBlock cfiBlock21
@@ -1177,7 +1173,7 @@ TIMER3_IRQHandler:
           CFI Function TIMER4_IRQHandler
           CFI NoCalls
         THUMB
-//  247 extern "C" void TIMER4_IRQHandler(){ return; }
+//  245 extern "C" void TIMER4_IRQHandler(){ return; }
 TIMER4_IRQHandler:
         BX       LR               ;; return
           CFI EndBlock cfiBlock22
@@ -1201,26 +1197,8 @@ _ZN3ADCILi6EE6enableEv:
           CFI EndBlock cfiBlock23
 
         SECTION `.text`:CODE:REORDER:NOROOT(2)
-        SECTION_GROUP _ZN3ADCILi6EE7disableEv
-          CFI Block cfiBlock24 Using cfiCommon0
-          CFI Function _ZN3ADCILi6EE7disableEv
-          CFI NoCalls
-        THUMB
-// __interwork __softfp void ADC<6>::disable()
-_ZN3ADCILi6EE7disableEv:
-        MOVS     R1,#+0
-        LDR.N    R2,??disable_0   ;; 0x40007500
-        STR      R1,[R2, #+0]
-        BX       LR               ;; return
-        DATA
-??disable_0:
-        DATA32
-        DC32     0x40007500
-          CFI EndBlock cfiBlock24
-
-        SECTION `.text`:CODE:REORDER:NOROOT(2)
         SECTION_GROUP _ZN3ADCILi6EE4initEv
-          CFI Block cfiBlock25 Using cfiCommon0
+          CFI Block cfiBlock24 Using cfiCommon0
           CFI Function _ZN3ADCILi6EE4initEv
         THUMB
 // __interwork __softfp void ADC<6>::init()
@@ -1233,27 +1211,81 @@ _ZN3ADCILi6EE4initEv:
         MOVS     R0,R4
           CFI FunCall _ZN3ADCILi6EE6enableEv
         BL       _ZN3ADCILi6EE6enableEv
-        ADDS     R0,R4,#+144
-        LDR.N    R1,??init_0      ;; 0x4000762c
+        MOVS     R1,#+0
+??init_1:
+        MOVS     R0,R1
+        UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
+        CMP      R0,#+6
+        BGE.N    ??init_2
+        MOVS     R2,R1
+        UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
+        MOVS     R0,#+24
+        MULS     R2,R0,R2
+        LDRB     R0,[R4, R2]
+        LDR.N    R2,??init_0      ;; 0x40007510
+        MOVS     R3,R1
+        UXTB     R3,R3            ;; ZeroExt  R3,R3,#+24,#+24
+        LSLS     R3,R3,#+4
+        STR      R0,[R2, R3]
+        ADDS     R1,R1,#+1
+        B.N      ??init_1
+??init_2:
+        MOVS     R1,#+0
+??init_3:
+        MOVS     R0,R1
+        UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
+        CMP      R0,#+6
+        BGE.N    ??init_4
+        MOVS     R0,R1
+        UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
+        ADD      R0,R4,R0, LSL #+2
+        LDRB     R0,[R0, #+146]
+        MOVS     R2,R1
+        UXTB     R2,R2            ;; ZeroExt  R2,R2,#+24,#+24
+        ADD      R2,R4,R2, LSL #+2
+        LDRB     R2,[R2, #+147]
+        LSLS     R2,R2,#+12
+        ORRS     R2,R2,R0, LSL #+16
+        MOVS     R0,R1
+        UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
+        ADD      R0,R4,R0, LSL #+2
+        LDRB     R0,[R0, #+144]
+        ORRS     R2,R2,R0, LSL #+8
+        MOVS     R0,R1
+        UXTB     R0,R0            ;; ZeroExt  R0,R0,#+24,#+24
+        ADD      R0,R4,R0, LSL #+2
+        LDRB     R0,[R0, #+145]
+        ORRS     R2,R0,R2
+        LDR.N    R0,??init_0      ;; 0x40007510
+        MOVS     R3,R1
+        UXTB     R3,R3            ;; ZeroExt  R3,R3,#+24,#+24
+        LSLS     R3,R3,#+4
+        ADD      R0,R0,R3
+        STR      R2,[R0, #+8]
+        ADDS     R1,R1,#+1
+        B.N      ??init_3
+??init_4:
+        ADDS     R0,R4,#+168
+        LDR.N    R1,??init_0+0x4  ;; 0x4000762c
         STR      R0,[R1, #+0]
         MOVS     R0,#+6
-        LDR.N    R1,??init_0+0x4  ;; 0x40007630
+        LDR.N    R1,??init_0+0x8  ;; 0x40007630
         STR      R0,[R1, #+0]
-        LDRB     R0,[R4, #+156]
-        LDR.N    R1,??init_0+0x8  ;; 0x400075f0
+        LDRB     R0,[R4, #+180]
+        LDR.N    R1,??init_0+0xC  ;; 0x400075f0
         STR      R0,[R1, #+0]
-        LDR.N    R1,??init_0+0xC  ;; 0x40007110
+        LDR.N    R1,??init_0+0x10  ;; 0x40007110
         MOVS     R0,#+0
         STR      R0,[R1, #+0]
         MOVS     R0,#+1
-        LDR.N    R2,??init_0+0x10  ;; 0x4000700c
+        LDR.N    R2,??init_0+0x14  ;; 0x4000700c
         STR      R0,[R2, #+0]
-??init_1:
+??init_5:
         LDR      R0,[R1, #+0]
         CMP      R0,#+0
-        BEQ.N    ??init_1
+        BEQ.N    ??init_5
         MOVS     R1,#+80
-        LDR.N    R0,??init_0+0x14
+        LDR.N    R0,??init_0+0x18
           CFI FunCall _ZN5Timer8delay_usEj
         BL       _ZN5Timer8delay_usEj
         MOVS     R1,#+7
@@ -1264,67 +1296,18 @@ _ZN3ADCILi6EE4initEv:
         DATA
 ??init_0:
         DATA32
+        DC32     0x40007510
         DC32     0x4000762c
         DC32     0x40007630
         DC32     0x400075f0
         DC32     0x40007110
         DC32     0x4000700c
         DC32     sys_timer
-          CFI EndBlock cfiBlock25
-
-        SECTION `.text`:CODE:REORDER:NOROOT(2)
-        SECTION_GROUP _ZN3ADCILi6EE6deinitEv
-          CFI Block cfiBlock26 Using cfiCommon0
-          CFI Function _ZN3ADCILi6EE6deinitEv
-        THUMB
-// __interwork __softfp void ADC<6>::deinit()
-_ZN3ADCILi6EE6deinitEv:
-        PUSH     {R4,LR}
-          CFI R14 Frame(CFA, -4)
-          CFI R4 Frame(CFA, -8)
-          CFI CFA R13+8
-        MOVS     R4,R0
-        MOVS     R0,#+0
-??deinit_1:
-        MOVS     R1,R0
-        UXTB     R1,R1            ;; ZeroExt  R1,R1,#+24,#+24
-        CMP      R1,#+6
-        BGE.N    ??deinit_2
-        MOVS     R1,#+0
-        LDR.N    R2,??deinit_0    ;; 0x40007510
-        STR      R1,[R2, #+0]
-        MOVS     R1,#+0
-        LDR.N    R2,??deinit_0+0x4  ;; 0x40007518
-        STR      R1,[R2, #+0]
-        ADDS     R0,R0,#+1
-        B.N      ??deinit_1
-??deinit_2:
-        MOVS     R0,#+1
-        LDR.N    R1,??deinit_0+0x8  ;; 0x40007008
-        STR      R0,[R1, #+0]
-        MOVS     R0,#+0
-        LDR.N    R1,??deinit_0+0xC  ;; 0x40007300
-        STR      R0,[R1, #+0]
-        MOVS     R0,#+0
-        LDR.N    R1,??deinit_0+0x10  ;; 0x40007308
-        STR      R0,[R1, #+0]
-        MOVS     R0,R4
-          CFI FunCall _ZN3ADCILi6EE7disableEv
-        BL       _ZN3ADCILi6EE7disableEv
-        POP      {R4,PC}          ;; return
-        DATA
-??deinit_0:
-        DATA32
-        DC32     0x40007510
-        DC32     0x40007518
-        DC32     0x40007008
-        DC32     0x40007300
-        DC32     0x40007308
-          CFI EndBlock cfiBlock26
+          CFI EndBlock cfiBlock24
 
         SECTION `.text`:CODE:REORDER:NOROOT(2)
         SECTION_GROUP _ZN3ADCILi6EE7measureEv
-          CFI Block cfiBlock27 Using cfiCommon0
+          CFI Block cfiBlock25 Using cfiCommon0
           CFI Function _ZN3ADCILi6EE7measureEv
         THUMB
 // __interwork __softfp void ADC<6>::measure()
@@ -1350,28 +1333,18 @@ _ZN3ADCILi6EE7measureEv:
         MOVS     R0,#+1
         LDR.N    R1,??measure_0+0x8  ;; 0x40007004
         STR      R0,[R1, #+0]
-??measure_2:
-        LDR.N    R0,??measure_0+0xC  ;; 0x40007104
-        LDR      R0,[R0, #+0]
-        CMP      R0,#+1
-        BEQ.N    ??measure_2
-        MOVS     R0,R4
-          CFI FunCall _ZN3ADCILi6EE6deinitEv
-        BL       _ZN3ADCILi6EE6deinitEv
         POP      {R4,PC}          ;; return
-        Nop      
         DATA
 ??measure_0:
         DATA32
         DC32     0x40007100
         DC32     0x40007000
         DC32     0x40007004
-        DC32     0x40007104
-          CFI EndBlock cfiBlock27
+          CFI EndBlock cfiBlock25
 
         SECTION `.text`:CODE:REORDER:NOROOT(2)
         SECTION_GROUP _ZN3ADCILi6EE20setConvertionEND_IRQEh
-          CFI Block cfiBlock28 Using cfiCommon0
+          CFI Block cfiBlock26 Using cfiCommon0
           CFI Function _ZN3ADCILi6EE20setConvertionEND_IRQEh
         THUMB
 // __interwork __softfp void ADC<6>::setConvertionEND_IRQ(uint8_t)
@@ -1419,7 +1392,7 @@ _ZN3ADCILi6EE20setConvertionEND_IRQEh:
         DC32     0x40007304
         DC32     0x40007100
         DC32     0x40007104
-          CFI EndBlock cfiBlock28
+          CFI EndBlock cfiBlock26
 
         SECTION `.init_array`:CODE:ROOT(2)
         SECTION_TYPE SHT_INIT_ARRAY, 0
@@ -1435,9 +1408,9 @@ _ZN3ADCILi6EE20setConvertionEND_IRQEh:
 // 
 //    41 bytes in section .bss
 //     4 bytes in section .init_array
-// 1'400 bytes in section .text
+// 1'416 bytes in section .text
 // 
-// 1'060 bytes of CODE memory (+ 344 bytes shared)
+// 1'060 bytes of CODE memory (+ 360 bytes shared)
 //    41 bytes of DATA memory
 //
 //Errors: none

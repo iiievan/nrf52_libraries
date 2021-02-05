@@ -1,8 +1,7 @@
 #include "Timer.h"
 #include "led_driver.h"
-
+#include "PowerControl.h"
 #include "ADC.h"
-#include "ADC.cpp" // because this is template of class
 
 Timer::Timer(uint8_t tmr_num)
 {
@@ -218,7 +217,6 @@ void   Timer::onIRQ()
     }
 }
 
-#define ADC_MEAS_INTERVAL  (300)    // in milliseconds
 void sys_timer_callback(uint32_t value)
 {
     static  uint8_t activeLeds = 0;    
@@ -226,7 +224,7 @@ void sys_timer_callback(uint32_t value)
     
     sys_timer.increment(value);
     
-    activeLeds = led_drivers_handle();
+    activeLeds = led_drivers_handle();   
     
     // periodically start measure task for adc
     if((sys_timer.get_ms() - adcTmr) > ADC_MEAS_INTERVAL)

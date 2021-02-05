@@ -429,28 +429,28 @@ void nrf_hw_pwm::set_chrg_bar(int16_t led_num)
     {
         switch(led_num)
         {
-            case CHRG_LED1:
+            case CHARGE_LED_1:
                 write_chnl(_chctrl_2, 220, true);
                 break;
     
-            case CHRG_LED2:
+            case CHARGE_LED_2:
                 write_chnl(_chctrl_2, 220, true);
                 write_chnl(_chctrl_1, 220, true);
                 break;
     
-            case CHRG_LED3:
+            case CHARGE_LED_3:
                 write_chnl(_chctrl_2, 220, true);
                 write_chnl(_chctrl_1, 220, true);
                 write_chnl(_chctrl_3,        32);
                 break;
     
-            case CHRG_LED4:
+            case CHARGE_LED_4:
                 write_chnl(_chctrl_2, 220, true);
                 write_chnl(_chctrl_1,   0, true);
                 write_chnl(_chctrl_3,        32);
                 break;
     
-            case CHRG_LED5:
+            case CHARGE_LED_5:
                 write_chnl(_chctrl_2, 32);
                 write_chnl(_chctrl_1, 32);
                 write_chnl(_chctrl_3, 45);

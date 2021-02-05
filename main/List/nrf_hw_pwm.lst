@@ -1,13 +1,13 @@
 ###############################################################################
 #
-# IAR ANSI C/C++ Compiler V8.40.1.212/W32 for ARM         03/Feb/2021  19:31:03
+# IAR ANSI C/C++ Compiler V8.40.1.212/W32 for ARM         05/Feb/2021  12:20:14
 # Copyright 1999-2019 IAR Systems AB.
 #
 #    Cpu mode     =  
 #    Endian       =  little
 #    Source file  =  E:\cpp\nrf52_libraries\pwm\nrf_hw_pwm.cpp
 #    Command line =
-#        -f C:\Users\IF385~1.SHO\AppData\Local\Temp\EW803F.tmp
+#        -f C:\Users\IF385~1.SHO\AppData\Local\Temp\EWB7A2.tmp
 #        (E:\cpp\nrf52_libraries\pwm\nrf_hw_pwm.cpp -D NRF52840_XXAA -D
 #        CONFIG_NFCT_PINS_AS_GPIOS -D _AUDIOGUDE_V2_BOARD -D DEBUG -lCN
 #        E:\cpp\nrf52_libraries\main\List -lA E:\cpp\nrf52_libraries\main\List
@@ -1541,7 +1541,7 @@ E:\cpp\nrf52_libraries\pwm\nrf_hw_pwm.cpp
    \       0x48   0xD333             BCC.N    ??set_chrg_bar_8
    \       0x4A   0xE064             B.N      ??set_chrg_bar_9
     431                  {
-    432                      case CHRG_LED1:
+    432                      case CHARGE_LED_1:
     433                          write_chnl(_chctrl_2, 220, true);
    \                     ??set_chrg_bar_4: (+1)
    \       0x4C   0x2301             MOVS     R3,#+1
@@ -1554,7 +1554,7 @@ E:\cpp\nrf52_libraries\pwm\nrf_hw_pwm.cpp
     434                          break;
    \       0x5C   0xE073             B.N      ??set_chrg_bar_10
     435              
-    436                      case CHRG_LED2:
+    436                      case CHARGE_LED_2:
     437                          write_chnl(_chctrl_2, 220, true);
    \                     ??set_chrg_bar_6: (+1)
    \       0x5E   0x2301             MOVS     R3,#+1
@@ -1575,7 +1575,7 @@ E:\cpp\nrf52_libraries\pwm\nrf_hw_pwm.cpp
     439                          break;
    \       0x7E   0xE062             B.N      ??set_chrg_bar_10
     440              
-    441                      case CHRG_LED3:
+    441                      case CHARGE_LED_3:
     442                          write_chnl(_chctrl_2, 220, true);
    \                     ??set_chrg_bar_5: (+1)
    \       0x80   0x2301             MOVS     R3,#+1
@@ -1604,7 +1604,7 @@ E:\cpp\nrf52_libraries\pwm\nrf_hw_pwm.cpp
     445                          break;
    \       0xB0   0xE049             B.N      ??set_chrg_bar_10
     446              
-    447                      case CHRG_LED4:
+    447                      case CHARGE_LED_4:
     448                          write_chnl(_chctrl_2, 220, true);
    \                     ??set_chrg_bar_8: (+1)
    \       0xB2   0x2301             MOVS     R3,#+1
@@ -1633,7 +1633,7 @@ E:\cpp\nrf52_libraries\pwm\nrf_hw_pwm.cpp
     451                          break;
    \       0xE2   0xE030             B.N      ??set_chrg_bar_10
     452              
-    453                      case CHRG_LED5:
+    453                      case CHARGE_LED_5:
     454                          write_chnl(_chctrl_2, 32);
    \                     ??set_chrg_bar_7: (+1)
    \       0xE4   0x2300             MOVS     R3,#+0

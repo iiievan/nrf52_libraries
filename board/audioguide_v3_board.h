@@ -1,5 +1,5 @@
-#ifndef __AUDIOGUIDE_V2_BOARD_H
-#define __AUDIOGUIDE_V2_BOARD_H
+#ifndef __AUDIOGUIDE_V3_BOARD_H
+#define __AUDIOGUIDE_V3_BOARD_H
 
 //forward declaration for board
 class led_driver;
@@ -37,7 +37,7 @@ class led_driver;
 #define JACK_6_PIN              (PORT_0 | 31)  // P0.31                                     // AIN7
 #define SYS_3V0_PIN             (PORT_1 | 7)   // P1.07
 
-#define BUZZER                  (PORT_0 | 4)   // P0.04 BUZZER
+
 #define VIBRO                   (PORT_1 | 12)  // P1.12 VIBRO
 
 #define GPS_RX                  (PORT_0 | 12)  // P0.12 for NRF this is TX
@@ -59,27 +59,27 @@ class led_driver;
 #define BTN_COL_3               (PORT_1 | 5)    // P1.05
 
 // leds
-#define THREE_PIN_CHARGE_BAR
-
-#define LED_SYS_RED_PIN         (PORT_0 | 7)   // P0.07 LED_SYS_RED 
-#define LED_SYS_GREEN_PIN       (PORT_0 | 5)   // P0.05 LED_SYS_GREEN 
+#define LED_SYS_GREEN_PIN       (PORT_0 | 7)   // P0.07 LED_SYS_GREEN
 #define LED_BL_BTN_PIN          (PORT_0 | 26)  // P0.26 LED_BL_BTN 
 #define LED_BTN_PR_PIN          (PORT_0 | 11)  // P0.11 LED_BTN_PR  
 #define LED_KB_PIN              (PORT_0 | 25)  // P0.25 LED_KB
-#define LED_BAT_1_PIN           (PORT_0 | 8)   // P0.08 LED_BAT_1 
-#define LED_BAT_2_PIN           (PORT_0 | 27)  // P0.27 LED_BAT_2 
-#define LED_BAT_3_PIN           (PORT_0 | 6)   // P0.06 LED_BAT_3
+#define LED_BAT_1_PIN           (PORT_0 | 8)   // P0.08 LED_BAT_1
+#define LED_BAT_2_PIN           (PORT_0 | 6)   // P0.06 LED_BAT_2 
+#define LED_BAT_3_PIN           (PORT_0 | 4)   // P0.04 LED_BAT_3
+#define LED_BAT_4_PIN           (PORT_0 | 27)  // P0.27 LED_BAT_4
+#define LED_BAT_5_PIN           (PORT_0 | 5)   // P0.05 LED_BAT_5   
 
 enum 
 {
-    LED_SYS_RED = 0, 
-    LED_SYS_GREEN ,
+    LED_SYS_GREEN = 0,
     LED_BL_BTN, 
     LED_BTN_PR,   
     LED_KB,
     LED_BAT_1,
     LED_BAT_2,
     LED_BAT_3,
+    LED_BAT_4,
+    LED_BAT_5,
     LEDS_NUM
 };
 
@@ -90,22 +90,21 @@ enum
     CHARGE_LED_3,
     CHARGE_LED_4,
     CHARGE_LED_5,
-    CHARGE_LED_NUM,
-    SHTDWN  = -1 
+    CHARGE_LED_NUM
 };
-
-// LED_BAT_1..3 are included in the spice module due to lack of pins
-// and managed separately in set_chrg_bar
-// LED_BAT_2 is needed to indicate the critical discharge of the battery by blinking, therefore the charge_bar driver is installed for it.
-extern led_driver charge_bar;
-
-extern led_driver red_led;     
+   
 extern led_driver green_led;   
 extern led_driver bl_btn_led; 
 extern led_driver btn_pr_led;  
 extern led_driver kb_led;
+extern led_driver charge_led_1;
+extern led_driver charge_led_2;
+extern led_driver charge_led_3;
+extern led_driver charge_led_4;
+extern led_driver charge_led_5;
 
 extern led_driver* led_list[];
-extern uint32_t led_2_port_list[];
+extern led_driver* charge_led_list[];
+extern   uint32_t  led_2_port_list[];
 
-#endif //__AUDIOGUIDE_V2_BOARD_H
+#endif //__AUDIOGUIDE_V3_BOARD_H

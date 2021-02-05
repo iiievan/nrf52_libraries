@@ -31,7 +31,7 @@ public:
                        uint32_t pin_2, 
                        uint32_t pin_3, 
                        uint16_t clock_div, 
-                       Timer *pTmr,  
+                         Timer *pTmr,  
                        uint16_t max_val = LED_BRIGHT_100,  
                        uint32_t f_time = LED_SHORT_BLINK_MS); 
             

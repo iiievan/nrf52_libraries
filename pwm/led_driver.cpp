@@ -35,11 +35,50 @@ led_driver* led_list[LEDS_NUM] =
     &bl_btn_led,
     &btn_pr_led,
     &kb_led,
-    NULL,    // по сути это LED_BAT_1..3 входят в модуль чардж бара.
+    &charge_bar,    // по сути это LED_BAT_1..3 входят в модуль чардж бара.
     NULL,    
     NULL
 };
 #endif //_AUDIOGUDE_V2_BOARD
+
+#ifdef _AUDIOGUDE_V3_BOARD
+uint32_t led_2_port_list[LEDS_NUM] = 
+{
+    LED_SYS_GREEN_PIN,  // P0.07 LED_SYS_GREEN 
+    LED_BL_BTN_PIN,     // P0.26 LED_BL_BTN 
+    LED_BTN_PR_PIN,     // P0.11 LED_BTN_PR  
+    LED_KB_PIN,         // P0.25 LED_KB
+    LED_BAT_1_PIN,      // P0.08 LED_BAT_1 
+    LED_BAT_2_PIN,      // P0.06 LED_BAT_2
+    LED_BAT_3_PIN,      // P0.04 LED_BAT_3 
+    LED_BAT_4_PIN,      // P0.27 LED_BAT_4
+    LED_BAT_5_PIN       // P0.05 LED_BAT_5 
+};
+
+
+led_driver    green_led   ( led_2_port_list[LED_SYS_GREEN], &sys_timer, MAX_PWM_VALUE, LED_SHORT_BLINK_MS );
+led_driver    bl_btn_led  ( led_2_port_list[LED_BL_BTN],    &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+led_driver    btn_pr_led  ( led_2_port_list[LED_BTN_PR],    &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+led_driver    kb_led      ( led_2_port_list[LED_KB],        &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+led_driver    charge_led_1( led_2_port_list[LED_BAT_1],     &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+led_driver    charge_led_2( led_2_port_list[LED_BAT_2],     &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+led_driver    charge_led_3( led_2_port_list[LED_BAT_3],     &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+led_driver    charge_led_4( led_2_port_list[LED_BAT_4],     &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+led_driver    charge_led_5( led_2_port_list[LED_BAT_5],     &sys_timer, MAX_PWM_VALUE, LED_FAST_BLINK_MS );
+
+led_driver* led_list[LEDS_NUM] =
+{ 
+    &green_led,
+    &bl_btn_led,
+    &btn_pr_led,
+    &kb_led,
+    &charge_led_1,
+    &charge_led_2,    
+    &charge_led_3,
+    &charge_led_4,   
+    &charge_led_5
+};
+#endif
 
 led_driver::led_driver(uint32_t pin, Timer *pTmr, uint16_t max_val,  uint32_t f_time)
 : pTimer(pTmr)

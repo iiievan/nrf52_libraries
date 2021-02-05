@@ -1,13 +1,13 @@
 ///////////////////////////////////////////////////////////////////////////////
 //
-// IAR ANSI C/C++ Compiler V8.40.1.212/W32 for ARM        03/Feb/2021  19:31:03
+// IAR ANSI C/C++ Compiler V8.40.1.212/W32 for ARM        05/Feb/2021  12:20:14
 // Copyright 1999-2019 IAR Systems AB.
 //
 //    Cpu mode     =  
 //    Endian       =  little
 //    Source file  =  E:\cpp\nrf52_libraries\pwm\nrf_hw_pwm.cpp
 //    Command line =
-//        -f C:\Users\IF385~1.SHO\AppData\Local\Temp\EW803F.tmp
+//        -f C:\Users\IF385~1.SHO\AppData\Local\Temp\EWB7A2.tmp
 //        (E:\cpp\nrf52_libraries\pwm\nrf_hw_pwm.cpp -D NRF52840_XXAA -D
 //        CONFIG_NFCT_PINS_AS_GPIOS -D _AUDIOGUDE_V2_BOARD -D DEBUG -lCN
 //        E:\cpp\nrf52_libraries\main\List -lA E:\cpp\nrf52_libraries\main\List
@@ -2072,28 +2072,28 @@ _ZN10nrf_hw_pwm10write_chnlEhjb:
 //  429     {
 //  430         switch(led_num)
 //  431         {
-//  432             case CHRG_LED1:
+//  432             case CHARGE_LED_1:
 //  433                 write_chnl(_chctrl_2, 220, true);
 //  434                 break;
 //  435     
-//  436             case CHRG_LED2:
+//  436             case CHARGE_LED_2:
 //  437                 write_chnl(_chctrl_2, 220, true);
 //  438                 write_chnl(_chctrl_1, 220, true);
 //  439                 break;
 //  440     
-//  441             case CHRG_LED3:
+//  441             case CHARGE_LED_3:
 //  442                 write_chnl(_chctrl_2, 220, true);
 //  443                 write_chnl(_chctrl_1, 220, true);
 //  444                 write_chnl(_chctrl_3,        32);
 //  445                 break;
 //  446     
-//  447             case CHRG_LED4:
+//  447             case CHARGE_LED_4:
 //  448                 write_chnl(_chctrl_2, 220, true);
 //  449                 write_chnl(_chctrl_1,   0, true);
 //  450                 write_chnl(_chctrl_3,        32);
 //  451                 break;
 //  452     
-//  453             case CHRG_LED5:
+//  453             case CHARGE_LED_5:
 //  454                 write_chnl(_chctrl_2, 32);
 //  455                 write_chnl(_chctrl_1, 32);
 //  456                 write_chnl(_chctrl_3, 45);

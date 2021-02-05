@@ -1188,7 +1188,7 @@
     <group>
         <name>adc</name>
         <file>
-            <name>$PROJ_DIR$\adc\ADC.cpp</name>
+            <name>$PROJ_DIR$\adc\ADC.h</name>
         </file>
     </group>
     <group>
@@ -1203,7 +1203,7 @@
             <name>$PROJ_DIR$\board\board.h</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\board\PowerControl.h</name>
+            <name>$PROJ_DIR$\board\PowerControl.cpp</name>
         </file>
     </group>
     <group>
