@@ -18,7 +18,7 @@ define symbol __ICFEDIT_stack_RAM_end__   = 0x2003FFE0;
 
 /*-Sizes-*/
 define symbol __ICFEDIT_size_cstack__ = 0x2000;
-define symbol __ICFEDIT_size_heap__   = 0x0;
+define symbol __ICFEDIT_size_heap__   = 0x2000;
 /**** End of ICF editor section. ###ICF###*/
 
 define memory mem with size = 4G;

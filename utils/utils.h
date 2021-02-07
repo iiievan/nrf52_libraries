@@ -1,12 +1,17 @@
 #ifndef _UTILS_H
 #define _UTILS_H
 
+#include <string>
 #include "nrf.h"
 #include "nrf_gpio.h"
 
 #ifdef _cplusplus
 extern "C" {
 #endif
+  
+#define STACK_END       0x2003DFE0
+#define STACK_SIZE      0x2000
+#define HEAP_SIZE       0x2000
   
 #define MY_RAND_MAX        (32767)
 #define MY_RAND_MIN        (-32768)
@@ -54,6 +59,9 @@ extern void seed_random(unsigned int seed);
 extern uint16_t crc16_fill(const uint8_t *pBuf, uint32_t uiLength, uint16_t fill);
 extern uint16_t crc16(const uint8_t *pBuf, uint32_t uiLength);
 extern volatile uint32_t* pincfg_reg(uint32_t pin);
+extern void colorUp_stack_heap();
+extern uint32_t stack_avail();
+extern uint32_t heap_avail();
 
 #ifdef _cplusplus
 }

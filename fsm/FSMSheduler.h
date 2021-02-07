@@ -4,6 +4,7 @@
 #include "StepperFSM.h"
 #include "fifo.h"
 #include "timer.h"
+#include <vector>
 
 #define FSM_LIST_MAX        (16UL)          // the total number of machines in the list
 #define FSM_ACTIVE_MAX      (2 + 1)         // the number of simultaneously operating machines at the moment
