@@ -1,7 +1,6 @@
-#include "include.h"
-#include "fsm.h"
+#include "StepperFSM.h"
 
-void finite_state_machine::processing(bool trigger)
+void StepperFSM::handle(bool trigger)
 {
       fsm_status_t result = FSM_RUN;
     control_func_t cf;
@@ -89,7 +88,7 @@ void finite_state_machine::processing(bool trigger)
     _status = result;
 }
 
-bool finite_state_machine::control_iface_action(void const *param)
+bool StepperFSM::control_iface_action(void const *param)
 {
     bool result = false;
     
@@ -119,7 +118,7 @@ bool finite_state_machine::control_iface_action(void const *param)
 
 
 //-------------------------------------------------------------------------------------------------
-// Machine mchn_hello: приветствие светодиодами, заставка.
+// Machine mchn_hello: helloworld with leds.
 //-------------------------------------------------------------------------------------------------
 
 static bool func_blink_kb_1_time(led_driver *led)
@@ -152,13 +151,12 @@ static const fsm_step_t hello_prog[] =
     {0}
 };
 
-finite_state_machine mchn_hello(FSM_LED, LED_FSM_HELLO, hello_prog);
+StepperFSM mchn_hello(FSM_LED, LED_FSM_HELLO, hello_prog);
 //-------------------------------------------------------------------------------------------------
 
 
-
 //-------------------------------------------------------------------------------------------------
-// Machine mchn_charging: обозначение что устройство на зарядке.
+// Machine mchn_charging: designate that devise is on charge.
 //-------------------------------------------------------------------------------------------------
 static bool func_blink_kb_2_times(led_driver *led)
 {
@@ -190,13 +188,13 @@ static const fsm_step_t charging_prog[] =
     {0}
 };
 
-finite_state_machine mchn_charging(FSM_LED, LED_FSM_CHARGING, charging_prog);
+StepperFSM mchn_charging(FSM_LED, LED_FSM_CHARGING, charging_prog);
 //-------------------------------------------------------------------------------------------------
 
 
 
 //-------------------------------------------------------------------------------------------------
-// Machine mchn_usb_connected: обозначение что подключено USB
+// Machine mchn_usb_connected: designate that USB is connected
 //-------------------------------------------------------------------------------------------------
 static bool func_blink_kb_3_times(led_driver *led)
 {
@@ -228,10 +226,10 @@ static const fsm_step_t usb_prog[] =
     {0}
 };
 
-finite_state_machine mchn_usb_connected(FSM_LED, LED_FSM_USB_CONNECTED, usb_prog);
+StepperFSM mchn_usb_connected(FSM_LED, LED_FSM_USB_CONNECTED, usb_prog);
 //-------------------------------------------------------------------------------------------------
 
-finite_state_machine * const fsm_list[4] = 
+StepperFSM * const fsm_list[4] = 
 { 
     &mchn_hello,
     &mchn_charging,

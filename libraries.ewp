@@ -226,7 +226,7 @@
                     <name>CCDefines</name>
                     <state>NRF52840_XXAA</state>
                     <state>CONFIG_NFCT_PINS_AS_GPIOS</state>
-                    <state>_AUDIOGUDE_V3_BOARD</state>
+                    <state>_AUDIOGUDE_V2_BOARD</state>
                     <state>DEBUG</state>
                 </option>
                 <option>
@@ -364,6 +364,7 @@
                     <state>$PROJ_DIR$\utils</state>
                     <state>$PROJ_DIR$\timer</state>
                     <state>$PROJ_DIR$\adc</state>
+                    <state>$PROJ_DIR$\fsm</state>
                 </option>
                 <option>
                     <name>CCStdIncCheck</name>
@@ -1107,6 +1108,15 @@
     </group>
     <group>
         <name>fsm</name>
+        <file>
+            <name>$PROJ_DIR$\fsm\fifo.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\fsm\FSMSheduler.cpp</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\fsm\StepperFSM.cpp</name>
+        </file>
     </group>
     <group>
         <name>pwm</name>

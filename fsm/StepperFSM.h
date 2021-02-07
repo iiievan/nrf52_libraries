@@ -1,7 +1,10 @@
-#ifndef _FSM_H
-#define _FSM_H
+#ifndef _STEPPER_FSM_H
+#define _STEPPER_FSM_H
 
-#include "include.h"
+#include <intrinsics.h>
+#include <stddef.h>
+#include "nrf.h"
+#include "led_driver.h"
 
 class led_driver;       // led_driver forward declaration for control_func_t typedef compile
 
@@ -62,15 +65,15 @@ typedef struct
 
 typedef bool (*control_func_t)(led_driver *led);
 
-class finite_state_machine
+class StepperFSM
 {
 public:    
-                            finite_state_machine(const fsm_interface_t iface, fsmEventID_t id, fsm_step_t fsm_prog[]) : _prog_ptr(fsm_prog),_iface(iface), _id(id) {}        
+                            StepperFSM(const fsm_interface_t iface, fsmEventID_t id, fsm_step_t fsm_prog[]) : _prog_ptr(fsm_prog),_iface(iface), _id(id) {}        
     
         fsm_interface_t     get_interface(void) const { return _iface; }
            fsmEventID_t     get_id(void)        const { return _id; }
            fsm_status_t     get_status(void)          { return _status;}
-                   void     processing(bool trigger);
+                   void     handle(bool trigger);
                    bool     control_iface_action(void const *param);
 
                     int     stage    {-1};   // текущий шаг автомата.
@@ -85,10 +88,10 @@ private:
            fsm_status_t    _status {FSM_NA};    // текущий статус автомата.       
 }; 
 
-extern finite_state_machine mchn_hello;
-extern finite_state_machine mchn_charging;
-extern finite_state_machine mchn_usb_connected;
+extern StepperFSM mchn_hello;
+extern StepperFSM mchn_charging;
+extern StepperFSM mchn_usb_connected;
 
-extern finite_state_machine * const fsm_list[];
+extern StepperFSM * const fsm_list[];
 
-#endif
+#endif ///_STEPPER_FSM_H

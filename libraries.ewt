@@ -1223,6 +1223,15 @@
     </group>
     <group>
         <name>fsm</name>
+        <file>
+            <name>$PROJ_DIR$\fsm\fifo.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\fsm\FSMSheduler.cpp</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\fsm\StepperFSM.cpp</name>
+        </file>
     </group>
     <group>
         <name>pwm</name>

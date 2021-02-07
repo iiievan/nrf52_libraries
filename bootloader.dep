@@ -5,74 +5,108 @@
     <configuration>
         <name>bootloader</name>
         <outputs>
-            <file>$TOOLKIT_DIR$\lib\m7M_tls.a</file>
-            <file>$PROJ_DIR$\bootloader\boot_tools.c</file>
-            <file>$PROJ_DIR$\cmsis\device\nrf51_to_nrf52840.h</file>
-            <file>$PROJ_DIR$\cmsis\device\nrf.h</file>
-            <file>$PROJ_DIR$\bootloader\bootloader.c</file>
-            <file>$PROJ_DIR$\bootloader\Obj\bootloader.o</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\iar_intrinsics_common.h</file>
-            <file>$PROJ_DIR$\cmsis\device\nrf52840.h</file>
-            <file>$PROJ_DIR$\cmsis\include\core_cm4.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
-            <file>$PROJ_DIR$\bootloader\Obj\boot_tools.o</file>
-            <file>$PROJ_DIR$\cmsis\nrf_gpio.h</file>
-            <file>$PROJ_DIR$\bootloader\Obj\system_nrf52.__cstat.et</file>
-            <file>$PROJ_DIR$\cmsis\include\core_cmInstr.h</file>
-            <file>$PROJ_DIR$\cmsis\device\compiler_abstraction.h</file>
-            <file>$PROJ_DIR$\cmsis\device\nrf52_to_nrf52840.h</file>
-            <file>$PROJ_DIR$\bootloader\Obj\system_nrf52840.xcl</file>
-            <file>$PROJ_DIR$\bootloader\Obj\boot_tools.__cstat.et</file>
-            <file>$TOOLKIT_DIR$\lib\shb_l.a</file>
-            <file>$TOOLKIT_DIR$\inc\c\string.h</file>
-            <file>$PROJ_DIR$\bootloader\List\bootloader.map</file>
-            <file>$PROJ_DIR$\cmsis\system_nrf52840.c</file>
-            <file>$TOOLKIT_DIR$\lib\dl7M_tln.a</file>
-            <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
-            <file>$PROJ_DIR$\cmsis\system_nrf52.c</file>
             <file>$TOOLKIT_DIR$\inc\c\ysizet.h</file>
-            <file>$PROJ_DIR$\cmsis\iar_startup_nrf52840.s</file>
-            <file>$PROJ_DIR$\bootloader\boot_nRF5x.icf</file>
-            <file>$PROJ_DIR$\cmsis\system_nrf52840.h</file>
-            <file>$PROJ_DIR$\cmsis\iar_startup_nrf52.s</file>
-            <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
-            <file>$PROJ_DIR$\bootloader\Obj\boot_tools.xcl</file>
-            <file>$PROJ_DIR$\bootloader\Obj\system_nrf52.o</file>
             <file>$PROJ_DIR$\bootloader\Obj\bootloader.xcl</file>
             <file>$PROJ_DIR$\cmsis\include\core_cmFunc.h</file>
             <file>$TOOLKIT_DIR$\inc\c\stdbool.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\cmsis_iar.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_stdlib.h</file>
-            <file>$PROJ_DIR$\cmsis\include\core_cmSimd.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
-            <file>$PROJ_DIR$\bootloader\boot_tools.h</file>
-            <file>$PROJ_DIR$\bootloader\Obj\system_nrf52.xcl</file>
-            <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
+            <file>$PROJ_DIR$\bootloader\Obj\system_nrf52.o</file>
             <file>$PROJ_DIR$\bootloader\Obj\bootloader.__cstat.et</file>
-            <file>$PROJ_DIR$\bootloader\Obj\system_nrf52840.__cstat.et</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_stdlib.h</file>
+            <file>$PROJ_DIR$\bootloader\Obj\system_nrf52.xcl</file>
             <file>$PROJ_DIR$\bootloader\Obj\system_nrf52840.o</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
-            <file>$PROJ_DIR$\cmsis\device\nrf52840_bitfields.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
-            <file>$PROJ_DIR$\bootloader\bootloader.h</file>
-            <file>$TOOLKIT_DIR$\inc\c\iccarm_builtin.h</file>
             <file>$TOOLKIT_DIR$\lib\rt7M_tl.a</file>
-            <file>$PROJ_DIR$\bootloader\Exe\bootloader.out</file>
+            <file>$TOOLKIT_DIR$\inc\c\intrinsics.h</file>
             <file>$PROJ_DIR$\bootloader\Obj\iar_startup_nrf52840.o</file>
-            <file>$PROJ_DIR$\main\main.cpp</file>
+            <file>$PROJ_DIR$\bootloader\Obj\boot_tools.xcl</file>
+            <file>$TOOLKIT_DIR$\inc\c\cmsis_iar.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\ycheck.h</file>
+            <file>$PROJ_DIR$\cmsis\system_nrf52840.h</file>
+            <file>$PROJ_DIR$\bootloader\Obj\system_nrf52840.__cstat.et</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product_string.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Defaults.h</file>
+            <file>$TOOLKIT_DIR$\lib\dl7M_tln.a</file>
+            <file>$PROJ_DIR$\cmsis\device\nrf52840_bitfields.h</file>
+            <file>$PROJ_DIR$\bootloader\bootloader.h</file>
+            <file>$PROJ_DIR$\bootloader\Exe\bootloader.out</file>
             <file>$PROJ_DIR$\bootloader\Obj\bootloader.pbd</file>
             <file>$PROJ_DIR$\bootloader\Exe\bootloader.hex</file>
-            <file>$PROJ_DIR$\pwm\led_driver.cpp</file>
+            <file>$PROJ_DIR$\cmsis\include\core_cmSimd.h</file>
+            <file>$PROJ_DIR$\bootloader\boot_tools.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\iccarm_builtin.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\stdlib.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\stdint.h</file>
+            <file>$TOOLKIT_DIR$\lib\m7M_tls.a</file>
+            <file>$PROJ_DIR$\cmsis\include\core_cmInstr.h</file>
+            <file>$PROJ_DIR$\cmsis\device\compiler_abstraction.h</file>
+            <file>$PROJ_DIR$\cmsis\device\nrf52_to_nrf52840.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\yvals.h</file>
+            <file>$PROJ_DIR$\cmsis\nrf_gpio.h</file>
+            <file>$PROJ_DIR$\bootloader\Obj\system_nrf52840.xcl</file>
+            <file>$PROJ_DIR$\cmsis\device\nrf.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Product.h</file>
+            <file>$PROJ_DIR$\bootloader\Obj\boot_tools.__cstat.et</file>
+            <file>$TOOLKIT_DIR$\lib\shb_l.a</file>
+            <file>$PROJ_DIR$\bootloader\List\bootloader.map</file>
+            <file>$PROJ_DIR$\cmsis\device\nrf51_to_nrf52840.h</file>
+            <file>$PROJ_DIR$\cmsis\system_nrf52.c</file>
+            <file>$PROJ_DIR$\bootloader\boot_nRF5x.icf</file>
+            <file>$TOOLKIT_DIR$\inc\c\DLib_Config_Normal.h</file>
+            <file>$PROJ_DIR$\cmsis\iar_startup_nrf52.s</file>
+            <file>$TOOLKIT_DIR$\inc\c\string.h</file>
+            <file>$TOOLKIT_DIR$\inc\c\stdio.h</file>
+            <file>$PROJ_DIR$\bootloader\boot_tools.c</file>
+            <file>$PROJ_DIR$\cmsis\iar_startup_nrf52840.s</file>
+            <file>$TOOLKIT_DIR$\inc\c\iar_intrinsics_common.h</file>
+            <file>$PROJ_DIR$\cmsis\include\core_cm4.h</file>
+            <file>$PROJ_DIR$\bootloader\Obj\boot_tools.o</file>
+            <file>$PROJ_DIR$\bootloader\bootloader.c</file>
+            <file>$PROJ_DIR$\cmsis\system_nrf52840.c</file>
+            <file>$PROJ_DIR$\bootloader\Obj\bootloader.o</file>
+            <file>$PROJ_DIR$\cmsis\device\nrf52840.h</file>
+            <file>$PROJ_DIR$\bootloader\Obj\system_nrf52.__cstat.et</file>
         </outputs>
+        <file>
+            <name>$PROJ_DIR$\bootloader\Exe\bootloader.out</name>
+            <outputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 41</file>
+                </tool>
+                <tool>
+                    <name>OBJCOPY</name>
+                    <file> 24</file>
+                </tool>
+            </outputs>
+            <inputs>
+                <tool>
+                    <name>ILINK</name>
+                    <file> 44 53 56 11 4 8 40 9 30 19</file>
+                </tool>
+            </inputs>
+        </file>
         <file>
             <name>[ROOT_NODE]</name>
             <outputs>
                 <tool>
                     <name>ILINK</name>
-                    <file> 55 23</file>
+                    <file> 22 41</file>
+                </tool>
+            </outputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\cmsis\system_nrf52.c</name>
+            <outputs>
+                <tool>
+                    <name>ICCARM</name>
+                    <file> 4</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
+                    <file> 58</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 7</file>
                 </tool>
             </outputs>
         </file>
@@ -81,44 +115,53 @@
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 13</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 34</file>
+                    <file> 53</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 20</file>
+                    <file> 39</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 12</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 52 45 53 12 51 7 6 9 8 26 28 42 3 10 11 16 39 37 41 31 50 2 18 17 14 38 33 40 43</file>
+                    <file> 21 10 27 34 18 45 38 51 48 14 0 29 37 57 52 31 13 2 25 15 20 42 33 32 35 3 28 6 26</file>
                 </tool>
             </inputs>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\cmsis\iar_startup_nrf52840.s</name>
+            <outputs>
+                <tool>
+                    <name>AARM</name>
+                    <file> 11</file>
+                </tool>
+            </outputs>
         </file>
         <file>
             <name>$PROJ_DIR$\bootloader\bootloader.c</name>
             <outputs>
                 <tool>
                     <name>ICCARM</name>
+                    <file> 56</file>
+                </tool>
+                <tool>
+                    <name>__cstat</name>
                     <file> 5</file>
                 </tool>
                 <tool>
                     <name>BICOMP</name>
-                    <file> 36</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 46</file>
+                    <file> 1</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 22 26 12 51 7 6 28 49 52 45 53 9 8 42 3 10 11 16 39 37 41 31 50 2 18 17 14 38 33 40 43</file>
+                    <file> 47 14 34 18 45 38 0 17 21 10 27 51 48 29 37 57 52 31 13 2 25 15 20 42 33 32 35 3 28 6 26</file>
                 </tool>
             </inputs>
         </file>
@@ -127,66 +170,21 @@
             <outputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 48</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 19</file>
+                    <file> 8</file>
                 </tool>
                 <tool>
                     <name>__cstat</name>
-                    <file> 47</file>
+                    <file> 16</file>
+                </tool>
+                <tool>
+                    <name>BICOMP</name>
+                    <file> 36</file>
                 </tool>
             </outputs>
             <inputs>
                 <tool>
                     <name>ICCARM</name>
-                    <file> 42 26 12 51 7 6 38 45 53 9 3 10 11 16 39 37 41 31 50 2 18 17</file>
-                </tool>
-            </inputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\cmsis\system_nrf52.c</name>
-            <outputs>
-                <tool>
-                    <name>ICCARM</name>
-                    <file> 35</file>
-                </tool>
-                <tool>
-                    <name>BICOMP</name>
-                    <file> 44</file>
-                </tool>
-                <tool>
-                    <name>__cstat</name>
-                    <file> 15</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\cmsis\iar_startup_nrf52840.s</name>
-            <outputs>
-                <tool>
-                    <name>AARM</name>
-                    <file> 56</file>
-                </tool>
-            </outputs>
-        </file>
-        <file>
-            <name>$PROJ_DIR$\bootloader\Exe\bootloader.out</name>
-            <outputs>
-                <tool>
-                    <name>ILINK</name>
-                    <file> 23</file>
-                </tool>
-                <tool>
-                    <name>OBJCOPY</name>
-                    <file> 59</file>
-                </tool>
-            </outputs>
-            <inputs>
-                <tool>
-                    <name>ILINK</name>
-                    <file> 30 13 5 56 35 48 21 54 0 25</file>
+                    <file> 29 14 34 18 45 38 3 10 27 51 37 57 52 31 13 2 25 15 20 42 33 32</file>
                 </tool>
             </inputs>
         </file>

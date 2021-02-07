@@ -1,9 +1,12 @@
 #ifndef _FSM_SHEDULER_H
 #define _FSM_SHEDULER_H
 
-#include "include.h"
-#include "fsm.h"
+#include "StepperFSM.h"
 #include "fifo.h"
+#include "timer.h"
+
+#define FSM_LIST_MAX        (16UL)          // the total number of machines in the list
+#define FSM_ACTIVE_MAX      (2 + 1)         // the number of simultaneously operating machines at the moment
 
 typedef enum 
 {
@@ -22,20 +25,22 @@ typedef struct _fsm_iface_link_t_
   
     fsm_interface_t     iface;
        fsmEventID_t     fsm_id;
-} fsm_iface_link_t;
+} fsmQData_t;
 
 typedef struct
 {
          fsm_interface_t    fsm_iface;  //can_iface_t
             fsmEventID_t    fsm_id;     //can_ctl_func_id_t
-    finite_state_machine   *fsm;        //state_machine_func_t
+              StepperFSM   *fsm;        //state_machine_func_t
             fsm_status_t   *fsm_sts;    //state_machine_status_t
 } fsm_list_t;
 
-class fsm_sheduler
+class FSMsheduler
 {
 public:    
-                            fsm_sheduler(finite_state_machine * const *list): _fsm_list(list),_list_size(countof(list)) {} 
+                            FSMsheduler(StepperFSM * const *list ,  Timer &rTmr)
+                            : _fsm_list(list),_list_size(countof(list)),_ms_timer(rTmr) 
+                            {} 
 
                    // automatic control functions from the program logic ->
                    bool     fsm_in_fifo_added(fsmEventID_t fsm_id);                     // checking if the machine is added to the queue
@@ -49,14 +54,14 @@ public:
                    void     handle(void);                                               // the scheduler spins in the main cycle.
 
 private:  
+                  Timer    &_ms_timer; 
+    fifo<fsmQData_t, FSM_LIST_MAX> _TOTAL_FSM_FIFO;   // buffer of all machines in general
+    fifo<fsmQData_t, FSM_ACTIVE_MAX>   _ACTIVE_FSM_FIFO;  // buffer of currently active machines    
 
-    fifo<fsm_iface_link_t, MAX_FSM_FIFO_LEN> _TOTAL_FSM_FIFO;   // buffer of all machines in general
-    fifo<fsm_iface_link_t, MAX_ACTIVE_FSM>   _ACTIVE_FSM_FIFO;  // buffer of currently active machines    
-
-    finite_state_machine * const   *_fsm_list;    // a pointer to a list of fsm objects to process.
-                 const  uint32_t    _list_size;   // machine list size         
+      StepperFSM * const   *_fsm_list;    // a pointer to a list of fsm objects to process.
+         const  uint32_t    _list_size;   // machine list size         
 };
 
-extern fsm_sheduler led_list_fsm_sheduler;
+extern FSMsheduler leds_machines;
 
-#endif
+#endif //_FSM_SHEDULER_H

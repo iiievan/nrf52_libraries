@@ -1,10 +1,8 @@
 #ifndef _FIFO_H
 #define _FIFO_H
 
-#include "include.h"
-
-#define MAX_FSM_FIFO_LEN    (16UL)          // the total number of machines in the list
-#define MAX_ACTIVE_FSM      (2 + 1)         // the number of simultaneously operating machines at the moment
+#include <intrinsics.h>
+#include "nrf.h"
 
 template <typename T, size_t fifo_size = 16>
 class fifo
