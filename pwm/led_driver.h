@@ -23,11 +23,11 @@ typedef enum
     LED_BRIGHT_100 = 0xFF
 } leds_bright_e;
 
-class led_driver : public nrf_hw_pwm
+class ledDriver : public nrf_hw_pwm
 {
 public:
-            led_driver(uint32_t pin, Timer *pTmr, uint16_t max_val = LED_BRIGHT_100,  uint32_t f_time = LED_SHORT_BLINK_MS); // msec - rise and fall time to max value
-            led_driver(uint32_t pin_1, 
+            ledDriver(uint32_t pin, Timer *pTmr, uint16_t max_val = LED_BRIGHT_100,  uint32_t f_time = LED_SHORT_BLINK_MS); // msec - rise and fall time to max value
+            ledDriver(uint32_t pin_1, 
                        uint32_t pin_2, 
                        uint32_t pin_3, 
                        uint16_t clock_div, 

@@ -226,7 +226,7 @@
                     <name>CCDefines</name>
                     <state>NRF52840_XXAA</state>
                     <state>CONFIG_NFCT_PINS_AS_GPIOS</state>
-                    <state>_AUDIOGUDE_V2_BOARD</state>
+                    <state>_AUDIOGUDE_V3_BOARD</state>
                     <state>DEBUG</state>
                 </option>
                 <option>
@@ -1121,10 +1121,10 @@
     <group>
         <name>pwm</name>
         <file>
-            <name>$PROJ_DIR$\pwm\led_driver.cpp</name>
+            <name>$PROJ_DIR$\pwm\hwPWM.cpp</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\pwm\nrf_hw_pwm.cpp</name>
+            <name>$PROJ_DIR$\pwm\ledDriver.cpp</name>
         </file>
     </group>
     <group>

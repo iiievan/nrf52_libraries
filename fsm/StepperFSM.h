@@ -4,9 +4,9 @@
 #include <intrinsics.h>
 #include <stddef.h>
 #include "nrf.h"
-#include "led_driver.h"
+#include "ledDriver.h"
 
-class led_driver;       // led_driver forward declaration for control_func_t typedef compile
+class ledDriver;       // ledDriver forward declaration for control_func_t typedef compile
 
 #define TIME_DELTA (5)   // processing interval of machines.
 
@@ -63,7 +63,7 @@ typedef struct
        void const   *param;       // passed parameter (depends on action_type)
 } const fsm_step_t;
 
-typedef bool (*control_func_t)(led_driver *led);
+typedef bool (*control_func_t)(ledDriver *led);
 
 class StepperFSM
 {

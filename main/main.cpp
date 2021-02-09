@@ -6,8 +6,8 @@
 #include "nrf_gpio.h"
 #include "utils.h"
 
-#include "led_driver.h"
-#include "nrf_hw_pwm.h"
+#include "ledDriver.h"
+#include "hwPWM.h"
 #include "ADC.h"
 #include "timer.h"
 #include "PowerControl.h"

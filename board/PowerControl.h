@@ -5,7 +5,7 @@
 #include "utils.h"
 #include "Timer.h"
 #include "ADC.h"
-#include "led_driver.h"
+#include "ledDriver.h"
 
 //#define CHARGE_250MA_MAX  // limit current 250mA  for sales
 #define CHRG_BAT_OK                 (0.95)
@@ -32,7 +32,7 @@ public:
                          PowerControl(uint32_t  charge,                              // charge control pin
                          ADC<ADC_CHANNELS_NUM> &rADC,
                                          Timer &rTmr,
-                                   led_driver **chargeLeds, 
+                                   ledDriver **chargeLeds, 
                                       uint32_t  battery_meas = PIN_DISCONNECTED,     // battery meas pin
                                       uint32_t  input_meas = PIN_DISCONNECTED,       // input voltage meas pin
                                       uint32_t  supply3V0   = PIN_DISCONNECTED,             // rf power control pin
@@ -71,7 +71,7 @@ public:
 private:
 ADC<ADC_CHANNELS_NUM>   &_ADC;
                 Timer   &_ms_timer; 
-           led_driver  **_chargeLeds;
+           ledDriver  **_chargeLeds;
 
               uint32_t   _charge_ctrl_pin ;
               uint32_t   _supply3V0_ctrl_pin       { PIN_DISCONNECTED };

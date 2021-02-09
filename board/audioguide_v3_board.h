@@ -2,7 +2,7 @@
 #define __AUDIOGUIDE_V3_BOARD_H
 
 //forward declaration for board
-class led_driver;
+class ledDriver;
 
 #include "utils.h"
 
@@ -94,18 +94,18 @@ enum
     SHTDWN  = -1 
 };
    
-extern led_driver green_led;   
-extern led_driver bl_btn_led; 
-extern led_driver btn_pr_led;  
-extern led_driver kb_led;
-extern led_driver charge_led_1;
-extern led_driver charge_led_2;
-extern led_driver charge_led_3;
-extern led_driver charge_led_4;
-extern led_driver charge_led_5;
+extern ledDriver green_led;   
+extern ledDriver bl_btn_led; 
+extern ledDriver btn_pr_led;  
+extern ledDriver kb_led;
+extern ledDriver charge_led_1;
+extern ledDriver charge_led_2;
+extern ledDriver charge_led_3;
+extern ledDriver charge_led_4;
+extern ledDriver charge_led_5;
 
-extern led_driver* led_list[];
-extern led_driver* charge_led_list[];
+extern ledDriver* led_list[];
+extern ledDriver* charge_led_list[];
 extern   uint32_t  led_2_port_list[];
 
 #endif //__AUDIOGUIDE_V3_BOARD_H

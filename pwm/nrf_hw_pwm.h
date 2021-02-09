@@ -47,7 +47,7 @@ enum
 class nrf_hw_pwm
 {
 public:
-                         nrf_hw_pwm();  // конструктор по умолчанию для производных классов led_driver.
+                         nrf_hw_pwm();  // конструктор по умолчанию для производных классов ledDriver.
                          nrf_hw_pwm(uint16_t clock_div);
                          nrf_hw_pwm(uint16_t clock_div, uint32_t pin_1, uint32_t pin_2, uint32_t pin_3);  // конструктор на случай наличия модуля управления индикатором заряда
               

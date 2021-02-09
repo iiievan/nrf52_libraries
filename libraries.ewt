@@ -1236,10 +1236,10 @@
     <group>
         <name>pwm</name>
         <file>
-            <name>$PROJ_DIR$\pwm\led_driver.cpp</name>
+            <name>$PROJ_DIR$\pwm\hwPWM.cpp</name>
         </file>
         <file>
-            <name>$PROJ_DIR$\pwm\nrf_hw_pwm.cpp</name>
+            <name>$PROJ_DIR$\pwm\ledDriver.cpp</name>
         </file>
     </group>
     <group>

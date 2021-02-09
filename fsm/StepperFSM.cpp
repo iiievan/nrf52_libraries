@@ -5,7 +5,7 @@ void StepperFSM::handle(bool trigger)
       fsm_status_t result = FSM_RUN;
     control_func_t cf;
               bool cf_result;
-        led_driver *led = led_list[_prog_ptr[this->stage].action_type];
+        ledDriver *led = led_list[_prog_ptr[this->stage].action_type];
 
     if (trigger == true)
     {
@@ -121,7 +121,7 @@ bool StepperFSM::control_iface_action(void const *param)
 // Machine mchn_hello: helloworld with leds.
 //-------------------------------------------------------------------------------------------------
 
-static bool func_blink_kb_1_time(led_driver *led)
+static bool func_blink_kb_1_time(ledDriver *led)
 {
     static bool toggle = true;
 
@@ -135,7 +135,7 @@ static bool func_blink_kb_1_time(led_driver *led)
     return false;
 }
 
-static bool hello_end(led_driver *led)
+static bool hello_end(ledDriver *led)
 {
     led->turn_off();
 
@@ -158,7 +158,7 @@ StepperFSM mchn_hello(FSM_LED, LED_FSM_HELLO, hello_prog);
 //-------------------------------------------------------------------------------------------------
 // Machine mchn_charging: designate that devise is on charge.
 //-------------------------------------------------------------------------------------------------
-static bool func_blink_kb_2_times(led_driver *led)
+static bool func_blink_kb_2_times(ledDriver *led)
 {
     static bool toggle = true;
 
@@ -172,7 +172,7 @@ static bool func_blink_kb_2_times(led_driver *led)
     return false;
 }
 
-static bool charging_end(led_driver *led)
+static bool charging_end(ledDriver *led)
 {
     led->turn_off();
 
@@ -196,7 +196,7 @@ StepperFSM mchn_charging(FSM_LED, LED_FSM_CHARGING, charging_prog);
 //-------------------------------------------------------------------------------------------------
 // Machine mchn_usb_connected: designate that USB is connected
 //-------------------------------------------------------------------------------------------------
-static bool func_blink_kb_3_times(led_driver *led)
+static bool func_blink_kb_3_times(ledDriver *led)
 {
     static bool toggle = true;
 
@@ -210,7 +210,7 @@ static bool func_blink_kb_3_times(led_driver *led)
     return false;
 }
 
-static bool usb_end(led_driver *led)
+static bool usb_end(ledDriver *led)
 {
     led->turn_off();
 
