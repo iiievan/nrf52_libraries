@@ -51,24 +51,18 @@ typedef enum
 class ledDriver
 {
 public:
-             int    pin            {-1};
+             int    pin            {PIN_DISCONNECTED};
              int    led            {-1};
 ELEDChannelState    channel        {CHNL_NA};
-             int    pwm_module_num {-1}; 
+             int    pwm_module_num {-1};
+             bool   inversion;              // PWN output inversion flag
 
-                    ledDriver(uint32_t  pin, 
+                    ledDriver(uint32_t  pin_, 
                                  Timer &rTmr,
-                                 hwPWM &rPWM,  
-                            ELedBright  max_val = LED_BRIGHT_100,  
-                              uint32_t  f_time  = LED_SHORT_BLINK_MS); // msec - rise and fall time to max value
-
-                    ledDriver(uint32_t  pin_1, 
-                              uint32_t  pin_2, 
-                              uint32_t  pin_3, 
-                                 Timer &rTmr,
-                                 hwPWM &rPWM,  
-                            ELedBright  max_val = LED_BRIGHT_100,  
-                              uint32_t  f_time = LED_SHORT_BLINK_MS); 
+                                 hwPWM &rPWM,
+                              uint32_t  f_time  = LED_SHORT_BLINK_MS, // msec - rise and fall time to max value 
+                            ELedBright  max_val = LED_BRIGHT_100,
+                                  bool  inverted = false); 
 
             void    run(void);
             void    run(int repetitions);

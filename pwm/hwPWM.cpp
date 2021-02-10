@@ -21,13 +21,8 @@ hwPWM::hwPWM(uint16_t clock_div)
     }
 }
 
-hwPWM::hwPWM(uint16_t clock_div, ledDriver *driver_1, ledDriver *driver_2, ledDriver *driver_3)
-: _charge_bar_led_list
-{
-    driver_1,
-    driver_2,
-    driver_3
-}
+hwPWM::hwPWM(uint16_t clock_div, ledDriver **drivers_list)
+: _charge_bar_led_list(drivers_list)
 {          
     setClockDiv(clock_div);    
 
@@ -35,11 +30,6 @@ hwPWM::hwPWM(uint16_t clock_div, ledDriver *driver_1, ledDriver *driver_2, ledDr
     {
         setMaxValue(pwm, (uint32_t)MAX_PWM_VALUE);
         _setup(pwm);
-    }
-
-    for(int i = 0; i < 3; i++)
-    {
-        addDriver(_charge_bar_led_list[i]);
     }
 }
 
@@ -141,9 +131,9 @@ void hwPWM::setClockDiv(uint8_t div )
     }
 }
 
-int hwPWM::addDriver(ledDriver *driver)
+int hwPWM::linkDriver(ledDriver *driver)
 {
-    if(driver->pin != REMOVED)
+    if(driver->channel != CHNL_NA)
     { return ALRDY_IS; } 
 
     // find free slot which is not connected
@@ -151,10 +141,11 @@ int hwPWM::addDriver(ledDriver *driver)
     {
         for(int i = 0; i < MAX_CHANNELS; i++)
         {
-            if ( _pwm_dev[pwm]->PSEL.OUT[i] & PWM_PSEL_OUT_CONNECT_Msk )
+            // this is free slot
+            if (_pwm_dev[pwm]->PSEL.OUT[i] & PWM_PSEL_OUT_CONNECT_Msk)
             {
                 driver->channel = (ELEDChannelState)i;
-                driver->pwm_module_num = pwm;   // далее работаем с этим модулем PWM
+                driver->pwm_module_num = pwm;   
                 break;
             }
         }
@@ -180,8 +171,13 @@ int hwPWM::addDriver(ledDriver *driver)
         _pwm_dev[driver->pwm_module_num]->PSEL.OUT[driver->channel] = driver->pin;
     }
     
-    // set pwm to zero
-    setDriver(driver, 0);
+    // stop pwm to avoid random output generation just need set 0 value to sequence
+    // and depending on inversion flag
+    if(driver->inversion)
+        _seq_0[driver->pwm_module_num][driver->channel] = 0x0000; 
+    else
+        _seq_0[driver->pwm_module_num][driver->channel] = 0x8000; 
+    _stop(driver->pwm_module_num);
     
     return STATE_OK;
 }
@@ -211,6 +207,11 @@ void hwPWM::_start(uint8_t  pwm_index)
 }
 
 void hwPWM::_stop(uint8_t  pwm_index)
+{
+    _pwm_dev[pwm_index]->ENABLE  = (PWM_ENABLE_ENABLE_Disabled << PWM_ENABLE_ENABLE_Pos);
+}
+
+void hwPWM::_low_power(uint8_t  pwm_index)
 { 
     uint32_t pin;
 
@@ -270,5 +271,10 @@ bool hwPWM::_is_enabled (uint8_t  pwm_index)
     return _pwm_dev[pwm_index]->ENABLE;
 }
 
-hwPWM pwm_module(128);
+#ifdef _AUDIOGUDE_V3_BOARD
+hwPWM pwm_agregator(128);
+#endif
+#ifdef _AUDIOGUDE_V2_BOARD
+hwPWM pwm_agregator(128, &led_list[LED_BAT_1_PIN]);
+#endif
 

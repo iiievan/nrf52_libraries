@@ -12,20 +12,16 @@ uint32_t led_2_port_list[LEDS_NUM] =
     LED_BAT_1_PIN,      // P0.08 LED_BAT_1 
     LED_BAT_2_PIN,      // P0.27 LED_BAT_2
     LED_BAT_3_PIN       // P0.06 LED_BAT_3 
-};
+}; 
 
-// должен быть создан до того как будут использован в производных классах ниже.
-// иначе порушится вся карта пинов и каналов. Т.к. каждый ledDriver является производным
-// при вызове своего конструктора он сначала вызовет конструктор по умолчанию hw_pwm() - который бессмысленен чуть менее чем полностью)
-ledDriver    charge_bar  ( led_2_port_list[LED_BAT_1],
-                           led_2_port_list[LED_BAT_2],
-                           led_2_port_list[LED_BAT_3], sys_timer, pwm_module);  
-
-ledDriver    red_led     ( led_2_port_list[LED_SYS_RED],   sys_timer, pwm_module, LED_BRIGHT_100, LED_SHORT_BLINK_MS );
-ledDriver    green_led   ( led_2_port_list[LED_SYS_GREEN], sys_timer, pwm_module, LED_BRIGHT_100, LED_SHORT_BLINK_MS );
-ledDriver    bl_btn_led  ( led_2_port_list[LED_BL_BTN],    sys_timer, pwm_module, LED_BRIGHT_100, LED_FAST_BLINK_MS );
-ledDriver    btn_pr_led  ( led_2_port_list[LED_BTN_PR],    sys_timer, pwm_module, LED_BRIGHT_100, LED_FAST_BLINK_MS );
-ledDriver    kb_led      ( led_2_port_list[LED_KB],        sys_timer, pwm_module, LED_BRIGHT_100, LED_FAST_BLINK_MS );
+ledDriver    red_led     ( led_2_port_list[LED_SYS_RED],   sys_timer, pwm_agregator, LED_SHORT_BLINK_MS );
+ledDriver    green_led   ( led_2_port_list[LED_SYS_GREEN], sys_timer, pwm_agregator, LED_SHORT_BLINK_MS );
+ledDriver    bl_btn_led  ( led_2_port_list[LED_BL_BTN],    sys_timer, pwm_agregator, LED_FAST_BLINK_MS );
+ledDriver    btn_pr_led  ( led_2_port_list[LED_BTN_PR],    sys_timer, pwm_agregator, LED_FAST_BLINK_MS );
+ledDriver    kb_led      ( led_2_port_list[LED_KB],        sys_timer, pwm_agregator, LED_FAST_BLINK_MS );
+ledDriver    bat_led_1   ( led_2_port_list[LED_BAT_1_PIN], sys_timer, pwm_agregator, LED_FAST_BLINK_MS );
+ledDriver    bat_led_2   ( led_2_port_list[LED_BAT_2_PIN], sys_timer, pwm_agregator, LED_FAST_BLINK_MS );
+ledDriver    bat_led_3   ( led_2_port_list[LED_BAT_3_PIN], sys_timer, pwm_agregator, LED_FAST_BLINK_MS );
 
 
 ledDriver* led_list[LEDS_NUM] =
@@ -35,9 +31,9 @@ ledDriver* led_list[LEDS_NUM] =
     &bl_btn_led,
     &btn_pr_led,
     &kb_led,
-    &charge_bar,    // по сути это LED_BAT_1..3 входят в модуль чардж бара.
-    NULL,    
-    NULL
+    &bat_led_1,    
+    &bat_led_2,    
+    &bat_led_3
 };
 #endif //_AUDIOGUDE_V2_BOARD
 
@@ -56,16 +52,16 @@ uint32_t led_2_port_list[LEDS_NUM] =
 };
 
 
-ledDriver    green_led   ( led_2_port_list[LED_SYS_GREEN], sys_timer, pwm_module, LED_BRIGHT_100, LED_SHORT_BLINK_MS );
-ledDriver    bl_btn_led  ( led_2_port_list[LED_BL_BTN],    sys_timer, pwm_module, LED_BRIGHT_100, LED_FAST_BLINK_MS );
-ledDriver    btn_pr_led  ( led_2_port_list[LED_BTN_PR],    sys_timer, pwm_module, LED_BRIGHT_100, LED_FAST_BLINK_MS );
-ledDriver    kb_led      ( led_2_port_list[LED_KB],        sys_timer, pwm_module, LED_BRIGHT_100, LED_FAST_BLINK_MS );
-ledDriver    charge_led_1( led_2_port_list[LED_BAT_1],     sys_timer, pwm_module, LED_BRIGHT_100, LED_FAST_BLINK_MS );
-ledDriver    charge_led_2( led_2_port_list[LED_BAT_2],     sys_timer, pwm_module, LED_BRIGHT_100, LED_FAST_BLINK_MS );
-ledDriver    charge_led_3( led_2_port_list[LED_BAT_3],     sys_timer, pwm_module, LED_BRIGHT_100, LED_FAST_BLINK_MS );
-ledDriver    charge_led_4( led_2_port_list[LED_BAT_4],     sys_timer, pwm_module, LED_BRIGHT_100, LED_FAST_BLINK_MS );
-ledDriver    charge_led_5( led_2_port_list[LED_BAT_5],     sys_timer, pwm_module, LED_BRIGHT_100, LED_FAST_BLINK_MS );
-
+ledDriver    green_led   ( led_2_port_list[LED_SYS_GREEN], sys_timer, pwm_agregator, LED_SHORT_BLINK_MS );
+ledDriver    bl_btn_led  ( led_2_port_list[LED_BL_BTN],    sys_timer, pwm_agregator, LED_FAST_BLINK_MS  );
+ledDriver    btn_pr_led  ( led_2_port_list[LED_BTN_PR],    sys_timer, pwm_agregator, LED_FAST_BLINK_MS  );
+ledDriver    kb_led      ( led_2_port_list[LED_KB],        sys_timer, pwm_agregator, LED_FAST_BLINK_MS  );
+ledDriver    charge_led_1( led_2_port_list[LED_BAT_1],     sys_timer, pwm_agregator, LED_FAST_BLINK_MS  );
+ledDriver    charge_led_2( led_2_port_list[LED_BAT_2],     sys_timer, pwm_agregator, LED_FAST_BLINK_MS  );
+ledDriver    charge_led_3( led_2_port_list[LED_BAT_3],     sys_timer, pwm_agregator, LED_FAST_BLINK_MS  );
+ledDriver    charge_led_4( led_2_port_list[LED_BAT_4],     sys_timer, pwm_agregator, LED_FAST_BLINK_MS  );
+ledDriver    charge_led_5( led_2_port_list[LED_BAT_5],     sys_timer, pwm_agregator, LED_FAST_BLINK_MS  );
+ 
 ledDriver* led_list[LEDS_NUM] =
 { 
     &green_led,
@@ -82,45 +78,37 @@ ledDriver* led_list[LEDS_NUM] =
 
 ledDriver::ledDriver(uint32_t  pin_, 
                         Timer &rTmr,
-                        hwPWM &rPWM,  
-                   ELedBright  max_val,  
-                     uint32_t  f_time) // msec - rise and fall time to max value
-: _rTimer(rTmr),_rPWM_module(rPWM), _max_val(max_val)
+                        hwPWM &rPWM,
+                     uint32_t  f_time,  // msec - rise and fall time to max value 
+                   ELedBright  max_val,             
+                         bool  inverted)
+: _rTimer(rTmr),_rPWM_module(rPWM), _max_val(max_val),inversion(inverted) 
 {       
     set_fadetime(f_time);    
-    _timer = _rTimer.get_ms() - _tout;
+    _timer = _rTimer.get_ms() - _tout;    
 
-    pin = pin_;
+    pin = pin_; 
     nrf_gpio_cfg_output(pin);
     
-    for(auto i : led_2_port_list)
+    for(int i = 0; i < LEDS_NUM; i++)
     {
-        if(led_2_port_list[i] == pin_)
+        if(led_2_port_list[i] == pin)
+        {
           led = i;
+          break;
+        }
     }
+
+    _rPWM_module.linkDriver(this);       
 }
 
-ledDriver::ledDriver(uint32_t  pin_1, 
-                     uint32_t  pin_2, 
-                     uint32_t  pin_3, 
-                        Timer &rTmr,
-                        hwPWM &rPWM,  
-                   ELedBright  max_val,  
-                     uint32_t  f_time) 
-: _rTimer(rTmr),_rPWM_module(rPWM), _max_val(max_val)
-{    
-    set_fadetime(f_time);    
-    _timer = _rTimer.get_ms() - _tout;
-}
-
-// функция рассичтывает период между инкрементацией свечения светодиода и  
-// шаг инкрементации, так чтобы уложиться во период времени за который 
-// свечение светодиода поднимется(или опустится) на заданную величину.
+// calculate period between increments(dec) of led brightness  and  
+// step of incrementaion, so to meet fade time
 void ledDriver::set_fadetime(uint32_t f_time)
 {       
    volatile int nod;
   
-    // рассчитываем наибольший общий делитель
+    // calculate the greatest common factor(nod)
     if( _max_val >= f_time)
     {
           nod = ::nod<int>((int)f_time,(int)_max_val);
@@ -254,7 +242,6 @@ bool ledDriver::handle(void)
     return result;
 }
 
-// размещается в прерывании.
 bool ledDriver::_fade(void)   
 {   
     bool result = false;
@@ -265,6 +252,8 @@ bool ledDriver::_fade(void)
 
         if (_rTimer.get_ms() - _timer > (uint64_t)_tout)
         {
+             _timer = _rTimer.get_ms();
+             
              if(_fade_dir)
              {
                  _bright_val += (int)_step;
@@ -295,16 +284,13 @@ bool ledDriver::_fade(void)
                         return result;
                      }
                  }
-             }
-             
-             _timer = _rTimer.get_ms();
+             } 
         }
     }
 
     return result;
 }  
 
-// размещается в прерывании.
 bool ledDriver::_fade_up(void)   
 {   
     bool result = false;
@@ -337,7 +323,6 @@ bool ledDriver::_fade_up(void)
     return result;
 } 
 
-// размещается в прерывании.
 bool ledDriver::_fade_down(void)   
 {   
     bool result = false;
@@ -358,7 +343,7 @@ bool ledDriver::_fade_down(void)
 
                 _rPWM_module.setDriver(this,_bright_val); 
 
-               _status = STS_FINISHED;
+                _status = STS_FINISHED;
             }
              
             if(_status == STS_FINISHED)
@@ -398,9 +383,15 @@ uint8_t led_drivers_handle(void)
 {
     bool busy = false;
     uint8_t  result = 0;
+#ifdef _AUDIOGUDE_V3_BOARD
+    const uint32_t leds_number = LEDS_NUM;
+#endif
+#ifdef _AUDIOGUDE_V2_BOARD
+    const uint32_t leds_number = LED_BAT_1;
+#endif
     
    // handle led drivers
-   for ( uint32_t i = 0; i < LEDS_NUM; i++)
+   for (uint32_t i = 0; i < leds_number; i++)
    { 
       if(led_list[i] != NULL)
       { busy = led_list[i]->handle(); } 

@@ -31,33 +31,33 @@ class hwPWM
 public:
                          hwPWM(uint16_t clock_div);
 
-                         hwPWM(uint16_t clock_div, ledDriver *driver_1, ledDriver *driver_2, ledDriver *driver_3);  // constructor for specially three pin charge bar module 
+                         hwPWM(uint16_t clock_div, ledDriver **drivers_list);  // constructor for specially three pin charge bar module 
                     void setChrgBar(int led_num);      // specially three pin charge bar module    
 
                     void setMaxValue(uint8_t pwm_index, uint32_t value);       // sets the maximum value to which the PWM is regulated
                     void setClockDiv(uint8_t div = 1);                         // 1:2:4:8:16:32:64:128
 
-                     int addDriver(ledDriver *driver);   // register led driver
+                     int linkDriver(ledDriver *driver);   // register led driver
                      int setDriver(ledDriver *driver, uint32_t value, bool inverted = false);  // set pwm value to driver
                     void powerDown(void);   // puts the pwm module into low power mode 
                     
  private:
-                    void _start(uint8_t  pwm_index);                    // run PWM module
-                    void _stop (uint8_t  pwm_index);                    // stop PWM module and turn it to low power
+                    void _start(uint8_t  pwm_index);                // run PWM module
+                    void _stop(uint8_t  pwm_index);                 // stop PWM module
+                    void _low_power (uint8_t  pwm_index);           // stop PWM module and turn it to low power
                     void _run_sequence(uint8_t pwm_index);
                     void _setup(uint8_t pwm_index);
                     bool _is_enabled (uint8_t  pwm_index);
  
     static      uint16_t _seq_0[HWPWM_MODULE_NUM][MAX_CHANNELS];    // current PWM values for all channels.
   
-                uint16_t _max_value;                                    // maximum numerical value corresponding to the maximum duty cycle PWM
-                 uint8_t _clock_div;                                    // prescaler for PWM frequency target
+                uint16_t _max_value;                                // maximum numerical value corresponding to the maximum duty cycle PWM
+                 uint8_t _clock_div;                                // prescaler for PWM frequency target
                                       
-    static NRF_PWM_Type* _pwm_dev[];                                    // array of pointers to PWM modules
-              ledDriver* _charge_bar_led_list[3];
-
+    static NRF_PWM_Type* _pwm_dev[];                                    
+             ledDriver **_charge_bar_led_list;                      // point out on three last ledDrivers to manage specially charge bar module
 };
 
-extern hwPWM pwm_module;
+extern hwPWM pwm_agregator;
 
 #endif /* __HW_PWM_H */

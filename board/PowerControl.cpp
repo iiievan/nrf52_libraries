@@ -169,6 +169,7 @@ void    PowerControl::handle()
         hideBatt();
 }
 
+#define CRITICAL_BATTERY_VALUE (6)
 void PowerControl::showBatt()
 {
     static int8_t   current_bar_value {SHTDWN};
@@ -184,12 +185,15 @@ void PowerControl::showBatt()
         current_bar_value = CHARGE_LED_3;
     if (vbat_proc > 20 && vbat_proc <= 40)
         current_bar_value = CHARGE_LED_2; 
-    if (vbat_proc > 6 && vbat_proc <= 20)
+    if (vbat_proc > CRITICAL_BATTERY_VALUE && vbat_proc <= 20)
         current_bar_value = CHARGE_LED_1;  
 
 #ifdef _AUDIOGUDE_V2_BOARD
     // LED_BAT_1 is reference on charge_bar object in led_list 
-    _chargeLeds[LED_BAT_1]->set_chrg_bar(current_bar_value);
+   _rPWM.setChrgBar(current_bar_value);
+   
+    if (vbat_proc <= CRITICAL_BATTERY_VALUE)
+        _chargeLeds[LED_BAT_2]->run();   // just blinkin the only (first) LED - controled by LED_2 in section
     
     UNUSED(last_bar_value);
 #endif  //_AUDIOGUDE_V2_BOARD
@@ -206,7 +210,7 @@ void PowerControl::showBatt()
           _chargeLeds[i]->turn_off();
     }
     
-    if (vbat_proc <= 6)
+    if (vbat_proc <= CRITICAL_BATTERY_VALUE)
         _chargeLeds[LED_BAT_1]->run();   // just blinkin the only (first) LED
 #endif
     
@@ -218,7 +222,7 @@ void PowerControl::hideBatt()
     if(_batteryShown)
     {    
 #ifdef _AUDIOGUDE_V2_BOARD
-        _chargeLeds[LED_BAT_1]->set_chrg_bar(SHTDWN);
+        pwm_agregator.setChrgBar(SHTDWN);
 #endif  //_AUDIOGUDE_V2_BOARD
 
 #ifdef _AUDIOGUDE_V3_BOARD

@@ -32,6 +32,7 @@ public:
                          PowerControl(uint32_t  charge,                              // charge control pin
                          ADC<ADC_CHANNELS_NUM> &rADC,
                                          Timer &rTmr,
+                                         hwPWM &rPWM,
                                    ledDriver **chargeLeds, 
                                       uint32_t  battery_meas = PIN_DISCONNECTED,     // battery meas pin
                                       uint32_t  input_meas = PIN_DISCONNECTED,       // input voltage meas pin
@@ -40,6 +41,7 @@ public:
                          : _charge_ctrl_pin(charge),
                            _ADC(rADC),
                            _ms_timer(rTmr),
+                           _rPWM(rPWM),
                            _chargeLeds(chargeLeds),
                            _supply3V0_ctrl_pin(supply3V0),
                            _module_power_ctrl_pin(module),
@@ -71,7 +73,8 @@ public:
 private:
 ADC<ADC_CHANNELS_NUM>   &_ADC;
                 Timer   &_ms_timer; 
-           ledDriver  **_chargeLeds;
+                hwPWM   &_rPWM;
+            ledDriver  **_chargeLeds;
 
               uint32_t   _charge_ctrl_pin ;
               uint32_t   _supply3V0_ctrl_pin       { PIN_DISCONNECTED };

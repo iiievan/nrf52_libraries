@@ -97,13 +97,15 @@ enum
 // LED_BAT_1..3 are included in the spice module due to lack of pins
 // and managed separately in set_chrg_bar
 // LED_BAT_2 is needed to indicate the critical discharge of the battery by blinking, therefore the charge_bar driver is installed for it.
-extern ledDriver charge_bar;
 
 extern ledDriver red_led;     
 extern ledDriver green_led;   
 extern ledDriver bl_btn_led; 
 extern ledDriver btn_pr_led;  
 extern ledDriver kb_led;
+extern ledDriver bat_led_1; 
+extern ledDriver bat_led_2;  // control first led in sequence
+extern ledDriver bat_led_3;
 
 extern ledDriver* led_list[];
 extern uint32_t led_2_port_list[];

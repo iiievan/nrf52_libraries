@@ -94,7 +94,7 @@ void colorUp_stack_heap()
 {
     // color-up half a stack and half the heap with number 0x10100101
     // for stack and heap usage.
-    memset((void*)(STACK_END - HEAP_SIZE/2), 0xA5, STACK_END);
+    //memset((void*)(STACK_END - HEAP_SIZE/2), 0xA5, STACK_END);
     memset((void*)STACK_END, 0xA5, STACK_SIZE/2);
 }
 
