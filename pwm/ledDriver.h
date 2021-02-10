@@ -64,8 +64,7 @@ ELEDChannelState    channel        {CHNL_NA};
                             ELedBright  max_val = LED_BRIGHT_100,
                                   bool  inverted = false); 
 
-            void    run(void);
-            void    run(int repetitions);
+            void    run(int repetitions = -1);  // infinite fade by default
             void    run_up(void);
             void    run_down(void);
 
@@ -73,17 +72,13 @@ ELEDChannelState    channel        {CHNL_NA};
 
             void    light_up();            // turn on led to his maximum value
             void    turn_off();            // turn off led 
-            void    bright_set(uint32_t);  // set led brightness
-    
-                    // place in cycle
-            bool    handle(void);          // handle led actions
+            void    bright_set(uint32_t);  // set led brightness    
+                    
+            bool    handle(void);          // please handle in 1ms cycle
 
 private:      
-            bool    _fade(void);          // fade out and in of brightness 
-            bool    _fade_up(void);       // fade out of brightness  
-            bool    _fade_down(void);     // fade in of brightness  
-            bool    _need_finish(void);   // do need to complete immediately before the next launch?
-            void    _stop(void);          // stop current action an turn led off
+            bool    _isNeedFinish(void);   // do need to complete immediately before the next launch?
+            void    _stop(void);           // stop current action an turn led off
 
   ELEDDriver_sts    _status         {STS_NA};   // driver action status
              int    _num_of_rptions {-1};       // number of repetitions of one action

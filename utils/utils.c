@@ -90,22 +90,33 @@ volatile uint32_t* pincfg_reg(uint32_t pin)
   	return &port->PIN_CNF[pin];
 }
 
+void* memFill(void *s, int c, size_t len) 
+{
+    unsigned char *dst = (unsigned char *)s;
+    while (len > 0) {
+        *dst = (unsigned char)c;
+        dst++;
+        len--;
+    }
+    return s;
+}
+
 void colorUp_stack_heap()
 {
     // color-up half a stack and half the heap with number 0x10100101
     // for stack and heap usage.
-    //memset((void*)(STACK_END - HEAP_SIZE/2), 0xA5, STACK_END);
-    memset((void*)STACK_END, 0xA5, STACK_SIZE/2);
+    memFill((void*)HEAP_BEGIN, 0x55, HEAP_SIZE);
+    memFill((void*)STACK_BEGIN, 0xAA, STACK_SIZE/2);
 }
 
 uint32_t stack_avail()
 {
     static uint32_t stack_sz = 0;    
-    uint32_t *ptr = (uint32_t*)STACK_END;
+    unsigned char *ptr = (unsigned char *)STACK_BEGIN;
     
     uint32_t st = 0;
     
-    while (*ptr++ == 0xA5A5A5A5)
+    while (*ptr++ == 0xAA)
       st++;
     stack_sz = st;
     
@@ -116,9 +127,9 @@ uint32_t heap_avail()
 {
     static uint32_t heap_sz = 0;
     uint32_t hp = 0;
-    uint32_t *ptr = (uint32_t*)STACK_END;   
+    unsigned char *ptr = (unsigned char *)STACK_BEGIN - 1;   
     
-    while (*ptr-- == 0xA5A5A5A5)
+    while (*ptr-- == 0x55)
       hp++;
     heap_sz = hp;
     

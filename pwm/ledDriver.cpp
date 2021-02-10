@@ -52,7 +52,7 @@ uint32_t led_2_port_list[LEDS_NUM] =
 };
 
 
-ledDriver    green_led   ( led_2_port_list[LED_SYS_GREEN], sys_timer, pwm_agregator, LED_SHORT_BLINK_MS );
+ledDriver    green_led   ( led_2_port_list[LED_SYS_GREEN], sys_timer, pwm_agregator, LED_PERIOD_MAX_MS );
 ledDriver    bl_btn_led  ( led_2_port_list[LED_BL_BTN],    sys_timer, pwm_agregator, LED_FAST_BLINK_MS  );
 ledDriver    btn_pr_led  ( led_2_port_list[LED_BTN_PR],    sys_timer, pwm_agregator, LED_FAST_BLINK_MS  );
 ledDriver    kb_led      ( led_2_port_list[LED_KB],        sys_timer, pwm_agregator, LED_FAST_BLINK_MS  );
@@ -156,46 +156,30 @@ void ledDriver::bright_set(uint32_t value)
     __enable_interrupt();
 }
 
-void ledDriver::run(void)
+void ledDriver::run(int repetitions)
 { 
     __disable_interrupt();
   
-    if (!_need_finish())
+    if (!_isNeedFinish() && 
+        _num_of_rptions < 0)
     {      
-      _status = STS_RUN;
-      // infinite fading cycle
-      _num_of_rptions = -1;
+        _status = STS_RUN;
+        _num_of_rptions = repetitions;
     }
     
     __enable_interrupt();
 } 
 
-void ledDriver::run(int repetitions)
-{ 
-    __disable_interrupt();
-    
-    // don't start the driver if
-    // the repetitions from previousaction have not been completed.
-    if (_num_of_rptions < 0)
-    {
-        _num_of_rptions = repetitions;
-    
-        _status = STS_RUN;
-    }
-    
-    __enable_interrupt();
-}
-
 void ledDriver::run_up(void)
 { 
     __disable_interrupt();
-  
-    // if no need finish prevous action
-    if (!_need_finish())
-    { 
-        if(_bright_val < _max_val)    
-            _status = STS_RUN_UP;
-    }
+
+    if(_bright_val < _max_val &&
+       !_isNeedFinish())
+    {
+        _fade_dir = true;
+        _status = STS_RUN_UP;
+    }  
     
     __enable_interrupt();
 } 
@@ -203,13 +187,11 @@ void ledDriver::run_up(void)
 void ledDriver::run_down(void)
 { 
     __disable_interrupt();
-    
-    // if no need finish prevous action
-    if (!_need_finish())
-    { 
-        // commented out: decrease from the current brightness value
-        //_bright_val = _max_val;
-      if(_bright_val > 0)
+
+    if(_bright_val > 0 &&
+       !_isNeedFinish())
+    {
+        _fade_dir = false;
         _status = STS_RUN_DOWN;
     }
     
@@ -219,164 +201,95 @@ void ledDriver::run_down(void)
 void ledDriver::_stop(void)   
 {  
     _num_of_rptions = -1;
-
-    _status = STS_RUN_DOWN;
+        _bright_val = 0; 
+          _fade_dir = true;
+            _status = STS_FINISHED;
 
     _timer   = _rTimer.get_ms() - _tout;
-
-    _bright_val = 0;
-    _fade_dir   = true;    
 }
 
 bool ledDriver::handle(void) 
 {  
-     bool result = false;
+    bool result = false;
 
-    if(_fade())
-        result = true;
-    if(_fade_up())
-        result = true;
-    if(_fade_down())
-        result = true;
+    if(_status != STS_FINISHED && 
+       _status != STS_NA)
+      result = true;
+    else
+    {
+        _stop();
+        // do not process further
+        return false;
+    }
+
+    if (_rTimer.get_ms() - _timer > (uint64_t)_tout)
+    {
+        _timer = _rTimer.get_ms();
+
+        if(_status != STS_FINISHED)
+        {
+            if(_fade_dir)
+            {
+                _bright_val += (int)_step;
+    
+                if(_bright_val >= (int)_max_val )
+                {   
+                    _bright_val = (int)_max_val;    
+
+                    if(_status == STS_RUN)
+                       _fade_dir = !_fade_dir;                  
+                }
+            }
+            else
+            { 
+                _bright_val -= (int)_step;
+    
+                if(_bright_val <= 0)
+                { 
+                    _bright_val = 0;
+    
+                    if(_status == STS_RUN)
+                    {                            
+                        _fade_dir = !_fade_dir;
+                        if(--_num_of_rptions == 0)
+                          _stop();
+                    }
+                }
+            } 
+        } 
+
+        _rPWM_module.setDriver(this,_bright_val);           
+    }
 
     return result;
 }
 
-bool ledDriver::_fade(void)   
-{   
-    bool result = false;
-
-    if(_status == STS_RUN)
-    {
-        result = true;
-
-        if (_rTimer.get_ms() - _timer > (uint64_t)_tout)
-        {
-             _timer = _rTimer.get_ms();
-             
-             if(_fade_dir)
-             {
-                 _bright_val += (int)_step;
-                 if(_bright_val < (int)_max_val )
-                 { _rPWM_module.setDriver(this,_bright_val); }
-                 else
-                 { 
-                     _bright_val = (int)_max_val;
-                     _rPWM_module.setDriver(this,_bright_val);
-                     _fade_dir = !_fade_dir;
-                 }
-             }
-             else
-             { 
-                 _bright_val -= (int)_step;
-                 if(_bright_val > 0 )
-                 { _rPWM_module.setDriver(this,_bright_val); }
-                 else
-                 { 
-                     _bright_val = 0;
-                     _rPWM_module.setDriver(this,_bright_val);
-                     _fade_dir = !_fade_dir;
-  
-                     if(--_num_of_rptions == 0)
-                     {   
-                        _stop();
-  
-                        return result;
-                     }
-                 }
-             } 
-        }
-    }
-
-    return result;
-}  
-
-bool ledDriver::_fade_up(void)   
-{   
-    bool result = false;
-
-    if(_status == STS_RUN_UP)
-    {
-        result = true;
-
-        if (_rTimer.get_ms() - _timer > (uint64_t)_tout)
-        {
-            _bright_val += (int)_step;
-
-            if(_bright_val < (int)_max_val )
-            { _rPWM_module.setDriver(this,_bright_val); }
-            else
-            { 
-                _bright_val = (int)_max_val;
-                _rPWM_module.setDriver(this,_bright_val);
-
-                _status = STS_FINISHED;
-            }
-
-            if(_status == STS_FINISHED)
-            { _timer   = _rTimer.get_ms() - (uint64_t)_tout; }
-            else
-            { _timer   = _rTimer.get_ms(); }            
-        }
-    }
-
-    return result;
-} 
-
-bool ledDriver::_fade_down(void)   
-{   
-    bool result = false;
-
-    if(_status == STS_RUN_DOWN)
-    {
-        result = true;
-
-        if (_rTimer.get_ms() - _timer > (uint64_t)_tout)
-        {
-            _bright_val -= (int)_step;
-
-            if(_bright_val > 0 )
-            { _rPWM_module.setDriver(this,_bright_val); }
-            else
-            { 
-                _bright_val = 0;
-
-                _rPWM_module.setDriver(this,_bright_val); 
-
-                _status = STS_FINISHED;
-            }
-             
-            if(_status == STS_FINISHED)
-            { _timer   = _rTimer.get_ms() - (uint64_t)_tout; }
-            else
-            { _timer   = _rTimer.get_ms(); } 
-        }
-    }
-
-    return result;
-} 
-
-bool ledDriver::_need_finish(void)
+bool ledDriver::_isNeedFinish(void)
 {
-    if ( _num_of_rptions > 1)
-    { 
-        // make this repetiotion last
-        _num_of_rptions = 1;
-        return true;
-    } 
-    else
-    if (_status == STS_RUN_UP || _status == STS_RUN_DOWN)
-    {   
-        // let ascending or descending gradient complete
-        return true; 
+    bool result = false;
+    
+    switch(_status)
+    {
+        case STS_RUN:
+          if(_num_of_rptions > 1)
+            _num_of_rptions = 1;          
+          result = true;
+          break;
+        case STS_RUN_UP:
+            if(_bright_val == (int)_max_val)
+                _status = STS_FINISHED;
+            result = true;
+          break;
+        case STS_RUN_DOWN:
+             if(_bright_val == 0)
+                _status = STS_FINISHED;
+             result = true;
+          break;
+        default:
+          break;
     }
-    else
-    if (_status == STS_RUN && 
-        ( _num_of_rptions < 0))
-        return true;
-    else
-        return false;
-
+    
+    return result;
 }
 
 uint8_t led_drivers_handle(void)
