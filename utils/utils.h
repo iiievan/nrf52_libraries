@@ -9,10 +9,14 @@
 extern "C" {
 #endif
 
-#define HEAP_BEGIN      ((uint32_t)0x2003BFE0)
-#define HEAP_SIZE       ((uint32_t)0x2000)
-#define STACK_BEGIN     (HEAP_BEGIN + HEAP_SIZE)
-#define STACK_SIZE      ((uint32_t)0x2000)
+ #define ALLOCATION_CRITICAL_MIN     ((uint32_t)0x100)
+#define HEAP_BEGIN                  ((uint32_t)0x2003BFE0)
+#define HEAP_SIZE                   ((uint32_t)0x2000)
+#define HEAP_COLOR                  ((int)0x55)
+#define STACK_BEGIN                 (HEAP_BEGIN + HEAP_SIZE)
+#define STACK_SIZE                  ((uint32_t)0x2000)
+#define STACK_COLOR                 ((int)0xAA)
+
   
 #define MY_RAND_MAX     (32767)
 #define MY_RAND_MIN     (-32768)
@@ -64,6 +68,8 @@ void* memFill(void *s, int c, size_t len);
 extern void colorUp_stack_heap();
 extern uint32_t stack_avail();
 extern uint32_t heap_avail();
+extern long GetBiggestMalloc();
+extern long GetBiggestNew();
 
 #ifdef _cplusplus
 }

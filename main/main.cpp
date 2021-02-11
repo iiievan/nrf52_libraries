@@ -21,8 +21,7 @@ int main()
 {
     colorUp_stack_heap();
     
-    std::vector<StepperFSM> fsm_list_vector;
-    uint32_t heap_size;
+    std::vector<StepperFSM> *fsm_list_vector = new std::vector<StepperFSM>;
     
     sys_timer.setIRQ(0, TIMER_1MS_INT_PRIORITY);
     sys_timer.setCallback(sys_timer_callback);
@@ -65,33 +64,17 @@ int main()
     
     bl_btn_led.run(1);
     kb_led.run(3);
-    btn_pr_led.run(7);
-    
-    auto v_size = 0;
-    auto v_capacity = 0;
-    
+    btn_pr_led.run(7);    
     green_led.run_up();
+    
   	while(1)
   	{   
         green_led.run_down();
         power_manager.handle();
         green_led.run_up();
         
-        heap_size = heap_avail();
-        
-        if( HEAP_SIZE/2 <= heap_size)
-        {          
-            fsm_list_vector.push_back(mchn_hello);
-        }
-        else
-        {          
-           v_size = fsm_list_vector.size();
-           v_capacity = fsm_list_vector.capacity();
-        }
-        
-        UNUSED (v_size);
-        UNUSED (v_capacity);
-  	}
+        leds_task_sheduler.push(fsm_list_vector, mchn_hello);
+   	}
 }
 
 // because this is template of class, definition of irqhandler done in file where implementation of template is.

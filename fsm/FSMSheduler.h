@@ -1,10 +1,12 @@
 #ifndef _FSM_SHEDULER_H
 #define _FSM_SHEDULER_H
 
+#include <vector>
+#include "utils.h"
 #include "StepperFSM.h"
 #include "fifo.h"
 #include "timer.h"
-#include <vector>
+
 
 #define FSM_LIST_MAX        (16UL)          // the total number of machines in the list
 #define FSM_ACTIVE_MAX      (2 + 1)         // the number of simultaneously operating machines at the moment
@@ -44,6 +46,7 @@ public:
                             {} 
 
                    // automatic control functions from the program logic ->
+                   bool     push(std::vector<StepperFSM> *fsm_list, StepperFSM &fsm);        // try to add fsm to the vector list. Catch exception if unsuccess and return false
                    bool     fsm_in_fifo_added(fsmEventID_t fsm_id);                     // checking if the machine is added to the queue
                    bool     fsm_execute(fsmEventID_t fsm_id, fsm_trigger_t fsm_action); // command to execute the machine. true - the required machine is in the list, false - it is not in the list
                    void     delayed_start_handler(void);                                // delayed start processing
@@ -63,6 +66,6 @@ private:
          const  uint32_t    _list_size;   // machine list size         
 };
 
-extern FSMsheduler leds_machines;
+extern FSMsheduler leds_task_sheduler;
 
 #endif //_FSM_SHEDULER_H

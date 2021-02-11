@@ -1,6 +1,50 @@
 #include "FSMSheduler.h"
 
-// проверяет, добавлен ли автомат в очередь
+bool FSMsheduler::push(std::vector<StepperFSM> *fsm_vector, StepperFSM &fsm)
+{
+    bool result = true;
+    static uint32_t heap_free_size  = HEAP_SIZE;
+    static uint32_t max_object_size = ALLOCATION_CRITICAL_MIN;
+    uint32_t object_size = 0;
+    uint32_t heapAvailable = heap_avail();
+    uint32_t v_size     = fsm_vector->size();
+    uint32_t v_capacity = fsm_vector->capacity();      
+
+    if(v_size == v_capacity)
+    {
+        // recalculate maximum object size
+        if(heapAvailable < heap_free_size)
+        {
+            object_size  =  heap_free_size - heapAvailable;
+        
+            if(object_size > max_object_size)
+            {
+                max_object_size = object_size;
+                
+                if(max_object_size < heap_free_size)
+                  result = false;
+            }
+        
+            heap_free_size = heapAvailable;
+        } 
+        
+        try 
+        {
+            fsm_vector->reserve(v_size + 3);
+        }
+        catch (std::bad_alloc) 
+        {
+            result = false;
+        }
+    }
+    
+    if(max_object_size < heap_free_size && result)
+        fsm_vector->push_back(fsm);
+
+    return result;
+}
+
+// check, is fsm in queue
 bool FSMsheduler::fsm_in_fifo_added(fsmEventID_t fsm_id)
 {
       bool  func_result = false;
@@ -281,7 +325,7 @@ void FSMsheduler::handle(void)
     }
 }
 
-FSMsheduler leds_machines(fsm_list, sys_timer);
+FSMsheduler leds_task_sheduler(fsm_list, sys_timer);
 
 
 

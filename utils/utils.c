@@ -105,8 +105,8 @@ void colorUp_stack_heap()
 {
     // color-up half a stack and half the heap with number 0x10100101
     // for stack and heap usage.
-    memFill((void*)HEAP_BEGIN, 0x55, HEAP_SIZE);
-    memFill((void*)STACK_BEGIN, 0xAA, STACK_SIZE/2);
+    memFill((void*)HEAP_BEGIN, HEAP_COLOR, HEAP_SIZE);
+    memFill((void*)STACK_BEGIN, STACK_COLOR, STACK_SIZE/2);
 }
 
 uint32_t stack_avail()
@@ -116,7 +116,7 @@ uint32_t stack_avail()
     
     uint32_t st = 0;
     
-    while (*ptr++ == 0xAA)
+    while (*ptr++ == STACK_COLOR)
       st++;
     stack_sz = st;
     
@@ -125,13 +125,61 @@ uint32_t stack_avail()
 
 uint32_t heap_avail()
 {
-    static uint32_t heap_sz = 0;
     uint32_t hp = 0;
-    unsigned char *ptr = (unsigned char *)STACK_BEGIN - 1;   
+    unsigned char *ptr = (unsigned char *)HEAP_BEGIN;   
     
-    while (*ptr-- == 0x55)
-      hp++;
-    heap_sz = hp;
+    // scan whole heap
+    while (ptr++ < (unsigned char *)STACK_BEGIN)
+    {
+      if(*ptr == HEAP_COLOR)
+        hp++;
+    }
     
-    return heap_sz;
+    return hp;
+}
+
+long GetBiggestMalloc(void)
+{
+    long probe = HEAP_SIZE/2; //(or whatever you think as allocate maximum)
+    void * result;
+
+    while (1)
+   {
+        result = malloc(probe);
+        
+        if (result != NULL)
+        {
+             free(result);
+             return(probe);
+        }
+        
+        probe >>= 1;
+        
+        if (probe < ALLOCATION_CRITICAL_MIN)          // 32bytes or whatever you think as a minimum
+                return(0);
+   }
+}
+
+long GetBiggestNew(void)
+{
+    //(or whatever you think as allocate maximum)
+    long probe = HEAP_SIZE/2; 
+    unsigned char * result = nullptr;
+
+    while (1)
+   {
+        result = new(std::nothrow) unsigned char[probe];
+        
+        if (result != nullptr)
+        {
+             delete[] result;
+             return(probe);
+        }
+        
+        probe >>= 1;
+        
+        //(or whatever you think as a minimum)
+        if (probe < ALLOCATION_CRITICAL_MIN)          
+                return(0);
+   }
 }
