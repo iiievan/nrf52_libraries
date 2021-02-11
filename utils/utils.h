@@ -69,7 +69,7 @@ extern void colorUp_stack_heap();
 extern uint32_t stack_avail();
 extern uint32_t heap_avail();
 extern long GetBiggestMalloc();
-extern long GetBiggestNew();
+extern long MaxPossilblyAllocation();
 
 #ifdef _cplusplus
 }

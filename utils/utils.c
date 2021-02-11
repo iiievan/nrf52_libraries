@@ -160,7 +160,7 @@ long GetBiggestMalloc(void)
    }
 }
 
-long GetBiggestNew(void)
+long MaxPossilblyAllocation(void)
 {
     //(or whatever you think as allocate maximum)
     long probe = HEAP_SIZE/2; 
@@ -168,7 +168,14 @@ long GetBiggestNew(void)
 
     while (1)
    {
-        result = new(std::nothrow) unsigned char[probe];
+        try 
+        {
+            result = new unsigned char[probe];
+        }
+        catch (std::bad_alloc) 
+        {
+            probe >>= 1;
+        }
         
         if (result != nullptr)
         {
@@ -176,10 +183,9 @@ long GetBiggestNew(void)
              return(probe);
         }
         
-        probe >>= 1;
-        
         //(or whatever you think as a minimum)
         if (probe < ALLOCATION_CRITICAL_MIN)          
-                return(0);
+                return(0); 
+
    }
 }

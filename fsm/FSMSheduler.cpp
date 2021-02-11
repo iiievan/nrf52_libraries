@@ -8,39 +8,37 @@ bool FSMsheduler::push(std::vector<StepperFSM> *fsm_vector, StepperFSM &fsm)
     uint32_t object_size = 0;
     uint32_t heapAvailable = heap_avail();
     uint32_t v_size     = fsm_vector->size();
-    uint32_t v_capacity = fsm_vector->capacity();      
+    uint32_t v_capacity = fsm_vector->capacity();     
 
-    if(v_size == v_capacity)
+    // recalculate maximum object size
+    if(heapAvailable < heap_free_size)
     {
-        // recalculate maximum object size
-        if(heapAvailable < heap_free_size)
+        object_size  =  heap_free_size - heapAvailable;
+    
+        if(object_size > max_object_size)
         {
-            object_size  =  heap_free_size - heapAvailable;
-        
-            if(object_size > max_object_size)
-            {
-                max_object_size = object_size;
-                
-                if(max_object_size < heap_free_size)
-                  result = false;
-            }
-        
-            heap_free_size = heapAvailable;
-        } 
-        
-        try 
-        {
-            fsm_vector->reserve(v_size + 3);
+            max_object_size = object_size;
+            
+            if(max_object_size < heap_free_size)
+              result = false;
         }
-        catch (std::bad_alloc) 
-        {
-            result = false;
-        }
+    
+        heap_free_size = heapAvailable;
+    } 
+    // try allocate memory for new object
+    try 
+    {
+      if(v_size == v_capacity)
+        fsm_vector->reserve(v_size + 3);
+            // if possibly allocate so much space, and ther is no exceptions
+        if(max_object_size < MaxPossilblyAllocation())
+            fsm_vector->push_back(fsm);
+    }
+    catch (std::bad_alloc) 
+    {
+        result = false;
     }
     
-    if(max_object_size < heap_free_size && result)
-        fsm_vector->push_back(fsm);
-
     return result;
 }
 
