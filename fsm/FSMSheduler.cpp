@@ -1,14 +1,12 @@
 #include "FSMSheduler.h"
 
-bool FSMsheduler::push(std::vector<StepperFSM> *fsm_vector, StepperFSM &fsm)
+bool FSMsheduler::push(StepperFSM &fsm)
 {
     bool result = true;
-    static uint32_t heap_free_size  = HEAP_SIZE;
+    static uint32_t heap_free_size  = heap_avail() - 1;
     static uint32_t max_object_size = ALLOCATION_CRITICAL_MIN;
     uint32_t object_size = 0;
-    uint32_t heapAvailable = heap_avail();
-    uint32_t v_size     = fsm_vector->size();
-    uint32_t v_capacity = fsm_vector->capacity();     
+    uint32_t heapAvailable = heap_avail();  
 
     // recalculate maximum object size
     if(heapAvailable < heap_free_size)
@@ -28,11 +26,9 @@ bool FSMsheduler::push(std::vector<StepperFSM> *fsm_vector, StepperFSM &fsm)
     // try allocate memory for new object
     try 
     {
-      if(v_size == v_capacity)
-        fsm_vector->reserve(v_size + 3);
-            // if possibly allocate so much space, and ther is no exceptions
-        if(max_object_size < MaxPossilblyAllocation())
-            fsm_vector->push_back(fsm);
+        // if possibly allocate so much space, and there is no exceptions
+        if(max_object_size < heap_free_size)
+            _QUEUE->push(fsm);
     }
     catch (std::bad_alloc) 
     {
@@ -43,174 +39,121 @@ bool FSMsheduler::push(std::vector<StepperFSM> *fsm_vector, StepperFSM &fsm)
 }
 
 // check, is fsm in queue
-bool FSMsheduler::fsm_in_fifo_added(fsmEventID_t fsm_id)
+int FSMsheduler::fsmInQueue(StepperFSM *fsm)
 {
-      bool  func_result = false;
-       int  list_index = 0;
-    size_t  curr_fifo_avail = _TOTAL_FSM_FIFO.get_avail();
+    int  queue_index = -1;
 
-    // поддерживается или нет
-    while (_fsm_list[list_index]->get_id() != fsm_id && 
-           list_index < _list_size)
-    { list_index++; }
-
-    // поддерживается
-    if (curr_fifo_avail < FSM_LIST_MAX && _fsm_list[list_index]->get_id() == fsm_id)
+    // find fsm with this ID
+    for(int i = 0; i < _QUEUE.size(); i++)
     {
-        for (list_index = 0; list_index < curr_fifo_avail; list_index++)
+        if(_QUEUE[i]->ID == fsm->ID)
         {
-            fsmQData_t   *p_fsm_iface_link = _TOTAL_FSM_FIFO.read_item(list_index);
-
-            if (p_fsm_iface_link->fsm_id == fsm_id)
-            {
-                func_result = true;
-                break;
-            }
+            queue_index = i;
+            break;            
         }
-    }
+    } 
 
-    return func_result;
+    return queue_index;
 }  
 
-// true - нужный автомат есть в списке, false - его нет в списке
-// функция непосредственно запускает или убивает автомат в списке
-bool FSMsheduler::fsm_execute(fsmEventID_t fsm_id, fsm_trigger_t fsm_action)
+// check, is fsm in queue
+StepperFSM& FSMsheduler::getListIndex(StepperFSM *fsm)
+{
+    for(auto i : _fsm_list)
+    {
+        if(i->ID == fsm->ID)
+            break;
+    }
+
+    return *i;
+} 
+
+// true - the machine we want is on the queue, false - fault place in the list
+// function directly starts or kills the machine in the queue.
+bool FSMsheduler::fsmPlacement(StepperFSM *fsm, eFSMTrigger fsm_action)
 {
     bool func_result = false;
-    int list_index = 0;
+    StepperFSM *pFSM = getListIndex(fsm); // find fsm in list
 
-    // не добавляем к выполенинию новые автоматы при активном выполнении пометки позиции или автомате подсветки клавиатуры.
+    // don't push fsm in queue if necessary machines is execute right now
     if (fsm_action == FSM_KILL ||
-        fsm_id == LED_FSM_MARK_GPS_POSITION ||
-        fsm_id == LED_FSM_KB_TOGGLE ||  
-        (false == fsm_in_fifo_added(LED_FSM_MARK_GPS_POSITION) &&
-         false == fsm_in_fifo_added(LED_FSM_KB_TOGGLE)))
-    {        
-        // ищем автомат в списке
-        while (_fsm_list[list_index]->get_id() != fsm_id && list_index < _list_size)
-        { list_index++; }
-    
-        
-        if (_TOTAL_FSM_FIFO.get_avail() < _TOTAL_FSM_FIFO.get_size() &&
-            _fsm_list[list_index]->get_id() == fsm_id )
+        fsm->ID == LED_FSM_MARK_GPS_POSITION ||
+        fsm->ID == LED_FSM_KB_TOGGLE ||  
+        (0 > fsm_in_queue(LED_FSM_MARK_GPS_POSITION) &&
+         0 > fsm_in_queue(LED_FSM_KB_TOGGLE)))
+    {   
+        if (pFSM != nullptr && _QUEUE.size() < FSM_QUEUE_MAX)
         {
-            // запуск управляющей функции
+            // start fsm by placing in queue
             if (fsm_action == FSM_START)
             {
-                // берем основные данные из автомата для того чтобы поместить его в FIFO
-                fsmQData_t    fsm_iface_link;
-                
-                fsm_iface_link.fsm_id = fsm_id;
-                fsm_iface_link.iface  = _fsm_list[list_index]->get_interface();
-
-                _TOTAL_FSM_FIFO.add(fsm_iface_link);
+                _QUEUE.push_front(pFSM);
             } 
             else            
             if (fsm_action == FSM_KILL) // остановка управляющей функции
             {
-                //cmd_fifo_t temp_cmd_list;
-                fifo<fsmQData_t, FSM_LIST_MAX> TMP_FIFO;
-                    
-                // поиск и удаление из FIFO (извлекаем из FIFO все команды, кроме удаляемой, во временный FIFO, потом переносим все обратно)
-                // хз как это сделать более красиво пускай пока будет так):
-                while (_TOTAL_FSM_FIFO.get_avail() > 0)
+                // remove fsm from queue, it is no longer рфтвдув
+                _QUEUE.erase(pFSM);
+
+                // if fsm is active - finish him. Machine erased from _ACTIVE_FSM next in handle() method execution.
+                for (auto it = _ACTIVE_FSM.begin(); it != _ACTIVE_FSM.end(); it++) 
                 {
-                    fsmQData_t  extract_iface_link = _TOTAL_FSM_FIFO.extract();
-                    
-                    if (extract_iface_link.fsm_id != fsm_id)
+                    if(it->ID == fsm->ID)
                     {
-                        TMP_FIFO.add(extract_iface_link);
-                    }
-                }
-
-                while (TMP_FIFO.get_avail() > 0)
-                {
-                    fsmQData_t  extract_iface_link = TMP_FIFO.extract();
-                    _TOTAL_FSM_FIFO.add(extract_iface_link);
-                }
-    
-                // поиск и удаление из списка работающих в данный момент, остановка автомата
-                for (list_index = 0; list_index < FSM_ACTIVE_MAX; list_index++)
-                {
-                    fsmQData_t *p_active_fsm = _ACTIVE_FSM_FIFO.read_item(list_index);
-
-                    if (p_active_fsm->fsm_id == fsm_id)
-                    {
-                        int j = 0;
-                        p_active_fsm->fsm_id = FSM_NOINIT;
-
-                        // поиск и остановка соответствующего автомата
-                        for (j = 0; j < _list_size; j++)
-                        {
-                            if (_fsm_list[j]->get_id() == fsm_id)
-                            {
-                                _fsm_list[j]->count    =  0;
-                                _fsm_list[j]->interval =  0;
-                                _fsm_list[j]->stage    = -1;
-
-                                break;
-                            }
-                        }
+                        // turn fsm to initial state
+                        it->ID = FSM_NOINIT;
+                        it->count    =  0;
+                        it->interval =  0;
+                        it->stage    = -1;
                     }
                 }
             }
 
-            // нужный автомат в списке
+            // machine in queue
             func_result = true;
         }
-        // нужного автомата нет в списке.
+
+        // fault placing fsm
         func_result = false;
     }
 
     return func_result;
 }
 
-// обработка автоматов с отложенным стартом, крутится просто в основном цикле.
-void FSMsheduler::delayed_start_handler(void)
+// handle machines with a delayed start, just spinning in the handle() loop.
+void FSMsheduler::delayedStart(void)
 {
-    uint8_t i;
-
-    for (i = 0; _fsm_list[i] != nullptr; i++)
+    for(auto i : _fsm_list)
     {
-        if (FSM_DELAYED_START == _fsm_list[i]->get_status() && 
-            fsm_in_fifo_added(_fsm_list[i]->get_id()) == false)
-        {
-            fsm_execute(_fsm_list[i]->get_id(), FSM_START);
-        }
+        if(i->status == FSM_DELAYED_START && fsmInQueue[i] < 0)
+            fsmPlacement(i, FSM_START);
     }
 }
 
-fsm_status_t FSMsheduler::fsm_sts_get(fsmEventID_t func_id)
+eFSMStatus FSMsheduler::getStatus(StepperFSM *fsm)
 {
-    fsm_status_t func_result = FSM_NA;
-    uint8_t i;
+    eFSMStatus result = FSM_NA;
 
-    for (i = 0; _fsm_list[i]->get_id() != FSM_NOINIT; i++)
+    for(auto i : _fsm_list)
     {
-        if (_fsm_list[i]->get_id() == func_id)
-        {
-            func_result = _fsm_list[i]->get_status();
-            break;
-        }
+        if(i->ID == fsm->ID )
+            result = i->status;
     }
 
-    return func_result;
+    return result;
 }
 
 void FSMsheduler::kill_all_active_fsm(void)
 {
-    uint8_t i;
-
-    for (i = 0; _fsm_list[i]->get_id() != FSM_NOINIT; i++)
+    for(auto i : _fsm_list)
     {
-        if ((FSM_RUN == _fsm_list[i]->get_status() || fsm_in_fifo_added(_fsm_list[i]->get_id()) == true) &&
-            _fsm_list[i]->get_id() != LED_FSM_MARK_GPS_POSITION &&
-            _fsm_list[i]->get_id() != LED_FSM_KB_TOGGLE )
+        if((i->status == FSM_RUN || fsmInQueue(i) >= 0) &&
+           i->ID != LED_FSM_MARK_GPS_POSITION &&
+           i->ID != LED_FSM_KB_TOGGLE)
         {
-            fsm_execute(_fsm_list[i]->get_id(), FSM_KILL);
-        }
+            fsmPlacement(i, FSM_KILL);
+        }            
     }
-
 }
 
 // на случай если необходима экстренная обработка автоматов
@@ -285,7 +228,7 @@ void FSMsheduler::handle(void)
                                     if (_fsm_list[j]->get_status() == FSM_NA || 
                                         _fsm_list[j]->get_status() == FSM_NONE)
                                     {
-                                        _fsm_list[j]->handle(true);  // заряжаем автомат на выполнение
+                                        _fsm_list[j]->handle(true);  // выполняем автомат.
                                     }
                                     break;
                                 }

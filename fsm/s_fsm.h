@@ -17,7 +17,7 @@ typedef enum
     FSM_USB,        // fsm to work with USB
     FSM_BT,         // fsm to work with Bluethooth
     FSM_I2C         // fsm to work with I2C
-} eFSMInterface; 
+} fsm_interface_t; 
 
 typedef enum
 {
@@ -32,7 +32,7 @@ typedef enum
     LED_FSM_GPS_MATCH                   = 0x08,     // аудиогид в зоне действия gps точки.
     LED_FSM_GPS_LOG_ENABLED             = 0x09,     // активирован режим трекинга GPS
     LED_FSM_MARK_GPS_POSITION           = 0x0A,     // отметить в логе GPS текущее положение в режиме трекинга
-} eFSM_id; 
+} fsmEventID_t; 
 
 typedef enum 
 {
@@ -41,7 +41,7 @@ typedef enum
     FSM_RUN,              // автомат работает и выполняет шаги
     FSM_RELEASE,          // автомат только что закончил работу
     FSM_DELAYED_START     // отложенный старт автомата, старт будет в момент следующий проверки статуса автомата.
-} eFSMStatus;
+} fsm_status_t;
 
 typedef enum
 {
@@ -53,46 +53,45 @@ typedef enum
     MOD_LED_CHARGE_BAR  =  5,
     OBJECT             = 254,
     NO_TO_DO           = 255
-} actionType_t;
+} action_type_t;
 
 typedef struct
 {
          uint16_t   count;        // how many times
          uint16_t   interval;     // with what interval in ms
-    actionType_t   action_type;  // what to do
+    action_type_t   action_type;  // what to do
        void const   *param;       // passed parameter (depends on action_type)
-} const FSMStep_t;
+} const fsm_step_t;
 
 typedef bool (*control_func_t)(ledDriver *led);
 
 class StepperFSM
 {
-public:   
-                EFSM_id     ID;
-             eFSMStatus     status  {FSM_NA}; // current fsm status
-                    int     stage   {-1};     // current step.
-                    int     count    {0};     // how many times is left to repeat
-                    int     interval {0};     // at what interval.
-
-                            StepperFSM(const eFSMInterface iface, eFSM_id _id, FSMStep_t fsm_prog[]) 
-                            : ID(_id), _iface(iface),_prog_ptr(fsm_prog)  {}        
+public:    
+                            StepperFSM(const fsm_interface_t iface, fsmEventID_t id, fsm_step_t fsm_prog[]) : _prog_ptr(fsm_prog),_iface(iface), _id(id) {}        
     
-          eFSMInterface     get_interface(void) const { return _iface; }
-
+        fsm_interface_t     get_interface(void) const { return _iface; }
+           fsmEventID_t     get_id(void)        const { return _id; }
+           fsm_status_t     get_status(void)          { return _status;}
                    void     handle(bool trigger);
                    bool     control_iface_action(void const *param);
 
+                    int     stage    {-1};   // текущий шаг автомата.
+                    int     count    {0};    // сколько раз его осталось повторить.
+                    int     interval {0};    // с каким интервалом.
 
 private:
 
-      FSMStep_t * const    _prog_ptr;  // pointer on fsm programm.
-    const eFSMInterface    _iface;     // interface which fsm interaction     
+     fsm_step_t * const    _prog_ptr;           // указатель на программу автомата.
+  const fsm_interface_t    _iface;              // интерфейс на который воздействует автомат.
+  const    fsmEventID_t    _id;                 // идентификатор автомата.
+           fsm_status_t    _status {FSM_NA};    // текущий статус автомата.       
 }; 
 
-extern StepperFSM  mchn_hello;
-extern StepperFSM  mchn_charging;
-extern StepperFSM  mchn_usb_connected;
+extern StepperFSM mchn_hello;
+extern StepperFSM mchn_charging;
+extern StepperFSM mchn_usb_connected;
 
-extern StepperFSM *fsm_list[];
+extern StepperFSM * const fsm_list[];
 
 #endif ///_STEPPER_FSM_H

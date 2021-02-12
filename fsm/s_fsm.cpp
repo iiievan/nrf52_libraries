@@ -2,7 +2,7 @@
 
 void StepperFSM::handle(bool trigger)
 {
-      EFSMStatus result = FSM_RUN;
+      fsm_status_t result = FSM_RUN;
     control_func_t cf;
               bool cf_result;
         ledDriver *led = led_list[_prog_ptr[this->stage].action_type];
@@ -14,21 +14,21 @@ void StepperFSM::handle(bool trigger)
             this->count = _prog_ptr[0].count;
             if (this->count == 0)
             {
-                status = FSM_NONE;
+                _status = FSM_NONE;
                 return;
             }
             this->stage    = 0;
             this->interval = 0;             
         }
         
-        status = result;
+        _status = result;
         return;                     
     } 
     else
     {
         if (this->stage == -1)
         {
-            status = FSM_NONE;
+            _status = FSM_NONE;
             return;     
         }
     }
@@ -37,8 +37,8 @@ void StepperFSM::handle(bool trigger)
     {
         if (this->interval == 0)
         {
-            this->interval = (_prog_ptr[this->stage].interval + (TIME_DELTA - 1)) / TIME_DELTA;  // before the action - so that you can fix it in the handler-modifier
-                                                                                                 // rounding up is a multiple of TICK_COUNT_INTERVAL
+            this->interval = (_prog_ptr[this->stage].interval + (TIME_DELTA - 1)) / TIME_DELTA;         // before the action - so that you can fix it in the handler-modifier
+                                                                                                        // rounding up is a multiple of TICK_COUNT_INTERVAL
             if (this->interval == 0)
             {
                 this->interval = 1;                                                 
@@ -85,7 +85,7 @@ void StepperFSM::handle(bool trigger)
         }
     } while (this->interval == 0);
 
-    status = result;
+    _status = result;
 }
 
 bool StepperFSM::control_iface_action(void const *param)
