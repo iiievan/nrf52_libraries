@@ -1,6 +1,6 @@
 #include "StepperFSM.h"
 
-void StepperFSM::handle(bool trigger)
+void StepperFSM::spin(bool trigger)
 {
       EFSMStatus result = FSM_RUN;
     control_func_t cf;

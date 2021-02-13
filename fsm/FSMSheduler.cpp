@@ -41,7 +41,7 @@ bool FSMsheduler::push(StepperFSM &fsm)
 // check, is fsm in queue
 int FSMsheduler::fsmInQueue(StepperFSM *fsm)
 {
-    int  queue_index = -1;
+    int  queue_index = FSM_NA;
 
     // find fsm with this ID
     for(int i = 0; i < _QUEUE.size(); i++)
@@ -143,7 +143,7 @@ eFSMStatus FSMsheduler::getStatus(StepperFSM *fsm)
     return result;
 }
 
-void FSMsheduler::kill_all_active_fsm(void)
+void FSMsheduler::killAllactive(void)
 {
     for(auto i : _fsm_list)
     {
@@ -163,72 +163,58 @@ bool FSMsheduler::extra_fsm_handler(void)
 }
 
 // шедулер крутится в основном цикле с периодом обработки TIME_DELTA
-void FSMsheduler::handle(void)
+void FSMsheduler::shedule(void)
 {
-    static uint64_t execute_interval_tmr = 0;
-    
-    int list_index;
-    fsmQData_t  *p_fsm;
-    fsmQData_t  *p_active_fsm;
+    static uint64_t execute_interval_tmr = 0;    
 
-    delayed_start_handler();    // вначале обрабатываем статусы всех автоматов.
+    StepperFSM * inQueue;
+    auto activeFSM;
+
+    delayed_start_handler();    // first delayed fsm.
 
     if((_ms_timer.get_ms() - execute_interval_tmr) > TIME_DELTA || 
         true == extra_fsm_handler())
     {
         execute_interval_tmr = _ms_timer.get_ms();
-        // инициализация автоматов (при появлении новых команд)
-        if (_TOTAL_FSM_FIFO.get_avail() > 0)
+
+        // process machines that are in the queue
+        if (!_QUEUE.empty())
         {        
-            // поиск свободного места в списке активных автоматов
-            for (list_index = 0; list_index < FSM_ACTIVE_MAX; list_index++)
-            {
-                p_active_fsm = _ACTIVE_FSM_FIFO.read_item(list_index);
-    
-                if (p_active_fsm->fsm_id == FSM_NOINIT)
+            // looking for free slot among active fsm
+            for (activeFSM : _ACTIVE_FSM)
+            {                   
+                if (activeFSM->ID == FSM_NOINIT &&
+                    _ACTIVE_FSM.size() < FSM_ACTIVE_MAX)
                 {
-                    int j;
+                    auto duplicateFSM;
+
+                    inQueue = _QUEUE.back();                   
     
-                    p_fsm = _TOTAL_FSM_FIFO.read_head(); 
-    
-                    // добавить автомат можно только в том случае, если он уже не выполняется
-                    for (j = 0; j < FSM_ACTIVE_MAX; j++)
-                    {
-                        p_active_fsm = _ACTIVE_FSM_FIFO.read_item(j);
-    
-                        if (p_fsm->fsm_id == p_active_fsm->fsm_id)
-                        {
+                    // avoid fsm duplicating in QUEUE and in _ACTIVE_FSM
+                    for (duplicateFSM : _ACTIVE_FSM)
+                    {                        
+                        if(duplicateFSM->ID == inQueue->ID)
                             break;
-                        }
                     }
-    
-                    if (j >= FSM_ACTIVE_MAX)
-                    {
-                        bool cmd_exec = false;
-                        
-                        if (list_index < FSM_ACTIVE_MAX)
-                        {
-                            cmd_exec = true;
-                        }
-    
-                        if (true == cmd_exec)
-                        {
-                            _TOTAL_FSM_FIFO.extract(); //просто выбрасываем очередной автомат из списка, на него уже указывает p_fsm
-                            
-                            p_active_fsm = _ACTIVE_FSM_FIFO.read_item(list_index);
-    
-                            // поместить в список активных автоматов
-                            p_active_fsm->fsm_id = p_fsm->fsm_id;
-    
-                            // поиск и инициализация нужного автомата
-                            for (j = 0; j < _list_size; j++)
+
+                    // the machine is not in the list of active, add it
+                    if(duplicateFSM == _ACTIVE_FSM.end())    
+                    {                        
+                        // space is available
+                        if (activeFSM != _ACTIVE_FSM.end())
+                        {                             
+                            _ACTIVE_FSM.push_back(inQueue);                            
+                            _QUEUE.pop_back(); //just throw out current machine from queue, now he is on the list of active
+
+                            // find now active fsm in list of fsm
+                            for(auto j : _fsm_list)
                             {
-                                if (_fsm_list[j]->get_id() == p_fsm->fsm_id)
+                                if (j->ID == inQueue->ID)
                                 {
-                                    if (_fsm_list[j]->get_status() == FSM_NA || 
-                                        _fsm_list[j]->get_status() == FSM_NONE)
-                                    {
-                                        _fsm_list[j]->handle(true);  // выполняем автомат.
+                                    if (j->status == FSM_NA || 
+                                        j->status == FSM_NONE)
+                                    {                                        
+                                        j->spin(true);     // process fsm
                                     }
                                     break;
                                 }
@@ -240,24 +226,20 @@ void FSMsheduler::handle(void)
             }
         }
     
-        int j;
-        // деинициализируем автоматы, закончившие свою работу
-        for (j = 0; j < _list_size; j++)
+
+        // deinitialize fsm's that have finished their work       
+        for(auto k : _fsm_list)
         {    
-            _fsm_list[j]->handle(false);  // актуализируем информацию по автомату, заряжаем его на выполнение
+            k->spin(false);  // most of the time is spent here
           
-            if (_fsm_list[j]->get_status() == FSM_RELEASE)
+            if (k->status == FSM_RELEASE)
             {
-                // завершение работы автомата
-                int k;
-                for (k = 0; k < FSM_ACTIVE_MAX; k++)
-                {
-                    p_active_fsm = _ACTIVE_FSM_FIFO.read_item(k);
-    
-                    // удалить выполненный автомат из списка
-                    if (p_active_fsm->fsm_id == _fsm_list[j]->get_id())
+                // finish fsm
+                for (m : _ACTIVE_FSM)
+                {  
+                    if (m->ID == k->ID)
                     {
-                        p_active_fsm->fsm_id = FSM_NOINIT;
+                        m->ID = FSM_NOINIT;
                         break;
                     }
                 }

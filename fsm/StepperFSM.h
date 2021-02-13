@@ -36,8 +36,8 @@ typedef enum
 
 typedef enum 
 {
-    FSM_NA,               // начальный статус автомата при инициализации системы, остается таким если его нет в списке автоматов.
-    FSM_NONE,             // автомат либо не имеет шагов либо не выполняется
+    FSM_NA   = -1,               // начальный статус автомата при инициализации системы, остается таким если его нет в списке автоматов.
+    FSM_NONE = 0,             // автомат либо не имеет шагов либо не выполняется
     FSM_RUN,              // автомат работает и выполняет шаги
     FSM_RELEASE,          // автомат только что закончил работу
     FSM_DELAYED_START     // отложенный старт автомата, старт будет в момент следующий проверки статуса автомата.
@@ -59,7 +59,7 @@ typedef struct
 {
          uint16_t   count;        // how many times
          uint16_t   interval;     // with what interval in ms
-    actionType_t   action_type;  // what to do
+    actionType_t   action_type;   // what to do
        void const   *param;       // passed parameter (depends on action_type)
 } const FSMStep_t;
 
@@ -70,7 +70,7 @@ class StepperFSM
 public:   
                 EFSM_id     ID;
              eFSMStatus     status  {FSM_NA}; // current fsm status
-                    int     stage   {-1};     // current step.
+                    int     stage    {-1}; // current step.
                     int     count    {0};     // how many times is left to repeat
                     int     interval {0};     // at what interval.
 
@@ -78,10 +78,10 @@ public:
                             : ID(_id), _iface(iface),_prog_ptr(fsm_prog)  {}        
     
           eFSMInterface     get_interface(void) const { return _iface; }
+          eFSMInterface     setInterface(ledDriver *driver);
 
-                   void     handle(bool trigger);
+                   void     spin(bool trigger);
                    bool     control_iface_action(void const *param);
-
 
 private:
 

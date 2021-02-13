@@ -50,17 +50,17 @@ public:
                                       _QUEUE = new std::deque<StepperFSM*>;                                
                              } 
 
-                    bool     push(StepperFSM &fsm);                                // try to add fsm to the vector list. Catch exception if unsuccess and return false
-                     int     fsmInQueue(StepperFSM *fsm);                          // checking if the machine is added to the queue. return index of machine
-              StepperFSM&    getListIndex(StepperFSM *fsm);                        // find the machine into fsm list.
+                    bool     push(StepperFSM &fsm);                                 // try to add fsm to the vector list. Catch exception if unsuccess and return false
+                     int     fsmInQueue(StepperFSM *fsm);                           // checking if the machine is added to the queue. return index of machine
+              StepperFSM&    getListIndex(StepperFSM *fsm);                         // find the machine into fsm list.
                     bool     fsmPlacement(StepperFSM *fsm, eFSMTrigger fsm_action); // command to execute the machine. true - the required machine is in the list, false - it is not in the list
 
-              eFSMStatus     getStatus(StepperFSM *fsm);                           // updating the machine status
-                    void     kill_all_active_fsm(void);                            // kills all currently active machines
+              eFSMStatus     getStatus(StepperFSM *fsm);                            // updating the machine status
+                    void     killAllactive(void);                                   // kills all currently active machines
  
-                    bool     extra_fsm_handler(void);                              // in case emergency processing of fsm needed (faster than TIME_DELTA)
-                    void     delayedStart(void);                                   // delayed start processing
-                    void     handle(void);                                         // the scheduler spins in the main cycle.
+                    bool     extra_fsm_handler(void);                               // in case emergency processing of fsm needed (faster than TIME_DELTA)
+                    void     delayedStart(void);                                    // delayed start processing
+                    void     shedule(void);                                         // the scheduler spins in the main cycle.
 
 private:  
                    Timer   &_ms_timer; 
