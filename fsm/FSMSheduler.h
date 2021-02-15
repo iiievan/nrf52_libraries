@@ -41,19 +41,16 @@ typedef struct
 class FSMsheduler
 {
 public:    
-                             FSMsheduler(StepperFSM * list, Timer &rTmr)
+                             FSMsheduler(StepperFSM **list, Timer &rTmr)
                              : _fsm_list(list), _ms_timer(rTmr) 
-                             {
-                                 _ACTIVE_FSM = new std::vector<StepperFSM*>;
-                                 _ACTIVE_FSM.reserve(FSM_ACTIVE_MAX);
-
-                                      _QUEUE = new std::deque<StepperFSM*>;                                
+                             {                                 
+                                 _ACTIVE_FSM.reserve(FSM_ACTIVE_MAX);                                                              
                              } 
 
                     bool     push(StepperFSM &fsm);                                 // try to add fsm to the vector list. Catch exception if unsuccess and return false
                      int     fsmInQueue(StepperFSM *fsm);                           // checking if the machine is added to the queue. return index of machine
-              StepperFSM&    getListIndex(StepperFSM *fsm);                         // find the machine into fsm list.
-                    bool     fsmPlacement(StepperFSM *fsm, eFSMTrigger fsm_action); // command to execute the machine. true - the required machine is in the list, false - it is not in the list
+              StepperFSM*    getListIndex(StepperFSM *fsm);                         // find the machine into fsm list.
+                    bool     place(StepperFSM *fsm, eFSMTrigger fsm_action); // command to execute the machine. true - the required machine is in the list, false - it is not in the list
 
               eFSMStatus     getStatus(StepperFSM *fsm);                            // updating the machine status
                     void     killAllactive(void);                                   // kills all currently active machines
@@ -69,6 +66,6 @@ private:
               StepperFSM  **_fsm_list;      
 };
 
-extern FSMsheduler leds_task_sheduler;
+extern FSMsheduler leds_task_sheduler; 
 
 #endif //_FSM_SHEDULER_H

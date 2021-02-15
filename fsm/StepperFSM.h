@@ -68,7 +68,7 @@ typedef bool (*control_func_t)(ledDriver *led);
 class StepperFSM
 {
 public:   
-                EFSM_id     ID;
+                eFSM_id     ID;
              eFSMStatus     status  {FSM_NA}; // current fsm status
                     int     stage    {-1}; // current step.
                     int     count    {0};     // how many times is left to repeat

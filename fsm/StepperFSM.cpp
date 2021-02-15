@@ -2,7 +2,7 @@
 
 void StepperFSM::spin(bool trigger)
 {
-      EFSMStatus result = FSM_RUN;
+      eFSMStatus result = FSM_RUN;
     control_func_t cf;
               bool cf_result;
         ledDriver *led = led_list[_prog_ptr[this->stage].action_type];
@@ -142,7 +142,7 @@ static bool hello_end(ledDriver *led)
     return false;
 }
 
-static const fsm_step_t hello_prog[] =
+static const FSMStep_t hello_prog[] =
 {
     {  1,   500, MOD_LED_KB, (void const*)func_blink_kb_1_time },    
     {  1,   300, NO_TO_DO,   NULL   },
@@ -179,7 +179,7 @@ static bool charging_end(ledDriver *led)
     return false;
 }
 
-static const fsm_step_t charging_prog[] =
+static const FSMStep_t charging_prog[] =
 {
     {  2,   500, MOD_LED_KB, (void const*)func_blink_kb_2_times },    
     {  1,   800, NO_TO_DO,   NULL   },
@@ -217,7 +217,7 @@ static bool usb_end(ledDriver *led)
     return false;
 }
 
-static const fsm_step_t usb_prog[] =
+static const FSMStep_t usb_prog[] =
 {
     {  3,   500, MOD_LED_KB, (void const*)func_blink_kb_3_times },    
     {  1,   800, NO_TO_DO,   NULL   },
@@ -229,7 +229,7 @@ static const fsm_step_t usb_prog[] =
 StepperFSM mchn_usb_connected(FSM_LED, LED_FSM_USB_CONNECTED, usb_prog);
 //-------------------------------------------------------------------------------------------------
 
-StepperFSM * const fsm_list[4] = 
+StepperFSM *  fsm_list[4] = 
 { 
     &mchn_hello,
     &mchn_charging,

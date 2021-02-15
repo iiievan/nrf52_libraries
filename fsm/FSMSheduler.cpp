@@ -28,7 +28,7 @@ bool FSMsheduler::push(StepperFSM &fsm)
     {
         // if possibly allocate so much space, and there is no exceptions
         if(max_object_size < heap_free_size)
-            _QUEUE->push(fsm);
+            _QUEUE.push_front(&fsm);
     }
     catch (std::bad_alloc) 
     {
@@ -57,30 +57,32 @@ int FSMsheduler::fsmInQueue(StepperFSM *fsm)
 }  
 
 // check, is fsm in queue
-StepperFSM& FSMsheduler::getListIndex(StepperFSM *fsm)
+StepperFSM* FSMsheduler::getListIndex(StepperFSM *fsm)
 {
-    for(auto i : _fsm_list)
+    int i;
+    
+    for(i = 0 ; _fsm_list[i] != nullptr; i++)
     {
-        if(i->ID == fsm->ID)
+        if(_fsm_list[i]->ID == fsm->ID)
             break;
     }
 
-    return *i;
+    return _fsm_list[i];
 } 
 
 // true - the machine we want is on the queue, false - fault place in the list
 // function directly starts or kills the machine in the queue.
-bool FSMsheduler::fsmPlacement(StepperFSM *fsm, eFSMTrigger fsm_action)
+bool FSMsheduler::place(StepperFSM *fsm, eFSMTrigger fsm_action)
 {
     bool func_result = false;
     StepperFSM *pFSM = getListIndex(fsm); // find fsm in list
 
     // don't push fsm in queue if necessary machines is execute right now
     if (fsm_action == FSM_KILL ||
-        fsm->ID == LED_FSM_MARK_GPS_POSITION ||
-        fsm->ID == LED_FSM_KB_TOGGLE ||  
-        (0 > fsm_in_queue(LED_FSM_MARK_GPS_POSITION) &&
-         0 > fsm_in_queue(LED_FSM_KB_TOGGLE)))
+        fsm->ID == LED_FSM_USB_CONNECTED ||
+        fsm->ID == LED_FSM_CHARGING ||  
+        (0 > fsmInQueue(&mchn_usb_connected) &&
+         0 > fsmInQueue(&mchn_charging)))
     {   
         if (pFSM != nullptr && _QUEUE.size() < FSM_QUEUE_MAX)
         {
@@ -92,19 +94,26 @@ bool FSMsheduler::fsmPlacement(StepperFSM *fsm, eFSMTrigger fsm_action)
             else            
             if (fsm_action == FSM_KILL) // остановка управл€ющей функции
             {
-                // remove fsm from queue, it is no longer рфтвдув
-                _QUEUE.erase(pFSM);
-
-                // if fsm is active - finish him. Machine erased from _ACTIVE_FSM next in handle() method execution.
-                for (auto it = _ACTIVE_FSM.begin(); it != _ACTIVE_FSM.end(); it++) 
+                // remove fsm from queue, it is no longer handled
+                for (auto qit = _QUEUE.begin(); qit != _QUEUE.end(); qit++) 
                 {
-                    if(it->ID == fsm->ID)
+                    if((*qit)->ID == fsm->ID)
+                    {
+                        _QUEUE.erase(qit);
+                        _QUEUE.shrink_to_fit();
+                    }
+                }                
+                
+                // if fsm is active - finish him. Machine erased from _ACTIVE_FSM next in handle() method execution.
+                for (auto ait = _ACTIVE_FSM.begin(); ait != _ACTIVE_FSM.end(); ait++) 
+                {
+                    if((*ait)->ID == fsm->ID)
                     {
                         // turn fsm to initial state
-                        it->ID = FSM_NOINIT;
-                        it->count    =  0;
-                        it->interval =  0;
-                        it->stage    = -1;
+                        (*ait)->ID = FSM_NOINIT;
+                        (*ait)->count    =  0;
+                        (*ait)->interval =  0;
+                        (*ait)->stage    = -1;
                     }
                 }
             }
@@ -123,21 +132,24 @@ bool FSMsheduler::fsmPlacement(StepperFSM *fsm, eFSMTrigger fsm_action)
 // handle machines with a delayed start, just spinning in the handle() loop.
 void FSMsheduler::delayedStart(void)
 {
-    for(auto i : _fsm_list)
+    int i;
+    
+    for(i = 0 ; _fsm_list[i] != nullptr; i++)
     {
-        if(i->status == FSM_DELAYED_START && fsmInQueue[i] < 0)
-            fsmPlacement(i, FSM_START);
+        if(_fsm_list[i]->status == FSM_DELAYED_START && fsmInQueue(_fsm_list[i]) < 0)
+            place(_fsm_list[i], FSM_START);
     }
 }
 
 eFSMStatus FSMsheduler::getStatus(StepperFSM *fsm)
 {
     eFSMStatus result = FSM_NA;
-
-    for(auto i : _fsm_list)
+    int i;
+    
+    for(i = 0 ; _fsm_list[i] != nullptr; i++)
     {
-        if(i->ID == fsm->ID )
-            result = i->status;
+        if(_fsm_list[i]->ID == fsm->ID )
+            result = _fsm_list[i]->status;
     }
 
     return result;
@@ -145,13 +157,15 @@ eFSMStatus FSMsheduler::getStatus(StepperFSM *fsm)
 
 void FSMsheduler::killAllactive(void)
 {
-    for(auto i : _fsm_list)
+    int i;
+    
+    for(i = 0 ; _fsm_list[i] != nullptr; i++)
     {
-        if((i->status == FSM_RUN || fsmInQueue(i) >= 0) &&
-           i->ID != LED_FSM_MARK_GPS_POSITION &&
-           i->ID != LED_FSM_KB_TOGGLE)
+        if((_fsm_list[i]->status == FSM_RUN || fsmInQueue(_fsm_list[i]) >= 0) &&
+           _fsm_list[i]->ID != LED_FSM_CHARGING &&
+           _fsm_list[i]->ID != LED_FSM_USB_CONNECTED)
         {
-            fsmPlacement(i, FSM_KILL);
+            place(_fsm_list[i], FSM_KILL);
         }            
     }
 }
@@ -168,9 +182,9 @@ void FSMsheduler::shedule(void)
     static uint64_t execute_interval_tmr = 0;    
 
     StepperFSM * inQueue;
-    auto activeFSM;
+    std::vector<StepperFSM *>::iterator duplicateFSM;
 
-    delayed_start_handler();    // first delayed fsm.
+    delayedStart();    // first delayed fsm.
 
     if((_ms_timer.get_ms() - execute_interval_tmr) > TIME_DELTA || 
         true == extra_fsm_handler())
@@ -181,19 +195,17 @@ void FSMsheduler::shedule(void)
         if (!_QUEUE.empty())
         {        
             // looking for free slot among active fsm
-            for (activeFSM : _ACTIVE_FSM)
+            for (auto activeFSM = _ACTIVE_FSM.begin(); activeFSM != _ACTIVE_FSM.end(); activeFSM++) 
             {                   
-                if (activeFSM->ID == FSM_NOINIT &&
+                if ((*activeFSM)->ID == FSM_NOINIT &&
                     _ACTIVE_FSM.size() < FSM_ACTIVE_MAX)
                 {
-                    auto duplicateFSM;
-
                     inQueue = _QUEUE.back();                   
     
                     // avoid fsm duplicating in QUEUE and in _ACTIVE_FSM
-                    for (duplicateFSM : _ACTIVE_FSM)
+                    for (duplicateFSM = _ACTIVE_FSM.begin(); duplicateFSM != _ACTIVE_FSM.end(); duplicateFSM++)
                     {                        
-                        if(duplicateFSM->ID == inQueue->ID)
+                        if((*duplicateFSM)->ID == inQueue->ID)
                             break;
                     }
 
@@ -207,14 +219,14 @@ void FSMsheduler::shedule(void)
                             _QUEUE.pop_back(); //just throw out current machine from queue, now he is on the list of active
 
                             // find now active fsm in list of fsm
-                            for(auto j : _fsm_list)
+                            for(int j = 0 ; _fsm_list[j] != nullptr; j++)
                             {
-                                if (j->ID == inQueue->ID)
+                                if (_fsm_list[j]->ID == inQueue->ID)
                                 {
-                                    if (j->status == FSM_NA || 
-                                        j->status == FSM_NONE)
+                                    if (_fsm_list[j]->status == FSM_NA || 
+                                        _fsm_list[j]->status == FSM_NONE)
                                     {                                        
-                                        j->spin(true);     // process fsm
+                                        _fsm_list[j]->spin(true);     // process fsm
                                     }
                                     break;
                                 }
@@ -224,20 +236,19 @@ void FSMsheduler::shedule(void)
                     break;
                 }
             }
-        }
-    
+        }    
 
         // deinitialize fsm's that have finished their work       
-        for(auto k : _fsm_list)
+        for(int k = 0 ; _fsm_list[k] != nullptr; k++)
         {    
-            k->spin(false);  // most of the time is spent here
+            _fsm_list[k]->spin(false);  // most of the time is spent here
           
-            if (k->status == FSM_RELEASE)
+            if (_fsm_list[k]->status == FSM_RELEASE)
             {
                 // finish fsm
-                for (m : _ACTIVE_FSM)
+                for (auto m : _ACTIVE_FSM)
                 {  
-                    if (m->ID == k->ID)
+                    if (m->ID == _fsm_list[k]->ID)
                     {
                         m->ID = FSM_NOINIT;
                         break;
@@ -249,6 +260,3 @@ void FSMsheduler::shedule(void)
 }
 
 FSMsheduler leds_task_sheduler(fsm_list, sys_timer);
-
-
-

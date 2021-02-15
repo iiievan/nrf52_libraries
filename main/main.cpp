@@ -20,9 +20,7 @@ PowerControl power_manager(CHRG_EN_PIN, adc_unite, sys_timer, pwm_agregator, led
 int main()
 {
     colorUp_stack_heap();
-    
-    std::vector<StepperFSM> *fsm_list_vector = new std::vector<StepperFSM>;
-    
+      
     sys_timer.setIRQ(0, TIMER_1MS_INT_PRIORITY);
     sys_timer.setCallback(sys_timer_callback);
     sys_timer.init(7, 125, true);
@@ -72,9 +70,7 @@ int main()
         green_led.run_down();
         power_manager.handle();
         green_led.run_up();
-        
-        leds_task_sheduler.push(fsm_list_vector, mchn_hello);
-   	}
+     }
 }
 
 // because this is template of class, definition of irqhandler done in file where implementation of template is.
