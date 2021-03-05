@@ -131,15 +131,6 @@ void Timer::setCaptureCompare(uint8_t cc_num, uint8_t value, bool circulary)
    
 }
 
-void   Timer::increment(uint32_t dT)
-{
-    __disable_interrupt();
-
-    _time += dT;
-
-    __enable_interrupt();  
-}
-
 uint64_t   Timer::get_ms(void) const
 {
     uint64_t res;
@@ -207,9 +198,15 @@ void   Timer::resume()
     }
 }
 
-void   Timer::onIRQ()
+void   Timer::onIRQ(uint32_t dT)
 {
     _TIMER->EVENTS_COMPARE[0] = 0;
+
+    __disable_interrupt();
+
+    _time += dT;
+
+    __enable_interrupt(); 
 
     if (_on_irq_callback)
     {
@@ -217,13 +214,13 @@ void   Timer::onIRQ()
     }
 }
 
+Timer sys_timer(0);
+
 void sys_timer_callback(uint32_t value)
 {
     static  uint8_t activeLeds = 0;    
     static uint64_t adcTmr = 0;
-    
-    sys_timer.increment(value);
-    
+        
     activeLeds = led_drivers_handle();   
     
     // periodically start measure task for adc
@@ -236,9 +233,7 @@ void sys_timer_callback(uint32_t value)
     UNUSED(activeLeds);
 }
 
-Timer sys_timer(0);
-
-extern "C" void TIMER0_IRQHandler(){ sys_timer.onIRQ(); }
+extern "C" void TIMER0_IRQHandler(){ sys_timer.onIRQ(1); }
 extern "C" void TIMER1_IRQHandler(){ return; }
 extern "C" void TIMER2_IRQHandler(){ return; }
 extern "C" void TIMER3_IRQHandler(){ return; }

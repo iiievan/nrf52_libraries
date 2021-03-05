@@ -39,6 +39,7 @@ typedef enum
     FSM_NA   = -1,               // начальный статус автомата при инициализации системы, остается таким если его нет в списке автоматов.
     FSM_NONE = 0,             // автомат либо не имеет шагов либо не выполняется
     FSM_RUN,              // автомат работает и выполняет шаги
+    FSM_WAIT,             // pending the continuation of work
     FSM_RELEASE,          // автомат только что закончил работу
     FSM_DELAYED_START     // отложенный старт автомата, старт будет в момент следующий проверки статуса автомата.
 } eFSMStatus;
@@ -63,14 +64,14 @@ typedef struct
        void const   *param;       // passed parameter (depends on action_type)
 } const FSMStep_t;
 
-typedef bool (*control_func_t)(ledDriver *led);
+typedef bool (*control_func_t)(void * pArg);
 
 class StepperFSM
 {
 public:   
                 eFSM_id     ID;
              eFSMStatus     status  {FSM_NA}; // current fsm status
-                    int     stage    {-1}; // current step.
+                    int     stage    {-1};    // current step.
                     int     count    {0};     // how many times is left to repeat
                     int     interval {0};     // at what interval.
 

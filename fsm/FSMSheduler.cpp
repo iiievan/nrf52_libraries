@@ -39,21 +39,21 @@ bool FSMsheduler::push(StepperFSM &fsm)
 }
 
 // check, is fsm in queue
-int FSMsheduler::fsmInQueue(StepperFSM *fsm)
+bool FSMsheduler::fsmInQueue(StepperFSM *fsm)
 {
-    int  queue_index = FSM_NA;
+    bool  result = false;
 
     // find fsm with this ID
     for(int i = 0; i < _QUEUE.size(); i++)
     {
         if(_QUEUE[i]->ID == fsm->ID)
         {
-            queue_index = i;
+            result = true;
             break;            
         }
     } 
 
-    return queue_index;
+    return result;
 }  
 
 // check, is fsm in queue
@@ -72,7 +72,7 @@ StepperFSM* FSMsheduler::getListIndex(StepperFSM *fsm)
 
 // true - the machine we want is on the queue, false - fault place in the list
 // function directly starts or kills the machine in the queue.
-bool FSMsheduler::place(StepperFSM *fsm, eFSMTrigger fsm_action)
+bool FSMsheduler::execute(StepperFSM *fsm, eFSMTrigger fsm_action)
 {
     bool func_result = false;
     StepperFSM *pFSM = getListIndex(fsm); // find fsm in list
@@ -81,8 +81,8 @@ bool FSMsheduler::place(StepperFSM *fsm, eFSMTrigger fsm_action)
     if (fsm_action == FSM_KILL ||
         fsm->ID == LED_FSM_USB_CONNECTED ||
         fsm->ID == LED_FSM_CHARGING ||  
-        (0 > fsmInQueue(&mchn_usb_connected) &&
-         0 > fsmInQueue(&mchn_charging)))
+        (false == fsmInQueue(&mchn_usb_connected) &&
+         false == fsmInQueue(&mchn_charging)))
     {   
         if (pFSM != nullptr && _QUEUE.size() < FSM_QUEUE_MAX)
         {
@@ -136,8 +136,8 @@ void FSMsheduler::delayedStart(void)
     
     for(i = 0 ; _fsm_list[i] != nullptr; i++)
     {
-        if(_fsm_list[i]->status == FSM_DELAYED_START && fsmInQueue(_fsm_list[i]) < 0)
-            place(_fsm_list[i], FSM_START);
+        if(_fsm_list[i]->status == FSM_DELAYED_START && fsmInQueue(_fsm_list[i]) == false)
+            execute(_fsm_list[i], FSM_START);
     }
 }
 
@@ -161,11 +161,11 @@ void FSMsheduler::killAllactive(void)
     
     for(i = 0 ; _fsm_list[i] != nullptr; i++)
     {
-        if((_fsm_list[i]->status == FSM_RUN || fsmInQueue(_fsm_list[i]) >= 0) &&
+        if((_fsm_list[i]->status == FSM_RUN || fsmInQueue(_fsm_list[i]) == true) &&
            _fsm_list[i]->ID != LED_FSM_CHARGING &&
            _fsm_list[i]->ID != LED_FSM_USB_CONNECTED)
         {
-            place(_fsm_list[i], FSM_KILL);
+            execute(_fsm_list[i], FSM_KILL);
         }            
     }
 }

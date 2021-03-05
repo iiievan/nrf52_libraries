@@ -24,14 +24,13 @@ public:
               void   pause();
               void   resume();
 
-              void   increment(uint32_t dT);
               bool   checkBusy()  const  { return _is_paused; }
           uint64_t   get_ms(void) const;
           uint64_t   get_us(void);
               void   delay_ms(uint32_t ms);
               void   delay_us(uint32_t us);
 
-              void   onIRQ();
+              void   onIRQ(uint32_t dT);
               void   setIRQ(uint8_t cc_num, uint8_t priority);   // cc_num:0..5, priority:0..7
               void   setCaptureCompare(uint8_t cc_num, uint8_t value, bool circulary);
               void   setCallback(void(*function)(uint32_t)) { _on_irq_callback = function; }

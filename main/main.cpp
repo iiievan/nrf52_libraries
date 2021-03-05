@@ -67,6 +67,10 @@ int main()
     
   	while(1)
   	{   
+        if(FSM_NONE == mchn_hello.status && 
+           false == leds_task_sheduler.fsmInQueue(&mchn_hello))
+        {  leds_task_sheduler.execute(&mchn_hello, FSM_START); }
+      
         green_led.run_down();
         power_manager.handle();
         green_led.run_up();

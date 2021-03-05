@@ -48,9 +48,9 @@ public:
                              } 
 
                     bool     push(StepperFSM &fsm);                                 // try to add fsm to the vector list. Catch exception if unsuccess and return false
-                     int     fsmInQueue(StepperFSM *fsm);                           // checking if the machine is added to the queue. return index of machine
+                    bool     fsmInQueue(StepperFSM *fsm);                           // checking if the machine is added to the queue. return index of machine
               StepperFSM*    getListIndex(StepperFSM *fsm);                         // find the machine into fsm list.
-                    bool     place(StepperFSM *fsm, eFSMTrigger fsm_action); // command to execute the machine. true - the required machine is in the list, false - it is not in the list
+                    bool     execute(StepperFSM *fsm, eFSMTrigger fsm_action); // command to execute the machine. true - the required machine is in the list, false - it is not in the list
 
               eFSMStatus     getStatus(StepperFSM *fsm);                            // updating the machine status
                     void     killAllactive(void);                                   // kills all currently active machines
