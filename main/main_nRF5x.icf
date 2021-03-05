@@ -11,14 +11,14 @@ define symbol __BOOTLOADER_IMG             = 0x3DFF8;
 define symbol __FIRMWARE_TYPE              = 0x3DFF0;
 
 define symbol __ICFEDIT_region_RAM_start__ = 0x20000000;
-define symbol __ICFEDIT_region_RAM_end__   = 0x2003DFDF;
+define symbol __ICFEDIT_region_RAM_end__   = 0x2003BFDF;
 
-define symbol __ICFEDIT_stack_RAM_start__ = 0x2003DFE0;
+define symbol __ICFEDIT_stack_RAM_start__ = 0x2003BFE0;
 define symbol __ICFEDIT_stack_RAM_end__   = 0x2003FFE0;
 
 /*-Sizes-*/
 define symbol __ICFEDIT_size_cstack__ = 0x2000;
-define symbol __ICFEDIT_size_heap__   = 0x0;
+define symbol __ICFEDIT_size_heap__   = 0x2000;
 /**** End of ICF editor section. ###ICF###*/
 
 define memory mem with size = 4G;
@@ -38,6 +38,6 @@ place at address mem: __CHECKSUM__   { readonly section .checksum };
 place at address mem: __FIRMWARE_TYPE  { readonly section firmware_type };
 place at address mem: __BOOTLOADER_IMG { readonly section bootloader_section }; 
 place in ROM_region   { readonly };
-place in RAM_region   { readwrite,
-                        block HEAP };
-place in RAM_cstack   { block CSTACK };
+place in RAM_region   { readwrite };
+place in RAM_cstack   { block HEAP,
+                        block CSTACK };
