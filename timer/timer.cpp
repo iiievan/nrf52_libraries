@@ -1,9 +1,6 @@
 #include "Timer.h"
-#include "ledDriver.h"
-#include "PowerControl.h"
-#include "ADC.h"
 
-Timer::Timer(uint8_t tmr_num)
+Timer::Timer(unsigned int Hz, uint8_t tmr_num, eTimerMode mode)
 {
     switch(tmr_num)
     {        
@@ -31,11 +28,14 @@ Timer::Timer(uint8_t tmr_num)
              _TIMER = nullptr;
             break;
     }
+
+    _clk_frequency = setFrequency(Hz);
+
+    _TIMER->MODE = mode << TIMER_MODE_MODE_Pos;
 }
 
 void    Timer::init(uint32_t presc, uint32_t compare_val, bool circulary)
-{
-    _TIMER->MODE = TIMER_MODE_MODE_Timer << TIMER_MODE_MODE_Pos;
+{    
     _TIMER->BITMODE = TIMER_BITMODE_BITMODE_24Bit << TIMER_BITMODE_BITMODE_Pos;
 
     _TIMER->PRESCALER = presc << TIMER_PRESCALER_PRESCALER_Pos;
@@ -44,36 +44,111 @@ void    Timer::init(uint32_t presc, uint32_t compare_val, bool circulary)
     resume();
 }
 
- // cc_num:0..5, priority 0..7
-void Timer::setIRQ(uint8_t cc_num, uint8_t priority)  
-{ 
-    switch(cc_num)
-    {
-        case 0:
-            _TIMER->INTENSET |= TIMER_INTENSET_COMPARE0_Enabled << TIMER_INTENSET_COMPARE0_Pos;
-            break;
-        case 1:
-            _TIMER->INTENSET |= TIMER_INTENSET_COMPARE1_Enabled << TIMER_INTENSET_COMPARE1_Pos;
-            break;
-        case 2:
-            _TIMER->INTENSET |= TIMER_INTENSET_COMPARE2_Enabled << TIMER_INTENSET_COMPARE2_Pos;
-            break;
-        case 3:
-            _TIMER->INTENSET |= TIMER_INTENSET_COMPARE3_Enabled << TIMER_INTENSET_COMPARE3_Pos;
-            break;
-        case 4:
-            _TIMER->INTENSET |= TIMER_INTENSET_COMPARE4_Enabled << TIMER_INTENSET_COMPARE4_Pos;
-            break;
-        case 5:
-            _TIMER->INTENSET |= TIMER_INTENSET_COMPARE5_Enabled << TIMER_INTENSET_COMPARE5_Pos;
-            break;
-        default:
-            break;
-    }
+// return setted frequency or 0 if was not possible to set this frequency
+unsigned int    Timer::setFrequency(unsigned int freq)
+{   
+    // Ft = 16Mhz/2pow(prescaler);
+    uint32_t pow = 16000000/freq;
+    uint32_t prescaler = 1;
 
-    NVIC_SetPriority(_IRQn, priority);
-    NVIC_ClearPendingIRQ(_IRQn);
-    NVIC_EnableIRQ(_IRQn);
+    // timer clocking cannot be greater 16MHz
+    if(pow >= 1)
+    {
+        while(pow > 2)
+        {
+            pow /= 2;
+            prescaler++;
+        }
+    
+        _TIMER->PRESCALER = prescaler << TIMER_PRESCALER_PRESCALER_Pos;
+        return freq;
+    }
+    else
+        return 0;
+}
+
+// period in useconds
+void   setPeriod(uint8_t cc_num, double period)
+{
+      double min_period;
+    uint32_t capture_compare;
+
+    // if frequency is not set yet, set it to 1Mhz
+    if(_clk_frequency == 0)
+        setFrequency();
+
+    min_period = 1000000/_tmr_frequency;
+    
+    if(period >= min_period)
+    {
+        capture_compare = period/min_period;
+
+        switch(cc_num)
+        {
+            case 0:
+                _TIMER->CC[0] = capture_compare;
+                break;
+            case 1:
+                _TIMER->CC[1] = capture_compare;
+                break;
+            case 2:
+                _TIMER->CC[2] = capture_compare;
+                break;
+            case 3:
+                _TIMER->CC[3] = capture_compare;
+                break;
+            case 4:
+                _TIMER->CC[4] = capture_compare;
+                break;
+            case 5:
+                _TIMER->CC[5] = capture_compare;
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+// period in mseconds
+void   setPeriod(uint8_t cc_num, uint32_t period)
+{
+      double min_period;
+    uint32_t capture_compare;
+
+    // if frequency is not set yet, set it to 1khz
+    if(_clk_frequency == 0)
+        setFrequency(1000);
+
+    min_period = (1000000 * 1000)/_tmr_frequency;
+    
+    if(period >= min_period)
+    {
+        capture_compare = period/min_period;
+
+        switch(cc_num)
+        {
+            case 0:
+                _TIMER->CC[0] = capture_compare;
+                break;
+            case 1:
+                _TIMER->CC[1] = capture_compare;
+                break;
+            case 2:
+                _TIMER->CC[2] = capture_compare;
+                break;
+            case 3:
+                _TIMER->CC[3] = capture_compare;
+                break;
+            case 4:
+                _TIMER->CC[4] = capture_compare;
+                break;
+            case 5:
+                _TIMER->CC[5] = capture_compare;
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 void Timer::setCaptureCompare(uint8_t cc_num, uint8_t value, bool circulary)  
@@ -127,8 +202,39 @@ void Timer::setCaptureCompare(uint8_t cc_num, uint8_t value, bool circulary)
             default:
                 break;
         }      
+    }   
+}
+
+ // cc_num:0..5, priority 0..7
+void Timer::setIRQ(uint8_t cc_num, uint8_t priority)  
+{ 
+    switch(cc_num)
+    {
+        case 0:
+            _TIMER->INTENSET |= TIMER_INTENSET_COMPARE0_Enabled << TIMER_INTENSET_COMPARE0_Pos;
+            break;
+        case 1:
+            _TIMER->INTENSET |= TIMER_INTENSET_COMPARE1_Enabled << TIMER_INTENSET_COMPARE1_Pos;
+            break;
+        case 2:
+            _TIMER->INTENSET |= TIMER_INTENSET_COMPARE2_Enabled << TIMER_INTENSET_COMPARE2_Pos;
+            break;
+        case 3:
+            _TIMER->INTENSET |= TIMER_INTENSET_COMPARE3_Enabled << TIMER_INTENSET_COMPARE3_Pos;
+            break;
+        case 4:
+            _TIMER->INTENSET |= TIMER_INTENSET_COMPARE4_Enabled << TIMER_INTENSET_COMPARE4_Pos;
+            break;
+        case 5:
+            _TIMER->INTENSET |= TIMER_INTENSET_COMPARE5_Enabled << TIMER_INTENSET_COMPARE5_Pos;
+            break;
+        default:
+            break;
     }
-   
+
+    NVIC_SetPriority(_IRQn, priority);
+    NVIC_ClearPendingIRQ(_IRQn);
+    NVIC_EnableIRQ(_IRQn);
 }
 
 uint64_t   Timer::get_ms(void) const
@@ -200,41 +306,24 @@ void   Timer::resume()
 
 void   Timer::onIRQ(uint32_t dT)
 {
-    _TIMER->EVENTS_COMPARE[0] = 0;
-
     __disable_interrupt();
+    
+    _TIMER->EVENTS_COMPARE[0] = 0;    
 
     _time += dT;
 
     __enable_interrupt(); 
 
     if (_on_irq_callback)
-    {
-        _on_irq_callback(1);
-    }
+        _on_irq_callback(0);
 }
 
-Timer sys_timer(0);
+void timer_callback(uint32_t value)
+{}
 
-void sys_timer_callback(uint32_t value)
-{
-    static  uint8_t activeLeds = 0;    
-    static uint64_t adcTmr = 0;
-        
-    activeLeds = led_drivers_handle();   
-    
-    // periodically start measure task for adc
-    if((sys_timer.get_ms() - adcTmr) > ADC_MEAS_INTERVAL)
-    {
-        adcTmr = sys_timer.get_ms();
-        adc_unite.measure();
-    }
-    
-    UNUSED(activeLeds);
-}
-
-extern "C" void TIMER0_IRQHandler(){ sys_timer.onIRQ(1); }
-extern "C" void TIMER1_IRQHandler(){ return; }
-extern "C" void TIMER2_IRQHandler(){ return; }
-extern "C" void TIMER3_IRQHandler(){ return; }
+Timer anyTimer(125000, 4, TIMER);
+//extern "C" void TIMER0_IRQHandler(){ return; }
+//extern "C" void TIMER1_IRQHandler(){ return; }
+//extern "C" void TIMER2_IRQHandler(){ return; }
+//extern "C" void TIMER3_IRQHandler(){ return; }
 extern "C" void TIMER4_IRQHandler(){ return; }
