@@ -87,7 +87,7 @@ public:
 			  void   isrTransfer(const char *out, uint16_t len);
  
               void   on_irq(void);
-		   	  bool   getStartEvent() { return (bool)_SPIM->EVENTS_STARTED; }
+		   	  bool   getStartEvent() { return (bool)_SPIM->EVENTS_STARTED; }  //check if spi is busy now
 
         SPIPins_t   *pins;
 			 void    select()        { nrf_gpio_pin_clear(pins->cs_pin); }

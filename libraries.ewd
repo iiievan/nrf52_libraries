@@ -44,7 +44,7 @@
                 </option>
                 <option>
                     <name>MemFile</name>
-                    <state></state>
+                    <state>$TOOLKIT_DIR$\CONFIG\debugger\NordicSemi\nRF52840_xxAA.ddf</state>
                 </option>
                 <option>
                     <name>RunToEnable</name>
@@ -56,11 +56,11 @@
                 </option>
                 <option>
                     <name>CExtraOptionsCheck</name>
-                    <state>0</state>
+                    <state>1</state>
                 </option>
                 <option>
                     <name>CExtraOptions</name>
-                    <state></state>
+                    <state>--drv_vector_table_base=0x0</state>
                 </option>
                 <option>
                     <name>CFpuProcessor</name>
@@ -112,7 +112,7 @@
                 </option>
                 <option>
                     <name>FlashLoadersV3</name>
-                    <state>$TOOLKIT_DIR$\config\flashloader\</state>
+                    <state>$TOOLKIT_DIR$\config\flashloader\NordicSemi\nrf52840_xxaa.board</state>
                 </option>
                 <option>
                     <name>OCImagesSuppressCheck1</name>

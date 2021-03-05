@@ -1,4 +1,3 @@
-#include "include.h"
 #include "utils.h"
 
 static unsigned long int _next = 1;
@@ -7,9 +6,9 @@ void seed_random(unsigned int seed)
 {
   if (seed == 0)
   {
-    u32 v[4];
+    uint32_t v[4];
     
-    for (u8 i = 0; i < 4; i++)
+    for (uint8_t i = 0; i < 4; i++)
     {
       NRF_RNG->EVENTS_VALRDY = 0;
       NRF_RNG->TASKS_START = 1;
@@ -89,4 +88,104 @@ volatile uint32_t* pincfg_reg(uint32_t pin)
   	NRF_GPIO_Type * port = nrf_gpio_pin_port_decode(&pin);
 
   	return &port->PIN_CNF[pin];
+}
+
+void* memFill(void *s, int c, size_t len) 
+{
+    unsigned char *dst = (unsigned char *)s;
+    while (len > 0) {
+        *dst = (unsigned char)c;
+        dst++;
+        len--;
+    }
+    return s;
+}
+
+void colorUp_stack_heap()
+{
+    // color-up half a stack and half the heap with number 0x10100101
+    // for stack and heap usage.
+    memFill((void*)HEAP_BEGIN, HEAP_COLOR, HEAP_SIZE);
+    memFill((void*)STACK_BEGIN, STACK_COLOR, STACK_SIZE/2);
+}
+
+uint32_t stack_avail()
+{
+    static uint32_t stack_sz = 0;    
+    unsigned char *ptr = (unsigned char *)STACK_BEGIN;
+    
+    uint32_t st = 0;
+    
+    while (*ptr++ == STACK_COLOR)
+      st++;
+    stack_sz = st;
+    
+    return stack_sz;
+}
+
+uint32_t heap_avail()
+{
+    uint32_t hp = 0;
+    unsigned char *ptr = (unsigned char *)HEAP_BEGIN;   
+    
+    // scan whole heap
+    while (ptr++ < (unsigned char *)STACK_BEGIN)
+    {
+      if(*ptr == HEAP_COLOR)
+        hp++;
+    }
+    
+    return hp;
+}
+
+long GetBiggestMalloc(void)
+{
+    long probe = HEAP_SIZE/2; //(or whatever you think as allocate maximum)
+    void * result;
+
+    while (1)
+   {
+        result = malloc(probe);
+        
+        if (result != NULL)
+        {
+             free(result);
+             return(probe);
+        }
+        
+        probe >>= 1;
+        
+        if (probe < ALLOCATION_CRITICAL_MIN)          // 32bytes or whatever you think as a minimum
+                return(0);
+   }
+}
+
+long MaxPossilblyAllocation(void)
+{
+    //(or whatever you think as allocate maximum)
+    long probe = HEAP_SIZE/2; 
+    unsigned char * result = nullptr;
+
+    while (1)
+   {
+        try 
+        {
+            result = new unsigned char[probe];
+        }
+        catch (std::bad_alloc) 
+        {
+            probe >>= 1;
+        }
+        
+        if (result != nullptr)
+        {
+             delete[] result;
+             return(probe);
+        }
+        
+        //(or whatever you think as a minimum)
+        if (probe < ALLOCATION_CRITICAL_MIN)          
+                return(0); 
+
+   }
 }

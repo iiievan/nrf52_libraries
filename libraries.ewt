@@ -1186,6 +1186,27 @@
         </settings>
     </configuration>
     <group>
+        <name>adc</name>
+        <file>
+            <name>$PROJ_DIR$\adc\ADC.h</name>
+        </file>
+    </group>
+    <group>
+        <name>application</name>
+        <file>
+            <name>$PROJ_DIR$\utils\utils.c</name>
+        </file>
+    </group>
+    <group>
+        <name>board</name>
+        <file>
+            <name>$PROJ_DIR$\board\board.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\board\PowerControl.cpp</name>
+        </file>
+    </group>
+    <group>
         <name>cmsis</name>
         <file>
             <name>$PROJ_DIR$\cmsis\iar_startup_nrf52.s</name>
@@ -1198,6 +1219,33 @@
         </file>
         <file>
             <name>$PROJ_DIR$\cmsis\system_nrf52840.c</name>
+        </file>
+    </group>
+    <group>
+        <name>fsm</name>
+        <file>
+            <name>$PROJ_DIR$\fsm\fifo.h</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\fsm\FSMSheduler.cpp</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\fsm\StepperFSM.cpp</name>
+        </file>
+    </group>
+    <group>
+        <name>pwm</name>
+        <file>
+            <name>$PROJ_DIR$\pwm\hwPWM.cpp</name>
+        </file>
+        <file>
+            <name>$PROJ_DIR$\pwm\ledDriver.cpp</name>
+        </file>
+    </group>
+    <group>
+        <name>timer</name>
+        <file>
+            <name>$PROJ_DIR$\timer\timer.cpp</name>
         </file>
     </group>
     <file>
