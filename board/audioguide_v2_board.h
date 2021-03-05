@@ -2,7 +2,7 @@
 #define __AUDIOGUIDE_V2_BOARD_H
 
 //forward declaration for board
-class led_driver;
+class ledDriver;
 
 #include "utils.h"
 
@@ -97,15 +97,17 @@ enum
 // LED_BAT_1..3 are included in the spice module due to lack of pins
 // and managed separately in set_chrg_bar
 // LED_BAT_2 is needed to indicate the critical discharge of the battery by blinking, therefore the charge_bar driver is installed for it.
-extern led_driver charge_bar;
 
-extern led_driver red_led;     
-extern led_driver green_led;   
-extern led_driver bl_btn_led; 
-extern led_driver btn_pr_led;  
-extern led_driver kb_led;
+extern ledDriver red_led;     
+extern ledDriver green_led;   
+extern ledDriver bl_btn_led; 
+extern ledDriver btn_pr_led;  
+extern ledDriver kb_led;
+extern ledDriver bat_led_1; 
+extern ledDriver bat_led_2;  // control first led in sequence
+extern ledDriver bat_led_3;
 
-extern led_driver* led_list[];
+extern ledDriver* led_list[];
 extern uint32_t led_2_port_list[];
 
 #endif //__AUDIOGUIDE_V2_BOARD_H

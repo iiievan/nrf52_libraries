@@ -1,8 +1,8 @@
 #include "StepperFSM.h"
 
-void StepperFSM::spin(bool trigger)
+void StepperFSM::handle(bool trigger)
 {
-      eFSMStatus result = FSM_RUN;
+      fsm_status_t result = FSM_RUN;
     control_func_t cf;
               bool cf_result;
         ledDriver *led = led_list[_prog_ptr[this->stage].action_type];
@@ -14,21 +14,21 @@ void StepperFSM::spin(bool trigger)
             this->count = _prog_ptr[0].count;
             if (this->count == 0)
             {
-                status = FSM_NONE;
+                _status = FSM_NONE;
                 return;
             }
             this->stage    = 0;
             this->interval = 0;             
         }
         
-        status = result;
+        _status = result;
         return;                     
     } 
     else
     {
         if (this->stage == -1)
         {
-            status = FSM_NONE;
+            _status = FSM_NONE;
             return;     
         }
     }
@@ -37,8 +37,8 @@ void StepperFSM::spin(bool trigger)
     {
         if (this->interval == 0)
         {
-            this->interval = (_prog_ptr[this->stage].interval + (TIME_DELTA - 1)) / TIME_DELTA;  // before the action - so that you can fix it in the handler-modifier
-                                                                                                 // rounding up is a multiple of TICK_COUNT_INTERVAL
+            this->interval = (_prog_ptr[this->stage].interval + (TIME_DELTA - 1)) / TIME_DELTA;         // before the action - so that you can fix it in the handler-modifier
+                                                                                                        // rounding up is a multiple of TICK_COUNT_INTERVAL
             if (this->interval == 0)
             {
                 this->interval = 1;                                                 
@@ -85,7 +85,7 @@ void StepperFSM::spin(bool trigger)
         }
     } while (this->interval == 0);
 
-    status = result;
+    _status = result;
 }
 
 bool StepperFSM::control_iface_action(void const *param)
@@ -142,7 +142,7 @@ static bool hello_end(ledDriver *led)
     return false;
 }
 
-static const FSMStep_t hello_prog[] =
+static const fsm_step_t hello_prog[] =
 {
     {  1,   500, MOD_LED_KB, (void const*)func_blink_kb_1_time },    
     {  1,   300, NO_TO_DO,   NULL   },
@@ -179,7 +179,7 @@ static bool charging_end(ledDriver *led)
     return false;
 }
 
-static const FSMStep_t charging_prog[] =
+static const fsm_step_t charging_prog[] =
 {
     {  2,   500, MOD_LED_KB, (void const*)func_blink_kb_2_times },    
     {  1,   800, NO_TO_DO,   NULL   },
@@ -217,7 +217,7 @@ static bool usb_end(ledDriver *led)
     return false;
 }
 
-static const FSMStep_t usb_prog[] =
+static const fsm_step_t usb_prog[] =
 {
     {  3,   500, MOD_LED_KB, (void const*)func_blink_kb_3_times },    
     {  1,   800, NO_TO_DO,   NULL   },
@@ -229,7 +229,7 @@ static const FSMStep_t usb_prog[] =
 StepperFSM mchn_usb_connected(FSM_LED, LED_FSM_USB_CONNECTED, usb_prog);
 //-------------------------------------------------------------------------------------------------
 
-StepperFSM *  fsm_list[4] = 
+StepperFSM * const fsm_list[4] = 
 { 
     &mchn_hello,
     &mchn_charging,
