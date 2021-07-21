@@ -9,7 +9,7 @@
 extern "C" {
 #endif
 
- #define ALLOCATION_CRITICAL_MIN     ((uint32_t)0x100)
+#define ALLOCATION_CRITICAL_MIN     ((uint32_t)0x100)
 #define HEAP_BEGIN                  ((uint32_t)0x2003BFE0)
 #define HEAP_SIZE                   ((uint32_t)0x2000)
 #define HEAP_COLOR                  ((int)0x55)
@@ -31,6 +31,12 @@ else                                                                          \
 {                                                                             \
     while (1);                                                                \
 }
+
+#define SLEEPFORAWHILE()                        \
+NRF_POWER->DCDCEN = 0;                          \
+NRF_CLOCK->TASKS_HFCLKSTOP = 1;                 \
+__WFI();                                        \
+__WFI();
 
 #define countof(a)              (sizeof(a) / sizeof(*(a)))
 

@@ -37,7 +37,6 @@ class ledDriver;
 #define JACK_6_PIN              (PORT_0 | 31)  // P0.31                                     // AIN7
 #define SYS_3V0_PIN             (PORT_1 | 7)   // P1.07
 
-
 #define VIBRO                   (PORT_1 | 12)  // P1.12 VIBRO
 
 #define GPS_RX                  (PORT_0 | 12)  // P0.12 for NRF this is TX
